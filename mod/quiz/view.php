@@ -33,14 +33,14 @@ require_once($CFG->dirroot . '/course/format/lib.php');
 $id = optional_param('id', 0, PARAM_INT); // Course Module ID, or ...
 $q = optional_param('q',  0, PARAM_INT);  // Quiz ID.
 
-if ($id) {
+if ($id) { // Check if course module id is valid
     if (!$cm = get_coursemodule_from_id('quiz', $id)) {
         print_error('invalidcoursemodule');
     }
     if (!$course = $DB->get_record('course', array('id' => $cm->course))) {
         print_error('coursemisconf');
     }
-} else {
+} else { // Check if quiz id is valid
     if (!$quiz = $DB->get_record('quiz', array('id' => $q))) {
         print_error('invalidquizid', 'quiz');
     }
@@ -241,7 +241,10 @@ if (isguestuser()) {
     // If they are not enrolled in this course in a good enough role, tell them to enrol.
     echo $output->view_page_notenrolled($course, $quiz, $cm, $context, $viewobj->infomessages);
 } else {
+    // Here if there are valid quiz list to display
+    echo 'START CONTENT HERE';
     echo $output->view_page($course, $quiz, $cm, $context, $viewobj);
+    echo 'END CONTENT HERE';
 }
 
 echo $OUTPUT->footer();

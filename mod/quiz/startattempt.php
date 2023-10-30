@@ -106,11 +106,19 @@ if ($currentattemptid) {
     if ($lastattempt->state == quiz_attempt::OVERDUE) {
         redirect($quizobj->summary_url($lastattempt->id));
     } else {
-        redirect($quizobj->attempt_url($currentattemptid, $page));
+
+        redirect($quizobj->quiz_instructions_url($currentattemptid, $page));
+
+        // if has existing attempts
+        //redirect($quizobj->attempt_url($currentattemptid, $page));
     }
 }
 
 $attempt = quiz_prepare_and_start_new_attempt($quizobj, $attemptnumber, $lastattempt);
 
+// Redirect to the quiz instructions page.
+redirect($quizobj->quiz_instructions_url($attempt->id, $page));
+
+// If has no existing attempts
 // Redirect to the attempt page.
-redirect($quizobj->attempt_url($attempt->id, $page));
+//redirect($quizobj->attempt_url($attempt->id, $page));

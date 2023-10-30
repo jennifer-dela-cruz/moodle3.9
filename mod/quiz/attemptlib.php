@@ -395,6 +395,7 @@ class quiz {
      * @return string the URL of this quiz's view page.
      */
     public function view_url() {
+        // cmid = quiz id
         global $CFG;
         return $CFG->wwwroot . '/mod/quiz/view.php?id=' . $this->cm->id;
     }
@@ -403,6 +404,7 @@ class quiz {
      * @return string the URL of this quiz's edit page.
      */
     public function edit_url() {
+        // cmid = quiz id
         global $CFG;
         return $CFG->wwwroot . '/mod/quiz/edit.php?cmid=' . $this->cm->id;
     }
@@ -413,6 +415,9 @@ class quiz {
      * @return string the URL of that attempt.
      */
     public function attempt_url($attemptid, $page = 0) {
+        // cmid = quiz id
+        // attempt = number of attempts
+        // page = page number
         global $CFG;
         $url = $CFG->wwwroot . '/mod/quiz/attempt.php?attempt=' . $attemptid;
         if ($page) {
@@ -429,6 +434,8 @@ class quiz {
      * @return moodle_url the URL of this quiz's edit page. Needs to be POSTed to with a cmid parameter.
      */
     public function start_attempt_url($page = 0) {
+        // cmid = quiz id
+        // page = page number
         $params = array('cmid' => $this->cm->id, 'sesskey' => sesskey());
         if ($page) {
             $params['page'] = $page;
@@ -441,6 +448,8 @@ class quiz {
      * @return string the URL of the review of that attempt.
      */
     public function review_url($attemptid) {
+        // cmid = quiz id
+        // attempt = number of attempts
         return new moodle_url('/mod/quiz/review.php', array('attempt' => $attemptid, 'cmid' => $this->get_cmid()));
     }
 
@@ -449,7 +458,27 @@ class quiz {
      * @return string the URL of the review of that attempt.
      */
     public function summary_url($attemptid) {
+        // cmid = quiz id
+        // attempt = number of attempts
         return new moodle_url('/mod/quiz/summary.php', array('attempt' => $attemptid, 'cmid' => $this->get_cmid()));
+    }
+
+    /**
+     * @param int $attemptid the id of an attempt.
+     * @param int $page optional page number to go to in the attempt.
+     * @return string the URL of the quiz instructions.
+     */
+    public function quiz_instructions_url($attemptid, $page = 0) {
+        // cmid = quiz id
+        // attempt = number of attempts
+        // page = page number
+        global $CFG;
+        $url = $CFG->wwwroot . '/mod/quiz/quiz_instructions.php?attempt=' . $attemptid;
+        if ($page) {
+            $url .= '&page=' . $page;
+        }
+        $url .= '&cmid=' . $this->get_cmid();
+        return $url;
     }
 
     // Bits of content =========================================================
