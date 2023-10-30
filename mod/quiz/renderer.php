@@ -317,6 +317,7 @@ class mod_quiz_renderer extends plugin_renderer_base {
     public function navigation_panel(quiz_nav_panel_base $panel) {
 
         $output = '';
+        //$output .= 'START NAVIGATION PANEL HERE';
         $userpicture = $panel->user_picture();
         if ($userpicture) {
             $fullname = fullname($userpicture->user);
@@ -340,6 +341,8 @@ class mod_quiz_renderer extends plugin_renderer_base {
 
         $this->page->requires->js_init_call('M.mod_quiz.nav.init', null, false,
                 quiz_get_js_module());
+
+        //$output .= 'END NAVIGATION PANEL HERE';
 
         return $output;
     }
@@ -508,13 +511,18 @@ class mod_quiz_renderer extends plugin_renderer_base {
                 'id' => 'responseform'));
         $output .= html_writer::start_tag('div');
 
+        // ADD HERE THE QUIZ AND PRECHECK INSTRUCTIONS
+
+        // ADD ACCEPT BUTTON
+
+        // HIDE ALL THE QUESTIONS FOR NOW
         // Print all the questions.
-        foreach ($slots as $slot) {
+        /*foreach ($slots as $slot) {
             $output .= $attemptobj->render_question($slot, false, $this,
                     $attemptobj->attempt_url($slot, $page), $this);
-        }
+        }*/
 
-        // REMOVED THE NEXT AND PREVIOUS BUTTONS
+        // HIDE THE NEXT AND PREVIOUS BUTTONS FOR NOW
         //$navmethod = $attemptobj->get_quiz()->navmethod;
         //$output .= $this->attempt_navigation_buttons($page, $attemptobj->is_last_page($page), $navmethod);
 

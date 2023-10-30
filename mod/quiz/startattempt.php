@@ -107,6 +107,7 @@ if ($currentattemptid) {
         redirect($quizobj->summary_url($lastattempt->id));
     } else {
 
+        // DO IF ELSE HERE NEXT TIME
         redirect($quizobj->quiz_instructions_url($currentattemptid, $page));
 
         // if has existing attempts
@@ -116,6 +117,7 @@ if ($currentattemptid) {
 
 $attempt = quiz_prepare_and_start_new_attempt($quizobj, $attemptnumber, $lastattempt);
 
+// DO IF ELSE HERE NEXT TIME
 // Redirect to the quiz instructions page.
 redirect($quizobj->quiz_instructions_url($attempt->id, $page));
 

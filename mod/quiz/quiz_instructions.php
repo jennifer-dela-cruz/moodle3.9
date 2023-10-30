@@ -117,10 +117,11 @@ if (!$attemptobj->set_currentpage($page)) {
 $headtags = $attemptobj->get_html_head_contributions($page);
 $PAGE->requires->js_init_call('M.mod_quiz.init_attempt_form', null, false, quiz_get_js_module());
 
+// HIDE THE QUIZ NAVIGATION PANEL FOR NOW
 // Arrange for the navigation to be displayed in the first region on the page.
-$navbc = $attemptobj->get_navigation_panel($output, 'quiz_attempt_nav_panel', $page);
+/*$navbc = $attemptobj->get_navigation_panel($output, 'quiz_attempt_nav_panel', $page);
 $regions = $PAGE->blocks->get_regions();
-$PAGE->blocks->add_fake_block($navbc, reset($regions));
+$PAGE->blocks->add_fake_block($navbc, reset($regions));*/
 
 $headtags = $attemptobj->get_html_head_contributions($page);
 $PAGE->set_title($attemptobj->attempt_page_title($page));
@@ -132,6 +133,7 @@ if ($attemptobj->is_last_page($page)) {
     $nextpage = $page + 1;
 }
 
+// DO IF ELSE HERE NEXT TIME
 // $attemptobj = quiz_attempt object/class
 // $page = Current page number
 // $slots = Array of integers relating to questions
