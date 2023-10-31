@@ -501,7 +501,13 @@ class mod_quiz_renderer extends plugin_renderer_base {
     public function precheck_form($attemptobj, $page, $slots, $id, $nextpage) {
         $output = '';
 
-        $output .= 'START FORM HERE';
+        //$output .= 'START FORM HERE';
+
+        // ADD HERE THE QUIZ AND PRECHECK INSTRUCTIONS
+        $output .= html_writer::tag('p', get_string('precheckinstructions_header', 'quiz'));
+        $output .= html_writer::tag('p', get_string('precheckinstructions', 'quiz'));
+        $output .= html_writer::tag('p', get_string('termsandconditions_header', 'quiz'));
+        $output .= html_writer::tag('p', get_string('termsandconditions', 'quiz'));
 
         // Start the form.
         $output .= html_writer::start_tag('form',
@@ -511,9 +517,9 @@ class mod_quiz_renderer extends plugin_renderer_base {
                 'id' => 'responseform'));
         $output .= html_writer::start_tag('div');
 
-        // ADD HERE THE QUIZ AND PRECHECK INSTRUCTIONS
-
         // ADD ACCEPT BUTTON
+        $output .= html_writer::empty_tag('input', array('type' => 'submit', 'name' => 'accept',
+                'value' => get_string('accepttermsandconditions', 'quiz'), 'class' => 'mod_quiz-next-nav btn btn-primary'));
 
         // HIDE ALL THE QUESTIONS FOR NOW
         // Print all the questions.
@@ -550,7 +556,7 @@ class mod_quiz_renderer extends plugin_renderer_base {
         $output .= html_writer::end_tag('div');
         $output .= html_writer::end_tag('form');
 
-        $output .= 'END FORM HERE';
+        //$output .= 'END FORM HERE';
 
         $output .= $this->connection_warning();
 
