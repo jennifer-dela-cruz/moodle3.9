@@ -28,74 +28,118 @@
 require_once(__DIR__ . '/../../config.php');
 require_once($CFG->dirroot . '/mod/quiz/locallib.php');
 
-// Remember the current time as the time any responses were submitted
-// (so as to make sure students don't get penalized for slow processing on this page).
-$timenow = time();
-
 // Get submitted parameters.
-$attemptid     = required_param('attempt',  PARAM_INT);
-$thispage      = optional_param('thispage', 0, PARAM_INT);
-$nextpage      = optional_param('nextpage', 0, PARAM_INT);
-$previous      = optional_param('previous',      false, PARAM_BOOL);
-$next          = optional_param('next',          false, PARAM_BOOL);
-$finishattempt = optional_param('finishattempt', false, PARAM_BOOL);
-$timeup        = optional_param('timeup',        0,      PARAM_BOOL); // True if form was submitted by timer.
-$scrollpos     = optional_param('scrollpos',     '',     PARAM_RAW);
-$cmid          = optional_param('cmid', null, PARAM_INT);
+$id = required_param('cmid', PARAM_INT); // Course module id
+$forcenew = optional_param('forcenew', false, PARAM_BOOL); // Used to force a new preview
+$page = optional_param('page', -1, PARAM_INT); // Page to jump to in the attempt.
 
-$attemptobj = quiz_create_attempt_handling_errors($attemptid, $cmid);
-
-// Set $nexturl now.
-if ($next) {
-    $page = $nextpage;
-} else if ($previous && $thispage > 0) {
-    $page = $thispage - 1;
-} else {
-    $page = $thispage;
+if (!$cm = get_coursemodule_from_id('quiz', $id)) {
+    print_error('invalidcoursemodule');
 }
-if ($page == -1) {
-    $nexturl = $attemptobj->summary_url();
-} else {
-    $nexturl = $attemptobj->attempt_url(null, $page);
-    if ($scrollpos !== '') {
-        $nexturl->param('scrollpos', $scrollpos);
+if (!$course = $DB->get_record('course', array('id' => $cm->course))) {
+    print_error("coursemisconf");
+}
+
+$quizobj = quiz::create($cm->instance, $USER->id);
+// This script should only ever be posted to, so set page URL to the view page.
+$PAGE->set_url($quizobj->view_url());
+// During quiz attempts, the browser back/forwards buttons should force a reload.
+$PAGE->set_cacheable(false);
+
+// Check login and sesskey.
+require_login($quizobj->get_course(), false, $quizobj->get_cm());
+require_sesskey();
+$PAGE->set_heading($quizobj->get_course()->fullname);
+
+// If no questions have been set up yet redirect to edit.php or display an error.
+if (!$quizobj->has_questions()) {
+    if ($quizobj->has_capability('mod/quiz:manage')) {
+        redirect($quizobj->edit_url());
+    } else {
+        print_error('cannotstartnoquestions', 'quiz', $quizobj->view_url());
     }
 }
 
-// Check login.
-require_login($attemptobj->get_course(), false, $attemptobj->get_cm());
-require_sesskey();
+// Create an object to manage all the other (non-roles) access rules.
+$timenow = time();
+$accessmanager = $quizobj->get_access_manager($timenow);
 
-// Check that this attempt belongs to this user.
-if ($attemptobj->get_userid() != $USER->id) {
-    throw new moodle_quiz_exception($attemptobj->get_quizobj(), 'notyourattempt');
+// Validate permissions for creating a new attempt and start a new preview attempt if required.
+list($currentattemptid, $attemptnumber, $lastattempt, $messages, $page) =
+    quiz_validate_new_attempt($quizobj, $accessmanager, $forcenew, $page, true);
+
+// Check access.
+if (!$quizobj->is_preview_user() && $messages) {
+    $output = $PAGE->get_renderer('mod_quiz');
+    print_error('attempterror', 'quiz', $quizobj->view_url(),
+            $output->access_messages($messages));
 }
 
-// Check capabilities.
-if (!$attemptobj->is_preview_user()) {
-    $attemptobj->require_capability('mod/quiz:attempt');
+if ($accessmanager->is_preflight_check_required($currentattemptid)) {
+    // Need to do some checks before allowing the user to continue.
+    $mform = $accessmanager->get_preflight_check_form(
+            $quizobj->start_attempt_url($page), $currentattemptid);
+
+    if ($mform->is_cancelled()) {
+        $accessmanager->back_to_view_page($PAGE->get_renderer('mod_quiz'));
+
+    } else if (!$mform->get_data()) {
+
+        // Form not submitted successfully, re-display it and stop.
+        $PAGE->set_url($quizobj->start_attempt_url($page));
+        $PAGE->set_title($quizobj->get_quiz_name());
+        $accessmanager->setup_attempt_page($PAGE);
+        $output = $PAGE->get_renderer('mod_quiz');
+        if (empty($quizobj->get_quiz()->showblocks)) {
+            $PAGE->blocks->show_only_fake_blocks();
+        }
+
+        echo $output->start_attempt_page($quizobj, $mform);
+        die();
+    }
+
+    // Pre-flight check passed.
+    $accessmanager->notify_preflight_check_passed($currentattemptid);
+}
+if ($currentattemptid) {
+    if ($lastattempt->state == quiz_attempt::OVERDUE) {
+        redirect($quizobj->summary_url($lastattempt->id));
+    } else {
+
+        if ($quizobj) {
+            // Get quiz details
+            $quiz_id = $quizobj->get_quizid();
+            $quiz_config = $DB->get_record('proctor_upou_quiz_config', array('id' => $quiz_id));
+            var_dump($quiz_config);
+
+            if ($quiz_config) {
+                // Redirect to the quiz instructions page.
+                // Applicable to both Automated Proctoring and Snapshot Proctoring
+                redirect($quizobj->system_prechecks_url($currentattemptid, $page));
+            } else {
+                // If has no existing attempts
+                // Redirect to the attempt page.
+                redirect($quizobj->attempt_url($currentattemptid, $page));
+            }
+        }
+    }
 }
 
-// If the attempt is already closed, send them to the review page.
-if ($attemptobj->is_finished()) {
-    throw new moodle_quiz_exception($attemptobj->get_quizobj(),
-            'attemptalreadyclosed', null, $attemptobj->review_url());
-}
+$attempt = quiz_prepare_and_start_new_attempt($quizobj, $attemptnumber, $lastattempt);
 
-// If this page cannot be accessed, notify user and send them to the correct page.
-if (!$finishattempt && !$attemptobj->check_page_access($thispage)) {
-    throw new moodle_exception('submissionoutofsequencefriendlymessage', 'question',
-            $attemptobj->attempt_url(null, $attemptobj->get_currentpage()));
-}
+if ($quizobj) {
+    // Get quiz details
+    $quiz_id = $quizobj->get_quizid();
+    $quiz_config = $DB->get_record('proctor_upou_quiz_config', array('id' => $quiz_id));
+    // var_dump($quiz_config);
 
-// Process the attempt, getting the new status for the attempt.
-$status = $attemptobj->process_attempt($timenow, $finishattempt, $timeup, $thispage);
-
-if ($status == quiz_attempt::OVERDUE) {
-    redirect($attemptobj->summary_url());
-} else if ($status == quiz_attempt::IN_PROGRESS) {
-    redirect($nexturl);
-} else {
-    // Attempt abandoned or finished.
-    redirect($attemptobj->review_url());
+    if ($quiz_config) {
+        // Redirect to the quiz instructions page.
+        // Applicable to both Automated Proctoring and Snapshot Proctoring
+        redirect($quizobj->system_prechecks_url($currentattemptid, $page));
+    } else {
+        // If has no existing attempts
+        // Redirect to the attempt page.
+        redirect($quizobj->attempt_url($currentattemptid, $page));
+    }
 }

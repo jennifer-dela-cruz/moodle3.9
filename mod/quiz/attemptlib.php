@@ -481,6 +481,24 @@ class quiz {
         return $url;
     }
 
+    /**
+     * @param int $attemptid the id of an attempt.
+     * @param int $page optional page number to go to in the attempt.
+     * @return string the URL of the quiz instructions.
+     */
+    public function system_prechecks_url($attemptid, $page = 0) {
+        // cmid = quiz id
+        // attempt = number of attempts
+        // page = page number
+        global $CFG;
+        $url = $CFG->wwwroot . '/mod/quiz/system_prechecks.php?attempt=' . $attemptid;
+        if ($page) {
+            $url .= '&page=' . $page;
+        }
+        $url .= '&cmid=' . $this->get_cmid();
+        return $url;
+    }
+
     // Bits of content =========================================================
 
     /**
