@@ -512,7 +512,7 @@ class mod_quiz_renderer extends plugin_renderer_base {
 
         // Start the form
         $output .= html_writer::start_tag('form',
-                array('action' => new moodle_url($attemptobj->processattempt_url(),
+                array('action' => new moodle_url($attemptobj->processaccept_url(),
                 array('cmid' => $attemptobj->get_cmid())), 'method' => 'post',
                 'enctype' => 'multipart/form-data', 'accept-charset' => 'utf-8',
                 'id' => 'responseform'));

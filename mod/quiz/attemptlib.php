@@ -1615,6 +1615,13 @@ class quiz_attempt {
     }
 
     /**
+     * @return moodle_url the URL of this quiz's precheck acceptance processing.
+     */
+    public function processaccept_url() {
+        return new moodle_url('/mod/quiz/process_accept.php');
+    }
+
+    /**
      * Generates the title of the review page.
      *
      * @param int $page the page number (starting with 0) in the attempt.

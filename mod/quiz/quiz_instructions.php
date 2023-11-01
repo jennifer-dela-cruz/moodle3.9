@@ -15,7 +15,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * This script displays a particular page of a quiz attempt that is in progress.
+ * This script displays the precheck instructions, terms and conditions of proctoring
+ * Copied from attempt.php
  *
  * @package   mod_quiz
  * @copyright 1999 onwards Martin Dougiamas  {@link http://moodle.com}
@@ -133,19 +134,14 @@ if ($attemptobj->is_last_page($page)) {
     $nextpage = $page + 1;
 }
 
-
-// DO IF ELSE HERE NEXT TIME
-// $attemptobj = quiz_attempt object/class
-// $page = Current page number
-// $slots = Array of integers relating to questions
-// $id = ID of the attempt
-// $nextpage = Next page number
 $test = '';
+// Parameter description
+    // $attemptobj = quiz_attempt object/class
+    // $page = Current page number
+    // $slots = Array of integers relating to questions
+    // $id = ID of the attempt
+    // $nextpage = Next page number
 echo $output->quiz_instructions_page($attemptobj, $page, $accessmanager, $messages, $slots, $id, $nextpage, $test);
 
-// $attemptobj = quiz_attempt object/class
-// $page = Current page number
-// $slots = Array of integers relating to questions
-// $id = ID of the attempt
-// $nextpage = Next page number
-// echo $output->attempt_page($attemptobj, $page, $accessmanager, $messages, $slots, $id, $nextpage);
+// ADD A REDIRECTION TO system_prechecks.php if Accept button is clicked
+// CAN I COPY FROM THE NEXT BUTTON IN VIEW.PHP?
