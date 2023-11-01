@@ -467,11 +467,11 @@ class mod_quiz_renderer extends plugin_renderer_base {
      * @param int $nextpage The number of the next page
      */
     public function quiz_instructions_page($attemptobj, $page, $accessmanager, $messages, $slots, $id,
-            $nextpage) {
+            $nextpage, $test) {
         $output = '';
         $output .= $this->header();
         $output .= $this->quiz_notices($messages);
-        $output .= $this->precheck_form($attemptobj, $page, $slots, $id, $nextpage);
+        $output .= $this->precheck_form($attemptobj, $page, $slots, $id, $nextpage, $test);
         $output .= $this->footer();
         return $output;
     }
@@ -490,7 +490,7 @@ class mod_quiz_renderer extends plugin_renderer_base {
     }
 
     /**
-     * Ouputs the form for prechecks
+     * Ouputs the form for prechecks and terms and conditions
      *
      * @param quiz_attempt $attemptobj
      * @param int $page Current page number
@@ -498,18 +498,19 @@ class mod_quiz_renderer extends plugin_renderer_base {
      * @param int $id ID of the attempt
      * @param int $nextpage Next page number
      */
-    public function precheck_form($attemptobj, $page, $slots, $id, $nextpage) {
+    public function precheck_form($attemptobj, $page, $slots, $id, $nextpage, $test) {
         $output = '';
 
         //$output .= 'START FORM HERE';
 
+        $output .= $test;
         // ADD HERE THE QUIZ AND PRECHECK INSTRUCTIONS
         $output .= html_writer::tag('p', get_string('precheckinstructions_header', 'quiz'));
         $output .= html_writer::tag('p', get_string('precheckinstructions', 'quiz'));
         $output .= html_writer::tag('p', get_string('termsandconditions_header', 'quiz'));
         $output .= html_writer::tag('p', get_string('termsandconditions', 'quiz'));
 
-        // Start the form.
+        // Start the form
         $output .= html_writer::start_tag('form',
                 array('action' => new moodle_url($attemptobj->processattempt_url(),
                 array('cmid' => $attemptobj->get_cmid())), 'method' => 'post',
@@ -517,7 +518,7 @@ class mod_quiz_renderer extends plugin_renderer_base {
                 'id' => 'responseform'));
         $output .= html_writer::start_tag('div');
 
-        // ADD ACCEPT BUTTON
+        // ACCEPT BUTTON
         $output .= html_writer::empty_tag('input', array('type' => 'submit', 'name' => 'accept',
                 'value' => get_string('accepttermsandconditions', 'quiz'), 'class' => 'mod_quiz-next-nav btn btn-primary'));
 

@@ -133,13 +133,15 @@ if ($attemptobj->is_last_page($page)) {
     $nextpage = $page + 1;
 }
 
+
 // DO IF ELSE HERE NEXT TIME
 // $attemptobj = quiz_attempt object/class
 // $page = Current page number
 // $slots = Array of integers relating to questions
 // $id = ID of the attempt
 // $nextpage = Next page number
-echo $output->quiz_instructions_page($attemptobj, $page, $accessmanager, $messages, $slots, $id, $nextpage);
+$test = '';
+echo $output->quiz_instructions_page($attemptobj, $page, $accessmanager, $messages, $slots, $id, $nextpage, $test);
 
 // $attemptobj = quiz_attempt object/class
 // $page = Current page number

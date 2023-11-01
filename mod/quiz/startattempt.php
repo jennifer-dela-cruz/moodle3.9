@@ -107,20 +107,40 @@ if ($currentattemptid) {
         redirect($quizobj->summary_url($lastattempt->id));
     } else {
 
-        // DO IF ELSE HERE NEXT TIME
-        redirect($quizobj->quiz_instructions_url($currentattemptid, $page));
+        if ($quizobj) {
+            // Get quiz details
+            $quiz_id = $quizobj->get_quizid();
+            $quiz_config = $DB->get_record('proctor_upou_quiz_config', array('id' => $quiz_id));
+            var_dump($quiz_config);
 
-        // if has existing attempts
-        //redirect($quizobj->attempt_url($currentattemptid, $page));
+            if ($quiz_config) {
+                // Redirect to the quiz instructions page.
+                // Applicable to both Automated Proctoring and Snapshot Proctoring
+                redirect($quizobj->quiz_instructions_url($currentattemptid, $page));
+            } else {
+                // If has no existing attempts
+                // Redirect to the attempt page.
+                redirect($quizobj->attempt_url($currentattemptid, $page));
+            }
+        }
     }
 }
 
 $attempt = quiz_prepare_and_start_new_attempt($quizobj, $attemptnumber, $lastattempt);
 
-// DO IF ELSE HERE NEXT TIME
-// Redirect to the quiz instructions page.
-redirect($quizobj->quiz_instructions_url($attempt->id, $page));
+if ($quizobj) {
+    // Get quiz details
+    $quiz_id = $quizobj->get_quizid();
+    $quiz_config = $DB->get_record('proctor_upou_quiz_config', array('id' => $quiz_id));
+    // var_dump($quiz_config);
 
-// If has no existing attempts
-// Redirect to the attempt page.
-//redirect($quizobj->attempt_url($attempt->id, $page));
+    if ($quiz_config) {
+        // Redirect to the quiz instructions page.
+        // Applicable to both Automated Proctoring and Snapshot Proctoring
+        redirect($quizobj->quiz_instructions_url($currentattemptid, $page));
+    } else {
+        // If has no existing attempts
+        // Redirect to the attempt page.
+        redirect($quizobj->attempt_url($currentattemptid, $page));
+    }
+}

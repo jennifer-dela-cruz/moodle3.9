@@ -241,10 +241,19 @@ if (isguestuser()) {
     // If they are not enrolled in this course in a good enough role, tell them to enrol.
     echo $output->view_page_notenrolled($course, $quiz, $cm, $context, $viewobj->infomessages);
 } else {
-    // Here if there are valid quiz list to display
-    echo 'START CONTENT HERE';
+
+    // Here if there is a valid quiz list to display
+    // echo 'START CONTENT HERE';
+    echo ' |Course ID:' . $course->id . '| ';
+    echo ' |Quiz ID:' . $quiz->id . '| ';
+    // if ($quiz->id) {
+    //     $quiz_config = $DB->get_record('proctor_upou_quiz_config', array('id' => $quiz->id));
+    //     var_dump($quiz_config);
+    // }
+
     echo $output->view_page($course, $quiz, $cm, $context, $viewobj);
-    echo 'END CONTENT HERE';
+    // echo 'END CONTENT HERE';
+
 }
 
 echo $OUTPUT->footer();
