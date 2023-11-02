@@ -127,6 +127,9 @@ if (!$attemptobj->set_currentpage($page)) {
 $headtags = $attemptobj->get_html_head_contributions($page);
 $PAGE->requires->js_init_call('M.mod_quiz.init_attempt_form', null, false, quiz_get_js_module());
 
+// Initializa the javascript for the system precheck
+$PAGE->requires->js(new moodle_url('/mod/quiz/system_precheck.js'));
+
 // HIDE THE QUIZ NAVIGATION PANEL FOR NOW
 // Arrange for the navigation to be displayed in the first region on the page.
 /*$navbc = $attemptobj->get_navigation_panel($output, 'quiz_attempt_nav_panel', $page);

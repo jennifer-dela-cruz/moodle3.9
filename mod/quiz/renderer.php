@@ -471,7 +471,7 @@ class mod_quiz_renderer extends plugin_renderer_base {
         $output = '';
         $output .= $this->header();
         $output .= $this->quiz_notices($messages);
-        $output .= $this->precheck_form($attemptobj, $page, $slots, $id, $nextpage, $test);
+        $output .= $this->system_prechecks_form($attemptobj, $page, $slots, $id, $nextpage, $test);
         $output .= $this->footer();
         return $output;
     }
@@ -599,12 +599,29 @@ class mod_quiz_renderer extends plugin_renderer_base {
 
         //$output .= 'START FORM HERE';
 
+        // Display this message if JavaScript is disabled
+        $output .= html_writer::start_tag('noscript');
+        $output .= html_writer::tag('p', get_string('jsdisabled', 'quiz'));
+        $output .= html_writer::end_tag('noscript');
+
         $output .= $test;
         // ADD HERE THE QUIZ AND PRECHECK INSTRUCTIONS
-        $output .= html_writer::tag('p', get_string('precheckinstructions_header', 'quiz'));
-        $output .= html_writer::tag('p', get_string('precheckinstructions', 'quiz'));
-        $output .= html_writer::tag('p', get_string('termsandconditions_header', 'quiz'));
-        $output .= html_writer::tag('p', get_string('termsandconditions', 'quiz'));
+        // This will display the message if JavaScript is enabled
+        // If JavaScript is enabled, this message will be replaced
+        $output .= html_writer::tag('p', '', array('id' => 'jsCheckMessage'));
+
+        $output .= html_writer::tag('p', '', array('id' => 'compareChromeVersion'));
+        $output .= html_writer::tag('p', '', array('id' => 'checkScreenSharingSupport'));
+        $output .= html_writer::tag('p', '', array('id' => 'getVideoDevice'));
+        $output .= html_writer::tag('p', '', array('id' => 'getMicrophone'));
+        $output .= html_writer::tag('p', '', array('id' => 'goFullscreen'));
+
+
+        $output .= html_writer::tag('script', "const pLabel = '1. Javascript check: '; document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('jsCheckMessage').textContent = pLabel + 'JavaScript is enabled!';
+        });");
+
+        $output .= html_writer::tag('button', get_string('gofullscreen', 'quiz'), array('onclick' => 'goFullscreen()'));
 
         // Start the form
         $output .= html_writer::start_tag('form',

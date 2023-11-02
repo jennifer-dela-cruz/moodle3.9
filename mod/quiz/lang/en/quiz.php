@@ -1013,3 +1013,5 @@ $string['termsandconditions_header'] = 'Terms and Conditions';
 $string['termsandconditions'] = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Mauris augue neque gravida in fermentum. Nulla facilisi nullam vehicula ipsum a arcu cursus vitae. Cursus in hac habitasse platea dictumst. Nisl vel pretium lectus quam id leo in vitae turpis. Nullam eget felis eget nunc. Diam volutpat commodo sed egestas egestas fringilla phasellus faucibus. Ullamcorper velit sed ullamcorper morbi tincidunt. Quis viverra nibh cras pulvinar mattis nunc. Ut etiam sit amet nisl purus in. Pellentesque nec nam aliquam sem et tortor consequat.';
 $string['accepttermsandconditions'] = 'Accept';
 $string['identityprechecks'] = 'Identity Prechecks';
+$string['jsdisabled'] = 'Javascript is disabled. Please enable JavaScript in your browser settings.';
+$string['gofullscreen'] = 'Go fullscreen';
