@@ -614,9 +614,9 @@ class mod_quiz_renderer extends plugin_renderer_base {
                 'id' => 'responseform'));
         $output .= html_writer::start_tag('div');
 
-        // ACCEPT BUTTON
-        $output .= html_writer::empty_tag('input', array('type' => 'submit', 'name' => 'accept',
-                'value' => get_string('accepttermsandconditions', 'quiz'), 'class' => 'mod_quiz-next-nav btn btn-primary'));
+        // NEXT BUTTON
+        $output .= html_writer::empty_tag('input', array('type' => 'submit', 'name' => 'identityprechecks',
+                'value' => get_string('identityprechecks', 'quiz'), 'class' => 'mod_quiz-next-nav btn btn-primary'));
 
         // HIDE ALL THE QUESTIONS FOR NOW
         // Print all the questions.

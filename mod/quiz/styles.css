@@ -1,3 +1,16 @@
+/** Proctor UPOU style **/
+.blinking {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    animation: blink 1s linear infinite;
+}
+@keyframes blink {
+    50% {
+        opacity: 0;
+    }
+}
+
 /** Bits that can appear on any page. */
 .path-mod-quiz .statedetails {
     display: block;

@@ -143,6 +143,15 @@ if ($attemptobj->is_last_page($page)) {
     $nextpage = $page + 1;
 }
 
+
+// ADD SYSTEM PRECHECKS HERE OR IN system_prechecks_form() in renderer.php
+// - - Verify webcam
+// - - Choose webcam
+// - - Verify microphone
+// - - Choose microphone
+// - - Verify screen sharing
+
+
 $test = '';
 // Parameter description
     // $attemptobj = quiz_attempt object/class
@@ -151,6 +160,3 @@ $test = '';
     // $id = ID of the attempt
     // $nextpage = Next page number
 echo $output->system_prechecks_page($attemptobj, $page, $accessmanager, $messages, $slots, $id, $nextpage, $test);
-
-// ADD A REDIRECTION TO system_prechecks.php if Accept button is clicked
-// CAN I COPY FROM THE NEXT BUTTON IN VIEW.PHP?

@@ -135,13 +135,13 @@ if ($attemptobj->is_last_page($page)) {
 }
 
 $test = '';
+
 // Parameter description
     // $attemptobj = quiz_attempt object/class
     // $page = Current page number
     // $slots = Array of integers relating to questions
     // $id = ID of the attempt
     // $nextpage = Next page number
-echo $output->quiz_instructions_page($attemptobj, $page, $accessmanager, $messages, $slots, $id, $nextpage, $test);
 
-// ADD A REDIRECTION TO system_prechecks.php if Accept button is clicked
-// CAN I COPY FROM THE NEXT BUTTON IN VIEW.PHP?
+// Display the quiz instructions form
+echo $output->quiz_instructions_page($attemptobj, $page, $accessmanager, $messages, $slots, $id, $nextpage, $test);
