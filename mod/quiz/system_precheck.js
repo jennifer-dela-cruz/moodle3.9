@@ -40,10 +40,16 @@ function compareChromeVersion() {
 
         if (chromeVersion === definedVersion) {
             document.getElementById('compareChromeVersion').textContent = pLabel + "This is Google Chrome and it's version " + definedVersion;
+            // document.getElementById('compareChromeVersion_hid').value = "1";
+            // const test_value = document.getElementById('compareChromeVersion_hid').value;
+            // alert(test_value);
         } else if (chromeVersion < definedVersion) {
             document.getElementById('compareChromeVersion').textContent = pLabel + "This is Google Chrome, but the version is lower than " + definedVersion;
         } else {
             document.getElementById('compareChromeVersion').textContent = pLabel + "This is Google Chrome, but the version is higher than " + definedVersion;
+            // document.getElementById('compareChromeVersion_hid').value = "1";
+            // const test_value = document.getElementById('compareChromeVersion_hid').value;
+            // alert(test_value);
         }
     } else {
         document.getElementById('compareChromeVersion').textContent = pLabel + "This is not Google Chrome.";

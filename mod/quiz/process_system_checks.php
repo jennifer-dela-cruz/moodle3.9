@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * This page deals with processing responses after the precheck instructions acceptance.
+ * This page deals with processing responses after the system precheck completion.
  *
- * People will normally arrive here from a form submission on quiz_instructions.php,
+ * People will normally arrive here from a form submission on system_prechecks.php,
  * and once the responses are processed, they will be redirected to system_prechecks.php.
  *
  * @package   mod_quiz
@@ -113,9 +113,9 @@ if ($currentattemptid) {
             var_dump($quiz_config);
 
             if ($quiz_config) {
-                // Redirect to the system prechecks page.
+                // Redirect to the identity prechecks page.
                 // Applicable to both Automated Proctoring and Snapshot Proctoring
-                redirect($quizobj->system_prechecks_url($currentattemptid, $page));
+                redirect($quizobj->identity_prechecks_url($currentattemptid, $page));
             } else {
                 // If has no existing attempts
                 // Redirect to the attempt page.
@@ -134,9 +134,9 @@ if ($quizobj) {
     // var_dump($quiz_config);
 
     if ($quiz_config) {
-        // Redirect to the system prechecks page.
+        // Redirect to the identity prechecks page.
         // Applicable to both Automated Proctoring and Snapshot Proctoring
-        redirect($quizobj->system_prechecks_url($currentattemptid, $page));
+        redirect($quizobj->identity_prechecks_url($currentattemptid, $page));
     } else {
         // If has no existing attempts
         // Redirect to the attempt page.

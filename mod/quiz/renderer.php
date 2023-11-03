@@ -471,7 +471,7 @@ class mod_quiz_renderer extends plugin_renderer_base {
         $output = '';
         $output .= $this->header();
         $output .= $this->quiz_notices($messages);
-        $output .= $this->system_prechecks_form($attemptobj, $page, $slots, $id, $nextpage, $test);
+        $output .= $this->quiz_instructions_form($attemptobj, $page, $slots, $id, $nextpage, $test);
         $output .= $this->footer();
         return $output;
     }
@@ -511,7 +511,7 @@ class mod_quiz_renderer extends plugin_renderer_base {
     }
 
     /**
-     * Ouputs the form for prechecks and terms and conditions
+     * Ouputs the form for isntructions, prechecks and terms and conditions
      *
      * @param quiz_attempt $attemptobj
      * @param int $page Current page number
@@ -519,7 +519,7 @@ class mod_quiz_renderer extends plugin_renderer_base {
      * @param int $id ID of the attempt
      * @param int $nextpage Next page number
      */
-    public function precheck_form($attemptobj, $page, $slots, $id, $nextpage, $test) {
+    public function quiz_instructions_form($attemptobj, $page, $slots, $id, $nextpage, $test) {
         $output = '';
 
         //$output .= 'START FORM HERE';
@@ -605,7 +605,12 @@ class mod_quiz_renderer extends plugin_renderer_base {
         $output .= html_writer::end_tag('noscript');
 
         $output .= $test;
-        // ADD HERE THE QUIZ AND PRECHECK INSTRUCTIONS
+
+        // Header and page description
+        $output .= html_writer::tag('p', get_string('systemprecheck_header', 'quiz'));
+        $output .= html_writer::tag('p', get_string('systemprecheck', 'quiz'));
+
+        // QUIZ AND PRECHECK INSTRUCTIONS
         // This will display the message if JavaScript is enabled
         // If JavaScript is enabled, this message will be replaced
         $output .= html_writer::tag('p', '', array('id' => 'jsCheckMessage'));
@@ -621,11 +626,15 @@ class mod_quiz_renderer extends plugin_renderer_base {
             document.getElementById('jsCheckMessage').textContent = pLabel + 'JavaScript is enabled!';
         });");
 
-        $output .= html_writer::tag('button', get_string('gofullscreen', 'quiz'), array('onclick' => 'goFullscreen()'));
+        // TO TRIGGER THE FULLSCREEN
+        $output .= html_writer::tag('button', get_string('gofullscreen', 'quiz'), array('onclick' => 'goFullscreen()', 'class' => 'btn btn-secondary'));
+
+        // LINE BREAK
+        $output .= html_writer::tag('p', '');
 
         // Start the form
         $output .= html_writer::start_tag('form',
-                array('action' => new moodle_url($attemptobj->processaccept_url(),
+                array('action' => new moodle_url($attemptobj->processsystemchecks_url(),
                 array('cmid' => $attemptobj->get_cmid())), 'method' => 'post',
                 'enctype' => 'multipart/form-data', 'accept-charset' => 'utf-8',
                 'id' => 'responseform'));
@@ -646,7 +655,22 @@ class mod_quiz_renderer extends plugin_renderer_base {
         //$navmethod = $attemptobj->get_quiz()->navmethod;
         //$output .= $this->attempt_navigation_buttons($page, $attemptobj->is_last_page($page), $navmethod);
 
-        // Some hidden fields to trach what is going on.
+        // HIDDEN FIELDS FOR THE PRECHECK
+        // 1 - passed; 0 - failed
+        $output .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'jsCheckMessage_hid',
+                'value' => '0', 'id' => 'jsCheckMessage_hid'));
+        $output .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'compareChromeVersion_hid',
+        'value' => '0', 'id' => 'compareChromeVersion_hid'));
+        $output .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'checkScreenSharingSupport_hid',
+                'value' => '0', 'id' => 'checkScreenSharingSupport_hid'));
+        $output .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'getVideoDevice_hid',
+        'value' => '0', 'id' => 'getVideoDevice_hid'));
+        $output .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'getMicrophone_hid',
+                'value' => '0', 'id' => 'getMicrophone_hid'));
+        $output .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'goFullscreen_hid',
+        'value' => '0', 'id' => 'goFullscreen_hid'));
+
+        // Some hidden fields to track what is going on.
         $output .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'attempt',
                 'value' => $attemptobj->get_attemptid()));
         $output .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'thispage',

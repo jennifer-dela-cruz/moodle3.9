@@ -15,16 +15,11 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * This script performs the system prechecks such as the following
- * - Verify webcam
- * - Choose webcam
- * - Verify microphone
- * - Choose microphone
- * - Verify screen sharing
- * - Verify internet connection
- * - Verify if the browser is Chrome and if with the latest version
- * - Enable fullscreen
- * - Check if javascript is disabled in the browser
+ * This script performs the identity prechecks such as the following
+ * - Face capture
+ * - Face verification
+ * - ID capture
+ * - ID verification
  * Copied from attempt.php
  *
  * @package   mod_quiz
@@ -127,8 +122,8 @@ if (!$attemptobj->set_currentpage($page)) {
 $headtags = $attemptobj->get_html_head_contributions($page);
 $PAGE->requires->js_init_call('M.mod_quiz.init_attempt_form', null, false, quiz_get_js_module());
 
-// Initializa the javascript for the system precheck
-$PAGE->requires->js(new moodle_url('/mod/quiz/system_precheck.js'));
+// Initializa the javascript for the identity precheck
+$PAGE->requires->js(new moodle_url('/mod/quiz/identity_precheck.js'));
 
 // HIDE THE QUIZ NAVIGATION PANEL FOR NOW
 // Arrange for the navigation to be displayed in the first region on the page.
@@ -153,4 +148,4 @@ $test = '';
     // $slots = Array of integers relating to questions
     // $id = ID of the attempt
     // $nextpage = Next page number
-echo $output->system_prechecks_page($attemptobj, $page, $accessmanager, $messages, $slots, $id, $nextpage, $test);
+echo $output->identity_prechecks_page($attemptobj, $page, $accessmanager, $messages, $slots, $id, $nextpage, $test);

@@ -484,7 +484,7 @@ class quiz {
     /**
      * @param int $attemptid the id of an attempt.
      * @param int $page optional page number to go to in the attempt.
-     * @return string the URL of the quiz instructions.
+     * @return string the URL of the system prechecks.
      */
     public function system_prechecks_url($attemptid, $page = 0) {
         // cmid = quiz id
@@ -492,6 +492,24 @@ class quiz {
         // page = page number
         global $CFG;
         $url = $CFG->wwwroot . '/mod/quiz/system_prechecks.php?attempt=' . $attemptid;
+        if ($page) {
+            $url .= '&page=' . $page;
+        }
+        $url .= '&cmid=' . $this->get_cmid();
+        return $url;
+    }
+
+    /**
+     * @param int $attemptid the id of an attempt.
+     * @param int $page optional page number to go to in the attempt.
+     * @return string the URL of the identity prechecks.
+     */
+    public function identity_prechecks_url($attemptid, $page = 0) {
+        // cmid = quiz id
+        // attempt = number of attempts
+        // page = page number
+        global $CFG;
+        $url = $CFG->wwwroot . '/mod/quiz/identity_prechecks.php?attempt=' . $attemptid;
         if ($page) {
             $url .= '&page=' . $page;
         }
@@ -1640,6 +1658,13 @@ class quiz_attempt {
     }
 
     /**
+     * @return moodle_url the URL of this quiz's system precheck processing.
+     */
+    public function processsystemchecks_url() {
+        return new moodle_url('/mod/quiz/process_system_checks.php');
+    }
+
+    /**
      * Generates the title of the review page.
      *
      * @param int $page the page number (starting with 0) in the attempt.
@@ -1659,6 +1684,8 @@ class quiz_attempt {
 
         return $title;
     }
+
+
 
     /**
      * @param int|null $slot indicates which question to link to.
