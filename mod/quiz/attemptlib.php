@@ -517,6 +517,24 @@ class quiz {
         return $url;
     }
 
+    /**
+     * @param int $attemptid the id of an attempt.
+     * @param int $page optional page number to go to in the attempt.
+     * @return string the URL of the final instructions
+     */
+    public function final_instructions_url($attemptid, $page = 0) {
+        // cmid = quiz id
+        // attempt = number of attempts
+        // page = page number
+        global $CFG;
+        $url = $CFG->wwwroot . '/mod/quiz/final_instructions.php?attempt=' . $attemptid;
+        if ($page) {
+            $url .= '&page=' . $page;
+        }
+        $url .= '&cmid=' . $this->get_cmid();
+        return $url;
+    }
+
     // Bits of content =========================================================
 
     /**
@@ -1662,6 +1680,13 @@ class quiz_attempt {
      */
     public function processsystemchecks_url() {
         return new moodle_url('/mod/quiz/process_system_checks.php');
+    }
+
+    /**
+     * @return moodle_url the URL of this quiz's identity precheck processing.
+     */
+    public function processidentitychecks_url() {
+        return new moodle_url('/mod/quiz/process_identity_checks.php');
     }
 
     /**
