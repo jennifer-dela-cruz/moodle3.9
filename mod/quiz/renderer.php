@@ -760,10 +760,19 @@ class mod_quiz_renderer extends plugin_renderer_base {
         $output .= $test;
 
         // Header and page description
-        $output .= html_writer::tag('p', get_string('identityprecheck_header', 'quiz'));
-        $output .= html_writer::tag('p', get_string('identityprecheck', 'quiz'));
+        $output .= html_writer::tag('p', get_string('identityfaceprecheck_header', 'quiz'));
+        $output .= html_writer::tag('p', get_string('identityfaceprecheck', 'quiz'));
 
-        // IDENTITY PRECHECK
+        //  FACE PRECHECK
+        $frame_width = 254;
+        $frame_height = 190;
+
+        $output .= html_writer::empty_tag('video', array('id' => 'video', 'width' => $frame_width, 'height' => $frame_height, 'autoplay' => 'autoplay'));
+        $output .= html_writer::empty_tag('canvas', array('id' => 'canvas', 'width' => $frame_width, 'height' => $frame_height, 'style' => 'display: none;'));
+        $output .= html_writer::empty_tag('img', array('id' => 'photo', 'src' => '', 'style' => 'display: none;'));
+        $output .= html_writer::empty_tag('input', array('id' => 'identity_type', 'type' => 'hidden', 'value' => 'face'));
+
+        $output .= html_writer::start_tag('div');
 
 
         // Start the form
@@ -772,11 +781,19 @@ class mod_quiz_renderer extends plugin_renderer_base {
                 array('cmid' => $attemptobj->get_cmid())), 'method' => 'post',
                 'enctype' => 'multipart/form-data', 'accept-charset' => 'utf-8',
                 'id' => 'responseform'));
-        $output .= html_writer::start_tag('div');
+        $output .= html_writer::start_tag('div', array('id' => 'buttonsContainer'));
+        $output .= html_writer::start_tag('div', array('id' => 'captureButtonContainer'));
+        $output .= html_writer::empty_tag('input', array('type' => 'submit', 'name' => 'capture_btn',
+                'value' => get_string('capture_btn', 'quiz'), 'class' => 'mod_quiz-next-nav btn btn-primary'));
+        $output .= html_writer::empty_tag('input', array('type' => 'submit', 'name' => 'retry_btn', 'style' => 'display: none;',
+        'value' => get_string('retry_btn', 'quiz'), 'class' => 'mod_quiz-next-nav btn btn-primary'));
+        $output .= html_writer::end_tag('div');
+        $output .= html_writer::end_tag('div');
+
 
         // NEXT BUTTON
-        $output .= html_writer::empty_tag('input', array('type' => 'submit', 'name' => 'finalinstructions',
-                'value' => get_string('finalinstructions', 'quiz'), 'class' => 'mod_quiz-next-nav btn btn-primary'));
+        $output .= html_writer::empty_tag('input', array('type' => 'submit', 'name' => 'identityidprechecks_btn',
+                'value' => get_string('identityidprechecks_btn', 'quiz'), 'class' => 'mod_quiz-next-nav btn btn-primary'));
 
         // HIDE ALL THE QUESTIONS FOR NOW
         // Print all the questions.
@@ -836,8 +853,8 @@ class mod_quiz_renderer extends plugin_renderer_base {
         $output .= $test;
 
         // Header and page description
-        $output .= html_writer::tag('p', get_string('identityprecheck_header', 'quiz'));
-        $output .= html_writer::tag('p', get_string('identityprecheck', 'quiz'));
+        $output .= html_writer::tag('p', get_string('identityidprecheck_header', 'quiz'));
+        $output .= html_writer::tag('p', get_string('identityidprecheck', 'quiz'));
 
         // IDENTITY PRECHECK
 
@@ -851,8 +868,8 @@ class mod_quiz_renderer extends plugin_renderer_base {
         $output .= html_writer::start_tag('div');
 
         // NEXT BUTTON
-        $output .= html_writer::empty_tag('input', array('type' => 'submit', 'name' => 'finalinstructions',
-                'value' => get_string('finalinstructions', 'quiz'), 'class' => 'mod_quiz-next-nav btn btn-primary'));
+        $output .= html_writer::empty_tag('input', array('type' => 'submit', 'name' => 'identityidprecheck_btn',
+                'value' => get_string('identityidprecheck_btn', 'quiz'), 'class' => 'mod_quiz-next-nav btn btn-primary'));
 
         // HIDE ALL THE QUESTIONS FOR NOW
         // Print all the questions.
