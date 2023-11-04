@@ -18,8 +18,6 @@
  * This script performs the identity prechecks such as the following
  * - Face capture
  * - Face verification
- * - ID capture
- * - ID verification
  * Copied from attempt.php
  *
  * @package   mod_quiz
@@ -122,7 +120,7 @@ if (!$attemptobj->set_currentpage($page)) {
 $headtags = $attemptobj->get_html_head_contributions($page);
 $PAGE->requires->js_init_call('M.mod_quiz.init_attempt_form', null, false, quiz_get_js_module());
 
-// Initializa the javascript for the identity precheck
+// Initialize the javascript for the identity precheck
 $PAGE->requires->js(new moodle_url('/mod/quiz/identity_precheck.js'));
 
 // HIDE THE QUIZ NAVIGATION PANEL FOR NOW
@@ -148,4 +146,4 @@ $test = '';
     // $slots = Array of integers relating to questions
     // $id = ID of the attempt
     // $nextpage = Next page number
-echo $output->identity_prechecks_page($attemptobj, $page, $accessmanager, $messages, $slots, $id, $nextpage, $test);
+echo $output->identity_face_prechecks_page($attemptobj, $page, $accessmanager, $messages, $slots, $id, $nextpage, $test);

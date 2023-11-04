@@ -15,10 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * This page deals with processing responses after the system precheck completion.
+ * This page deals with processing responses after the identity precheck completion.
  *
- * People will normally arrive here from a form submission on system_prechecks.php,
- * and once the responses are processed, they will be redirected to identity_prechecks.php.
+ * People will normally arrive here from a form submission on identity_prechecks.php,
+ * and once the responses are processed, they will be redirected to final_instructions.php.
  *
  * @package   mod_quiz
  * @copyright 2009 Tim Hunt
@@ -113,9 +113,9 @@ if ($currentattemptid) {
             var_dump($quiz_config);
 
             if ($quiz_config) {
-                // Redirect to the identity prechecks page.
+                // Redirect to the final instructions page.
                 // Applicable to both Automated Proctoring and Snapshot Proctoring
-                redirect($quizobj->identity_face_prechecks_url($currentattemptid, $page));
+                redirect($quizobj->identity_id_prechecks_url($currentattemptid, $page));
             } else {
                 // If has no existing attempts
                 // Redirect to the attempt page.
@@ -134,9 +134,9 @@ if ($quizobj) {
     // var_dump($quiz_config);
 
     if ($quiz_config) {
-        // Redirect to the identity prechecks page.
+        // Redirect to the final instructions page.
         // Applicable to both Automated Proctoring and Snapshot Proctoring
-        redirect($quizobj->identity_face_prechecks_url($currentattemptid, $page));
+        redirect($quizobj->identity_id_prechecks_url($currentattemptid, $page));
     } else {
         // If has no existing attempts
         // Redirect to the attempt page.

@@ -502,14 +502,32 @@ class quiz {
     /**
      * @param int $attemptid the id of an attempt.
      * @param int $page optional page number to go to in the attempt.
-     * @return string the URL of the identity prechecks.
+     * @return string the URL of the identity face prechecks.
      */
-    public function identity_prechecks_url($attemptid, $page = 0) {
+    public function identity_face_prechecks_url($attemptid, $page = 0) {
         // cmid = quiz id
         // attempt = number of attempts
         // page = page number
         global $CFG;
-        $url = $CFG->wwwroot . '/mod/quiz/identity_prechecks.php?attempt=' . $attemptid;
+        $url = $CFG->wwwroot . '/mod/quiz/identity_face_prechecks.php?attempt=' . $attemptid;
+        if ($page) {
+            $url .= '&page=' . $page;
+        }
+        $url .= '&cmid=' . $this->get_cmid();
+        return $url;
+    }
+
+    /**
+     * @param int $attemptid the id of an attempt.
+     * @param int $page optional page number to go to in the attempt.
+     * @return string the URL of the identity id prechecks.
+     */
+    public function identity_id_prechecks_url($attemptid, $page = 0) {
+        // cmid = quiz id
+        // attempt = number of attempts
+        // page = page number
+        global $CFG;
+        $url = $CFG->wwwroot . '/mod/quiz/identity_id_prechecks.php?attempt=' . $attemptid;
         if ($page) {
             $url .= '&page=' . $page;
         }
@@ -1683,11 +1701,19 @@ class quiz_attempt {
     }
 
     /**
-     * @return moodle_url the URL of this quiz's identity precheck processing.
+     * @return moodle_url the URL of this quiz's identity face precheck processing.
      */
-    public function processidentitychecks_url() {
-        return new moodle_url('/mod/quiz/process_identity_checks.php');
+    public function processidentityfacechecks_url() {
+        return new moodle_url('/mod/quiz/process_identity_face_checks.php');
     }
+
+    /**
+     * @return moodle_url the URL of this quiz's identity id precheck processing.
+     */
+    public function processidentityidchecks_url() {
+        return new moodle_url('/mod/quiz/process_identity_id_checks.php');
+    }
+
 
     /**
      * Generates the title of the review page.

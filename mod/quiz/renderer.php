@@ -498,7 +498,7 @@ class mod_quiz_renderer extends plugin_renderer_base {
     }
 
     /**
-     * Identity Prechecks Page
+     * Identity Face Prechecks Page
      *
      * @param quiz_attempt $attemptobj Instance of quiz_attempt
      * @param int $page Current page number
@@ -508,12 +508,33 @@ class mod_quiz_renderer extends plugin_renderer_base {
      * @param int $id The ID of an attempt
      * @param int $nextpage The number of the next page
      */
-    public function identity_prechecks_page($attemptobj, $page, $accessmanager, $messages, $slots, $id,
+    public function identity_face_prechecks_page($attemptobj, $page, $accessmanager, $messages, $slots, $id,
             $nextpage, $test) {
         $output = '';
         $output .= $this->header();
         $output .= $this->quiz_notices($messages);
-        $output .= $this->identity_prechecks_form($attemptobj, $page, $slots, $id, $nextpage, $test);
+        $output .= $this->identity_face_prechecks_form($attemptobj, $page, $slots, $id, $nextpage, $test);
+        $output .= $this->footer();
+        return $output;
+    }
+
+    /**
+     * Identity ID Prechecks Page
+     *
+     * @param quiz_attempt $attemptobj Instance of quiz_attempt
+     * @param int $page Current page number
+     * @param quiz_access_manager $accessmanager Instance of quiz_access_manager
+     * @param array $messages An array of messages
+     * @param array $slots Contains an array of integers that relate to questions
+     * @param int $id The ID of an attempt
+     * @param int $nextpage The number of the next page
+     */
+    public function identity_id_prechecks_page($attemptobj, $page, $accessmanager, $messages, $slots, $id,
+            $nextpage, $test) {
+        $output = '';
+        $output .= $this->header();
+        $output .= $this->quiz_notices($messages);
+        $output .= $this->identity_id_prechecks_form($attemptobj, $page, $slots, $id, $nextpage, $test);
         $output .= $this->footer();
         return $output;
     }
@@ -724,7 +745,7 @@ class mod_quiz_renderer extends plugin_renderer_base {
 
 
     /**
-     * Ouputs the form for identity prechecks
+     * Ouputs the form for identity face prechecks
      *
      * @param quiz_attempt $attemptobj
      * @param int $page Current page number
@@ -732,7 +753,7 @@ class mod_quiz_renderer extends plugin_renderer_base {
      * @param int $id ID of the attempt
      * @param int $nextpage Next page number
      */
-    public function identity_prechecks_form($attemptobj, $page, $slots, $id, $nextpage, $test) {
+    public function identity_face_prechecks_form($attemptobj, $page, $slots, $id, $nextpage, $test) {
         $output = '';
 
         //$output .= 'START FORM HERE';
@@ -747,7 +768,83 @@ class mod_quiz_renderer extends plugin_renderer_base {
 
         // Start the form
         $output .= html_writer::start_tag('form',
-                array('action' => new moodle_url($attemptobj->processidentitychecks_url(),
+                array('action' => new moodle_url($attemptobj->processidentityfacechecks_url(),
+                array('cmid' => $attemptobj->get_cmid())), 'method' => 'post',
+                'enctype' => 'multipart/form-data', 'accept-charset' => 'utf-8',
+                'id' => 'responseform'));
+        $output .= html_writer::start_tag('div');
+
+        // NEXT BUTTON
+        $output .= html_writer::empty_tag('input', array('type' => 'submit', 'name' => 'finalinstructions',
+                'value' => get_string('finalinstructions', 'quiz'), 'class' => 'mod_quiz-next-nav btn btn-primary'));
+
+        // HIDE ALL THE QUESTIONS FOR NOW
+        // Print all the questions.
+        /*foreach ($slots as $slot) {
+            $output .= $attemptobj->render_question($slot, false, $this,
+                    $attemptobj->attempt_url($slot, $page), $this);
+        }*/
+
+        // HIDE THE NEXT AND PREVIOUS BUTTONS FOR NOW
+        //$navmethod = $attemptobj->get_quiz()->navmethod;
+        //$output .= $this->attempt_navigation_buttons($page, $attemptobj->is_last_page($page), $navmethod);
+
+        // Some hidden fields to track what is going on.
+        $output .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'attempt',
+                'value' => $attemptobj->get_attemptid()));
+        $output .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'thispage',
+                'value' => $page, 'id' => 'followingpage'));
+        $output .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'nextpage',
+                'value' => $nextpage));
+        $output .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'timeup',
+                'value' => '0', 'id' => 'timeup'));
+        $output .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'sesskey',
+                'value' => sesskey()));
+        $output .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'scrollpos',
+                'value' => '', 'id' => 'scrollpos'));
+
+        // Add a hidden field with questionids. Do this at the end of the form, so
+        // if you navigate before the form has finished loading, it does not wipe all
+        // the student's answers.
+        $output .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'slots',
+                'value' => implode(',', $attemptobj->get_active_slots($page))));
+
+        // Finish the form.
+        $output .= html_writer::end_tag('div');
+        $output .= html_writer::end_tag('form');
+
+        //$output .= 'END FORM HERE';
+
+        $output .= $this->connection_warning();
+
+        return $output;
+    }
+
+    /**
+     * Ouputs the form for id face prechecks
+     *
+     * @param quiz_attempt $attemptobj
+     * @param int $page Current page number
+     * @param array $slots Array of integers relating to questions
+     * @param int $id ID of the attempt
+     * @param int $nextpage Next page number
+     */
+    public function identity_id_prechecks_form($attemptobj, $page, $slots, $id, $nextpage, $test) {
+        $output = '';
+
+        //$output .= 'START FORM HERE';
+        $output .= $test;
+
+        // Header and page description
+        $output .= html_writer::tag('p', get_string('identityprecheck_header', 'quiz'));
+        $output .= html_writer::tag('p', get_string('identityprecheck', 'quiz'));
+
+        // IDENTITY PRECHECK
+
+
+        // Start the form
+        $output .= html_writer::start_tag('form',
+                array('action' => new moodle_url($attemptobj->processidentityidchecks_url(),
                 array('cmid' => $attemptobj->get_cmid())), 'method' => 'post',
                 'enctype' => 'multipart/form-data', 'accept-charset' => 'utf-8',
                 'id' => 'responseform'));
