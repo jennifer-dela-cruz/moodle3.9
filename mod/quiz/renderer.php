@@ -683,8 +683,8 @@ class mod_quiz_renderer extends plugin_renderer_base {
         $output .= html_writer::start_tag('div');
 
         // NEXT BUTTON
-        $output .= html_writer::empty_tag('input', array('type' => 'submit', 'name' => 'identityprechecks',
-                'value' => get_string('identityprechecks', 'quiz'), 'class' => 'mod_quiz-next-nav btn btn-primary'));
+        $output .= html_writer::empty_tag('input', array('type' => 'submit', 'name' => 'identityfaceprechecks',
+                'value' => get_string('identityfaceprechecks_btn', 'quiz'), 'class' => 'mod_quiz-next-nav btn btn-primary'));
 
         // HIDE ALL THE QUESTIONS FOR NOW
         // Print all the questions.
@@ -767,13 +767,22 @@ class mod_quiz_renderer extends plugin_renderer_base {
         $frame_width = 254;
         $frame_height = 190;
 
-        $output .= html_writer::empty_tag('video', array('id' => 'video', 'width' => $frame_width, 'height' => $frame_height, 'autoplay' => 'autoplay'));
-        $output .= html_writer::empty_tag('canvas', array('id' => 'canvas', 'width' => $frame_width, 'height' => $frame_height, 'style' => 'display: none;'));
+        $output .= html_writer::start_tag('video', array('id' => 'video', 'width' => $frame_width, 'height' => $frame_height, 'autoplay' => 'autoplay'));
+        $output .= html_writer::end_tag('video');
+
+        $output .= html_writer::start_tag('canvas', array('id' => 'canvas', 'width' => $frame_width, 'height' => $frame_height, 'style' => 'display: none;'));
+        $output .= html_writer::end_tag('canvas');
+
+        // for troubleshooting purposes
+        // $output .= html_writer::start_tag('video', array('id' => 'video1', 'width' => $frame_width, 'height' => $frame_height, 'controls' => 'controls', 'autoplay' => 'autoplay'));
+        // $output .= html_writer::empty_tag('source', array('id' => 'source1', 'src' => 'test.mp4', 'type' => 'video/mp4'));
+        // $output .= html_writer::end_tag('video');
+
         $output .= html_writer::empty_tag('img', array('id' => 'photo', 'src' => '', 'style' => 'display: none;'));
         $output .= html_writer::empty_tag('input', array('id' => 'identity_type', 'type' => 'hidden', 'value' => 'face'));
 
+        // Start the div
         $output .= html_writer::start_tag('div');
-
 
         // Start the form
         $output .= html_writer::start_tag('form',
@@ -781,19 +790,22 @@ class mod_quiz_renderer extends plugin_renderer_base {
                 array('cmid' => $attemptobj->get_cmid())), 'method' => 'post',
                 'enctype' => 'multipart/form-data', 'accept-charset' => 'utf-8',
                 'id' => 'responseform'));
+
+        //  FACE PRECHECK BUTTONS
         $output .= html_writer::start_tag('div', array('id' => 'buttonsContainer'));
         $output .= html_writer::start_tag('div', array('id' => 'captureButtonContainer'));
-        $output .= html_writer::empty_tag('input', array('type' => 'submit', 'name' => 'capture_btn',
+        $output .= html_writer::empty_tag('input', array('type' => 'button', 'id' => 'capture',
                 'value' => get_string('capture_btn', 'quiz'), 'class' => 'mod_quiz-next-nav btn btn-primary'));
-        $output .= html_writer::empty_tag('input', array('type' => 'submit', 'name' => 'retry_btn', 'style' => 'display: none;',
+        $output .= html_writer::empty_tag('input', array('type' => 'button', 'id' => 'retry', 'style' => 'display: none;',
         'value' => get_string('retry_btn', 'quiz'), 'class' => 'mod_quiz-next-nav btn btn-primary'));
         $output .= html_writer::end_tag('div');
         $output .= html_writer::end_tag('div');
 
-
         // NEXT BUTTON
-        $output .= html_writer::empty_tag('input', array('type' => 'submit', 'name' => 'identityidprechecks_btn',
-                'value' => get_string('identityidprechecks_btn', 'quiz'), 'class' => 'mod_quiz-next-nav btn btn-primary'));
+        $output .= html_writer::empty_tag('input', array('type' => 'submit', 'id' => 'continue', 'name' => 'identityidprechecks_btn',
+                'value' => get_string('identityidprechecks_btn', 'quiz'),
+                'style' => 'display: none;', 'onclick' => 'continueUpload()'));
+                // 'class' => 'mod_quiz-next-nav btn btn-primary',
 
         // HIDE ALL THE QUESTIONS FOR NOW
         // Print all the questions.
@@ -857,7 +869,20 @@ class mod_quiz_renderer extends plugin_renderer_base {
         $output .= html_writer::tag('p', get_string('identityidprecheck', 'quiz'));
 
         // IDENTITY PRECHECK
+        $frame_width = 254;
+        $frame_height = 190;
 
+        $output .= html_writer::start_tag('video', array('id' => 'video', 'width' => $frame_width, 'height' => $frame_height, 'autoplay' => 'autoplay'));
+        $output .= html_writer::end_tag('video');
+
+        $output .= html_writer::start_tag('canvas', array('id' => 'canvas', 'width' => $frame_width, 'height' => $frame_height, 'style' => 'display: none;'));
+        $output .= html_writer::end_tag('canvas');
+
+        $output .= html_writer::empty_tag('img', array('id' => 'photo', 'src' => '', 'style' => 'display: none;'));
+        $output .= html_writer::empty_tag('input', array('id' => 'identity_type', 'type' => 'hidden', 'value' => 'id'));
+
+        // Start the div
+        $output .= html_writer::start_tag('div');
 
         // Start the form
         $output .= html_writer::start_tag('form',
@@ -865,11 +890,22 @@ class mod_quiz_renderer extends plugin_renderer_base {
                 array('cmid' => $attemptobj->get_cmid())), 'method' => 'post',
                 'enctype' => 'multipart/form-data', 'accept-charset' => 'utf-8',
                 'id' => 'responseform'));
-        $output .= html_writer::start_tag('div');
+
+        //  ID PRECHECK BUTTONS
+        $output .= html_writer::start_tag('div', array('id' => 'buttonsContainer'));
+        $output .= html_writer::start_tag('div', array('id' => 'captureButtonContainer'));
+        $output .= html_writer::empty_tag('input', array('type' => 'button', 'id' => 'capture',
+                'value' => get_string('capture_btn', 'quiz'), 'class' => 'mod_quiz-next-nav btn btn-primary'));
+        $output .= html_writer::empty_tag('input', array('type' => 'button', 'id' => 'retry', 'style' => 'display: none;',
+        'value' => get_string('retry_btn', 'quiz'), 'class' => 'mod_quiz-next-nav btn btn-primary'));
+        $output .= html_writer::end_tag('div');
+        $output .= html_writer::end_tag('div');
 
         // NEXT BUTTON
-        $output .= html_writer::empty_tag('input', array('type' => 'submit', 'name' => 'identityidprecheck_btn',
-                'value' => get_string('identityidprecheck_btn', 'quiz'), 'class' => 'mod_quiz-next-nav btn btn-primary'));
+        $output .= html_writer::empty_tag('input', array('type' => 'submit', 'id' => 'continue', 'name' => 'finalinstructions_btn',
+                'value' => get_string('finalinstructions_btn', 'quiz'),
+                'style' => 'display: none;', 'onclick' => 'continueUpload()'));
+                //'class' => 'mod_quiz-next-nav btn btn-primary',
 
         // HIDE ALL THE QUESTIONS FOR NOW
         // Print all the questions.
