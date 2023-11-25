@@ -75,19 +75,20 @@ function dataURItoBlob(dataURI) {
 function uploadImage(imageBlob) {
 
     uploadImageURL = '';
-
-    alert(document.getElementById('identity_type').value);
+    user_id = document.getElementById('user_id').value;
+    quiz_id = document.getElementById('quiz_id').value;
+    custFileName = user_id + '_' + quiz_id + '_' + Date.now() + '.jpeg';
+    //alert(document.getElementById('identity_type').value);
+    alert(custFileName);
 
     if (document.getElementById('identity_type').value == 'face') {
         // Goes to API Gateway: S3 Video Stream Upload - WORKING!!!
         const bucket = 'upou-face-captures';
-        const custFileName = Date.now() + '.jpeg';
         uploadImageURL = 'https://uaesp3yh1g.execute-api.us-east-1.amazonaws.com/v1/' + bucket + '/' + custFileName;
 
     } else { // it goes to the ID
         // Goes to API Gateway: S3 Video Stream Upload - WORKING!!!
         const bucket = 'upou-id-pictures';
-        const custFileName = Date.now() + '.jpeg';
         uploadImageURL = 'https://uaesp3yh1g.execute-api.us-east-1.amazonaws.com/v1/' + bucket + '/' + custFileName;
     }
 

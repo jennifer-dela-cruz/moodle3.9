@@ -45,6 +45,7 @@ $page = optional_param('page', 0, PARAM_INT);
 $cmid = optional_param('cmid', null, PARAM_INT);
 
 $attemptobj = quiz_create_attempt_handling_errors($attemptid, $cmid);
+
 $page = $attemptobj->force_page_number_into_range($page);
 $PAGE->set_url($attemptobj->attempt_url(null, $page));
 // During quiz attempts, the browser back/forwards buttons should force a reload.
@@ -146,4 +147,5 @@ $test = '';
     // $slots = Array of integers relating to questions
     // $id = ID of the attempt
     // $nextpage = Next page number
-echo $output->identity_face_prechecks_page($attemptobj, $page, $accessmanager, $messages, $slots, $id, $nextpage, $test);
+$quiz_id = $attemptobj->get_quizid();
+echo $output->identity_face_prechecks_page($attemptobj, $page, $accessmanager, $messages, $slots, $id, $nextpage, $USER->id, $quiz_id);

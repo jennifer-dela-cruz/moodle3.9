@@ -509,11 +509,11 @@ class mod_quiz_renderer extends plugin_renderer_base {
      * @param int $nextpage The number of the next page
      */
     public function identity_face_prechecks_page($attemptobj, $page, $accessmanager, $messages, $slots, $id,
-            $nextpage, $test) {
+            $nextpage, $user_id, $quiz_id) {
         $output = '';
         $output .= $this->header();
         $output .= $this->quiz_notices($messages);
-        $output .= $this->identity_face_prechecks_form($attemptobj, $page, $slots, $id, $nextpage, $test);
+        $output .= $this->identity_face_prechecks_form($attemptobj, $page, $slots, $id, $nextpage, $user_id, $quiz_id);
         $output .= $this->footer();
         return $output;
     }
@@ -530,11 +530,11 @@ class mod_quiz_renderer extends plugin_renderer_base {
      * @param int $nextpage The number of the next page
      */
     public function identity_id_prechecks_page($attemptobj, $page, $accessmanager, $messages, $slots, $id,
-            $nextpage, $test) {
+            $nextpage, $user_id, $quiz_id) {
         $output = '';
         $output .= $this->header();
         $output .= $this->quiz_notices($messages);
-        $output .= $this->identity_id_prechecks_form($attemptobj, $page, $slots, $id, $nextpage, $test);
+        $output .= $this->identity_id_prechecks_form($attemptobj, $page, $slots, $id, $nextpage, $user_id, $quiz_id);
         $output .= $this->footer();
         return $output;
     }
@@ -774,7 +774,7 @@ class mod_quiz_renderer extends plugin_renderer_base {
      * @param int $id ID of the attempt
      * @param int $nextpage Next page number
      */
-    public function identity_face_prechecks_form($attemptobj, $page, $slots, $id, $nextpage, $test) {
+    public function identity_face_prechecks_form($attemptobj, $page, $slots, $id, $nextpage, $user_id, $quiz_id) {
         $output = '';
 
         //$output .= 'START FORM HERE';
@@ -801,6 +801,9 @@ class mod_quiz_renderer extends plugin_renderer_base {
 
         $output .= html_writer::empty_tag('img', array('id' => 'photo', 'src' => '', 'style' => 'display: none;'));
         $output .= html_writer::empty_tag('input', array('id' => 'identity_type', 'type' => 'hidden', 'value' => 'face'));
+        // Add quiz id and user id hidden fields for image name
+        $output .= html_writer::empty_tag('input', array('id' => 'quiz_id', 'type' => 'hidden', 'value' => $quiz_id));
+        $output .= html_writer::empty_tag('input', array('id' => 'user_id', 'type' => 'hidden', 'value' => $user_id));
 
         // Start the div
         $output .= html_writer::start_tag('div');
@@ -879,7 +882,7 @@ class mod_quiz_renderer extends plugin_renderer_base {
      * @param int $id ID of the attempt
      * @param int $nextpage Next page number
      */
-    public function identity_id_prechecks_form($attemptobj, $page, $slots, $id, $nextpage, $test) {
+    public function identity_id_prechecks_form($attemptobj, $page, $slots, $id, $nextpage, $user_id, $quiz_id) {
         $output = '';
 
         //$output .= 'START FORM HERE';
@@ -901,6 +904,9 @@ class mod_quiz_renderer extends plugin_renderer_base {
 
         $output .= html_writer::empty_tag('img', array('id' => 'photo', 'src' => '', 'style' => 'display: none;'));
         $output .= html_writer::empty_tag('input', array('id' => 'identity_type', 'type' => 'hidden', 'value' => 'id'));
+        // Add quiz id and user id hidden fields for image name
+        $output .= html_writer::empty_tag('input', array('id' => 'quiz_id', 'type' => 'hidden', 'value' => $quiz_id));
+        $output .= html_writer::empty_tag('input', array('id' => 'user_id', 'type' => 'hidden', 'value' => $user_id));
 
         // Start the div
         $output .= html_writer::start_tag('div');

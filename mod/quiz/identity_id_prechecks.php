@@ -146,4 +146,5 @@ $test = '';
     // $slots = Array of integers relating to questions
     // $id = ID of the attempt
     // $nextpage = Next page number
-echo $output->identity_id_prechecks_page($attemptobj, $page, $accessmanager, $messages, $slots, $id, $nextpage, $test);
+$quiz_id = $attemptobj->get_quizid();
+echo $output->identity_id_prechecks_page($attemptobj, $page, $accessmanager, $messages, $slots, $id, $nextpage, $USER->id, $quiz_id);
