@@ -111,9 +111,19 @@ if ($currentattemptid) {
             // Get quiz details
             $quiz_id = $quizobj->get_quizid();
 
+            // Insert to proctor_upou_quiz_students
+            // To be inserted after the system precheck,
+            // identity and face prechecks (before proceeding to the actual quiz)
+
+
+            // If validation status (face and id) are failed,
+            // it will redirect back to quiz instructions.
+            // Otherwise, it will redirect to attempt.php
+
             // Check if done with both verify face and verify id ()
-            $quiz_student_config = $DB->get_record('proctor_upou_quiz_students', array('quiz_id' => $quiz_id, 'user_id' => $USER->id));
-            var_dump($quiz_student_config);
+            // not needed?
+            // $quiz_student_config = $DB->get_record('proctor_upou_quiz_students', array('quiz_id' => $quiz_id, 'user_id' => $USER->id));
+            // var_dump($quiz_student_config);
 
             // if ($quiz_config) {
             //     // Redirect to the quiz instructions page.
@@ -135,6 +145,10 @@ $attempt = quiz_prepare_and_start_new_attempt($quizobj, $attemptnumber, $lastatt
 //     $quiz_id = $quizobj->get_quizid();
 //     $quiz_config = $DB->get_record('proctor_upou_quiz_config', array('id' => $quiz_id));
 //     // var_dump($quiz_config);
+
+// If validation status (face and id) are failed,
+// it will redirect back to quiz instructions.
+// Otherwise, it will redirect to attempt.php
 
 //     if ($quiz_config) {
 //         // Redirect to the quiz instructions page.

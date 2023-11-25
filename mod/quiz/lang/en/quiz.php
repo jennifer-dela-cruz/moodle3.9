@@ -1027,3 +1027,4 @@ $string['retry_btn'] = 'Retry';
 $string['finalinstructions_header'] = 'Final Instructions';
 $string['finalinstructions_btn'] = 'Next: Final Instructions';
 $string['finalinstructions'] = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Mauris augue neque gravida in fermentum. Nulla facilisi nullam vehicula ipsum a arcu cursus vitae. Cursus in hac habitasse platea dictumst. Nisl vel pretium lectus quam id leo in vitae turpis. Nullam eget felis eget nunc. Diam volutpat commodo sed egestas egestas fringilla phasellus faucibus. Ullamcorper velit sed ullamcorper morbi tincidunt. Quis viverra nibh cras pulvinar mattis nunc. Ut etiam sit amet nisl purus in. Pellentesque nec nam aliquam sem et tortor consequat.';
+$string['proceedattemptquiz_btn'] = 'Proceed to attempt quiz';

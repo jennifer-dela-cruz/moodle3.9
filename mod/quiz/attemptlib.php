@@ -1714,6 +1714,13 @@ class quiz_attempt {
         return new moodle_url('/mod/quiz/process_identity_id_checks.php');
     }
 
+    /**
+     * @return moodle_url the URL of this quiz's proceed attempt processing.
+     */
+    public function proceedattempt_url() {
+        return new moodle_url('/mod/quiz/proceedattempt.php');
+    }
+
 
     /**
      * Generates the title of the review page.
