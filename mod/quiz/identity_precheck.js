@@ -77,8 +77,8 @@ function uploadImage(imageBlob) {
     uploadImageURL = '';
     user_id = document.getElementById('user_id').value;
     quiz_id = document.getElementById('quiz_id').value;
-    custFileName = user_id + '_' + quiz_id + '_' + Date.now() + '.jpeg';
-    //alert(document.getElementById('identity_type').value);
+    custFileName = quiz_id + '_' + user_id + '_' + Date.now() + '.jpeg';
+    alert(document.getElementById('identity_type').value);
     alert(custFileName);
 
     if (document.getElementById('identity_type').value == 'face') {
