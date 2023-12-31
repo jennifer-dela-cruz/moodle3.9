@@ -679,12 +679,35 @@ class mod_quiz_renderer extends plugin_renderer_base {
         $output .= html_writer::tag('p', get_string('jsdisabled', 'quiz'));
         $output .= html_writer::end_tag('noscript');
 
-        $output .= html_writer::tag('p', '', array('id' => 'jsCheckMessage'));
-        $output .= html_writer::tag('p', '', array('id' => 'compareChromeVersion'));
-        $output .= html_writer::tag('p', '', array('id' => 'checkScreenSharingSupport'));
-        $output .= html_writer::tag('p', '', array('id' => 'getVideoDevice'));
-        $output .= html_writer::tag('p', '', array('id' => 'getMicrophone'));
-        $output .= html_writer::tag('p', '', array('id' => 'goFullscreen'));
+        $output .= html_writer::tag('span', '', array('id' => 'jsCheckMessage', 'vertical-align' => 'middle')); // , 'margin' => '0'
+        $output .= html_writer::empty_tag('img', array('id' => 'jsCheckMessage_check', 'src' => 'pix/check.png', 'width' => '20', 'height' => '20', 'vertical-align' => 'middle', 'style' => 'display: none;'));
+        $output .= html_writer::empty_tag('img', array('id' => 'jsCheckMessage_cross', 'src' => 'pix/cross.png', 'width' => '20', 'height' => '20', 'vertical-align' => 'middle', 'style' => 'display: none;'));
+        $output .= html_writer::tag('p', '');
+
+        $output .= html_writer::tag('span', '', array('id' => 'compareChromeVersion'));
+        $output .= html_writer::empty_tag('img', array('id' => 'compareChromeVersion_check', 'src' => 'pix/check.png', 'width' => '20', 'height' => '20', 'vertical-align' => 'middle', 'style' => 'display: none;'));
+        $output .= html_writer::empty_tag('img', array('id' => 'compareChromeVersion_cross', 'src' => 'pix/cross.png', 'width' => '20', 'height' => '20', 'vertical-align' => 'middle', 'style' => 'display: none;'));
+        $output .= html_writer::tag('p', '');
+
+        $output .= html_writer::tag('span', '', array('id' => 'checkScreenSharingSupport'));
+        $output .= html_writer::empty_tag('img', array('id' => 'checkScreenSharingSupport_check', 'src' => 'pix/check.png', 'width' => '20', 'height' => '20', 'vertical-align' => 'middle', 'style' => 'display: none;'));
+        $output .= html_writer::empty_tag('img', array('id' => 'checkScreenSharingSupport_cross', 'src' => 'pix/cross.png', 'width' => '20', 'height' => '20', 'vertical-align' => 'middle', 'style' => 'display: none;'));
+        $output .= html_writer::tag('p', '');
+
+        $output .= html_writer::tag('span', '', array('id' => 'getVideoDevice'));
+        $output .= html_writer::empty_tag('img', array('id' => 'getVideoDevice_check', 'src' => 'pix/check.png', 'width' => '20', 'height' => '20', 'vertical-align' => 'middle', 'style' => 'display: none;'));
+        $output .= html_writer::empty_tag('img', array('id' => 'getVideoDevice_cross', 'src' => 'pix/cross.png', 'width' => '20', 'height' => '20', 'vertical-align' => 'middle', 'style' => 'display: none;'));
+        $output .= html_writer::tag('p', '');
+
+        $output .= html_writer::tag('span', '', array('id' => 'getMicrophone'));
+        $output .= html_writer::empty_tag('img', array('id' => 'getMicrophone_check', 'src' => 'pix/check.png', 'width' => '20', 'height' => '20', 'vertical-align' => 'middle', 'style' => 'display: none;'));
+        $output .= html_writer::empty_tag('img', array('id' => 'getMicrophone_cross', 'src' => 'pix/cross.png', 'width' => '20', 'height' => '20', 'vertical-align' => 'middle', 'style' => 'display: none;'));
+        $output .= html_writer::tag('p', '');
+
+        $output .= html_writer::tag('span', '', array('id' => 'goFullscreen'));
+        $output .= html_writer::empty_tag('img', array('id' => 'goFullscreen_check', 'src' => 'pix/check.png', 'width' => '20', 'height' => '20', 'vertical-align' => 'middle', 'style' => 'display: none;'));
+        $output .= html_writer::empty_tag('img', array('id' => 'goFullscreen_cross', 'src' => 'pix/cross.png', 'width' => '20', 'height' => '20', 'vertical-align' => 'middle', 'style' => 'display: none;'));
+        $output .= html_writer::tag('p', '');
 
 
         // 1. Checks the Javascript if enabled
@@ -696,11 +719,16 @@ class mod_quiz_renderer extends plugin_renderer_base {
             jsCheckMessagePass = false;
             document.addEventListener('DOMContentLoaded', function() {
                 const jsCheckMessageElement = document.getElementById('jsCheckMessage');
+                const jsCheckMessage_check = document.getElementById('jsCheckMessage_check');
+                const jsCheckMessage_cross = document.getElementById('jsCheckMessage_cross');
 
                 // Update the text content based on whether JavaScript is enabled or not
                 if (jsCheckMessageElement) {
                     jsCheckMessageElement.textContent = '1. Javascript check: JavaScript is enabled!';
                     jsCheckMessagePass = true;
+                    jsCheckMessage_check.style.display = 'inline';
+                } else {
+                    jsCheckMessage_cross.style.display = 'inline';
                 }
                 console.log('jsCheckMessagePass: ', jsCheckMessagePass);
             });
