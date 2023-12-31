@@ -3,6 +3,7 @@ const canvas = document.getElementById('canvas');
 const context = canvas.getContext('2d');
 const captureButton = document.getElementById('capture');
 const retryButton = document.getElementById('retry');
+const saveButton = document.getElementById('save');
 const continueButton = document.getElementById('continue');
 const photo = document.getElementById('photo');
 const buttonsContainer = document.getElementById('buttonsContainer');
@@ -31,7 +32,8 @@ function takePhoto() {
     photo.src = photoDataURL;
     photo.style.display = 'inline';
     retryButton.style.display = 'inline';
-    continueButton.style.display = 'inline';
+    saveButton.style.display = 'inline';
+    // continueButton.style.display = 'inline';
     captureButton.style.display = 'none';
 }
 
@@ -40,21 +42,28 @@ function retryCapture() {
     video.style.display = 'inline';
     photo.style.display = 'none';
     retryButton.style.display = 'none';
+    saveButton.style.display = 'none';
     continueButton.style.display = 'none';
     captureButton.style.display = 'inline';
 }
 
+
+function saveCapture() {
+    sendVerify = true;
+
+    // There is a few seconds delay when the below function is called
+    continueUpload(sendVerify);
+}
+
+
 // Continue with the image upload
-function continueUpload() {
+function continueUpload(sendVerify) {
     const photoDataURL = canvas.toDataURL('image/jpeg');
     const imageBlob = dataURItoBlob(photoDataURL);
 
     // Perform the image upload here using the uploadImage function
-    // You can modify the uploadImage function based on your API endpoint and requirements
-    uploadImage(imageBlob);
+    uploadImage(imageBlob, sendVerify);
 
-    // Reset the UI
-    //retryCapture();
 }
 
 // Function to convert data URI to Blob
@@ -72,24 +81,24 @@ function dataURItoBlob(dataURI) {
 }
 
 // Function to upload image data to an API endpoint as a Blob
-function uploadImage(imageBlob) {
+function uploadImage(imageBlob, sendVerify) {
 
-    uploadImageURL = '';
+    uploadImageURL = 'https://hdy3rohah6.execute-api.us-east-1.amazonaws.com/v1/';
+
     user_id = document.getElementById('user_id').value;
     quiz_id = document.getElementById('quiz_id').value;
     custFileName = quiz_id + '_' + user_id + '_' + Date.now() + '.jpeg';
-    alert(document.getElementById('identity_type').value);
-    alert(custFileName);
+    console.log('IDENTITY_TYPE: ', document.getElementById('identity_type').value);
 
     if (document.getElementById('identity_type').value == 'face') {
         // Goes to API Gateway: S3 Video Stream Upload - WORKING!!!
         const bucket = 'upou-face-captures';
-        uploadImageURL = 'https://uaesp3yh1g.execute-api.us-east-1.amazonaws.com/v1/' + bucket + '/' + custFileName;
+        uploadImageURL = uploadImageURL + bucket + '/' + custFileName;
 
     } else { // it goes to the ID
         // Goes to API Gateway: S3 Video Stream Upload - WORKING!!!
         const bucket = 'upou-id-pictures';
-        uploadImageURL = 'https://uaesp3yh1g.execute-api.us-east-1.amazonaws.com/v1/' + bucket + '/' + custFileName;
+        uploadImageURL = uploadImageURL + bucket + '/' + custFileName;
     }
 
     fetch(uploadImageURL, {
@@ -100,13 +109,115 @@ function uploadImage(imageBlob) {
     }
     })
     .then(response => {
-    // Handle the response from the API as needed
-    console.log('Image uploaded:', response);
+        if (document.getElementById('identity_type').value == 'face') {
+            bucket = 'upou-face-captures';
+        } else { // it goes to the ID
+            bucket = 'upou-id-pictures';
+        }
+
+        // Handle the response from the API as needed
+        console.log('===============================================');
+        console.log('After the uploadImage function is called...');
+        console.log('bucket: ', bucket);
+        console.log('key: ', custFileName);
+        console.log('Image uploaded:', response);
+
+        if (sendVerify) {
+            sendVerifyRequest(bucket, custFileName);
+        } else {
+            console.log('No verify request...');
+        }
     })
     .catch(error => {
     console.error('Error uploading image:', error);
     });
+
+}
+
+function sendVerifyRequest(bucket, custFileName) {
+
+    //  API Gateway endpoint
+    if (bucket == 'upou-face-captures') {
+        apiEndpoint = 'https://d4pe1tagpe.execute-api.us-east-1.amazonaws.com/v1/';
+    } else {
+        apiEndpoint = 'https://is713j3tqi.execute-api.us-east-1.amazonaws.com/v1/';
+    }
+
+    const verifyRequestUrl = apiEndpoint + bucket + '/' + custFileName;
+
+    console.log('===============================================');
+        console.log("BEFORE sendVerifyRequest is called...");
+        console.log('bucket: ', bucket);
+        console.log('key: ', custFileName);
+
+    const requestData = {
+        bucket: bucket, //'upou-face-captures',
+        key: custFileName, // '3_2_1702116559111.jpg',
+    };
+
+    fetch(verifyRequestUrl, {
+        method: 'PUT', //  HTTP method
+        headers: {
+        'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData),
+    })
+    .then(response => response.json())
+    .then(data => {
+       // Parse the outer response
+       const parsedResponse = data;
+
+       // Parse the inner JSON in the 'body' property
+       const bodyData = parsedResponse.body ? JSON.parse(parsedResponse.body) : null;
+
+       // Access the nested data
+       const bucketValue = bodyData ? bodyData.bucket : "";
+       const keyValue = bodyData ? bodyData.key  : "";
+
+       console.log('===============================================');
+       console.log("AFTER sendVerifyRequest is called...");
+       console.log("(Response from Lambda function: ", verifyRequestUrl);
+       console.log('bodyData: ', bodyData);
+       console.log('bucket: ', bucketValue);
+       console.log('key: ', keyValue);
+
+       if (bucket == 'upou-face-captures') {
+
+            const faceFound = bodyData ? bodyData.faceFound : false;
+            const faceCount = bodyData ? bodyData.faceCount : 0;
+
+            console.log('faceFound: ', faceFound);
+            console.log('faceCount: ', faceCount);
+
+            if (faceCount === 1) {
+                continueButton.style.display = 'inline';
+                saveButton.style.display = 'none';
+            } else {
+                alert('No face or multiple faces found. Please try again.');
+                retryCapture();
+            }
+       } else {
+            const idFound = bodyData ? bodyData.idFound : false;
+
+            console.log('idFound: ', idFound);
+
+            if (idFound) {
+                continueButton.style.display = 'inline';
+                saveButton.style.display = 'none';
+            } else {
+                alert('ID is not valid. Student name not found. Please try again.');
+                retryCapture();
+            }
+       }
+
+    })
+    .catch(error => {
+        // Handle errors
+        console.error('Error:', error);
+    });
+
 }
 
 captureButton.addEventListener('click', takePhoto);
 retryButton.addEventListener('click', retryCapture);
+saveButton.addEventListener('click', saveCapture);

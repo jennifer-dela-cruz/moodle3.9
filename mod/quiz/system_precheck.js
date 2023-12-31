@@ -23,6 +23,12 @@
  */
 
 const delay_duration = 3000; // 3000 milliseconds = 3 seconds (adjust as needed)
+const identityFacePrechecksButton = document.getElementById('identityfaceprechecks');
+compareChromeVersionPass = false;
+checkScreenSharingSupportPass = false;
+getVideoDevicePass = false;
+getMicrophonePass = false;
+goFullscreenPass = false;
 
 function delayFunction(callback) {
     const delay_duration = 3000;
@@ -30,30 +36,30 @@ function delayFunction(callback) {
 }
 
 function compareChromeVersion() {
-    const useragent = navigator.userAgent;
-    const isChrome = /Chrome/.test(useragent) && /Google Inc/.test(navigator.vendor);
+    const pLabel = "2. Web browser check: ";
 
-    if (isChrome) {
-        const chromeVersion = parseInt(useragent.match(/Chrome\/(\d+)/)[1]);
+    // Check if the browser is Google Chrome
+    if (typeof chrome !== 'undefined' && navigator.vendor.includes('Google')) {
+        const chromeVersion = parseInt(navigator.userAgent.match(/Chrome\/(\d+)/)[1]);
         const definedVersion = 100; // Change this to the version you want to compare against
-        const pLabel = "2. Web browser check: ";
 
         if (chromeVersion === definedVersion) {
             document.getElementById('compareChromeVersion').textContent = pLabel + "This is Google Chrome and it's version " + definedVersion;
-            // document.getElementById('compareChromeVersion_hid').value = "1";
-            // const test_value = document.getElementById('compareChromeVersion_hid').value;
-            // alert(test_value);
+            compareChromeVersionPass = true;
         } else if (chromeVersion < definedVersion) {
             document.getElementById('compareChromeVersion').textContent = pLabel + "This is Google Chrome, but the version is lower than " + definedVersion;
+            compareChromeVersionPass = false;
         } else {
             document.getElementById('compareChromeVersion').textContent = pLabel + "This is Google Chrome, but the version is higher than " + definedVersion;
-            // document.getElementById('compareChromeVersion_hid').value = "1";
-            // const test_value = document.getElementById('compareChromeVersion_hid').value;
-            // alert(test_value);
+            compareChromeVersionPass = true;
         }
     } else {
         document.getElementById('compareChromeVersion').textContent = pLabel + "This is not Google Chrome.";
+        compareChromeVersionPass = false;
     }
+
+    console.log('compareChromeVersionPass: ', compareChromeVersionPass);
+    showNextButton();
 }
 
 function checkScreenSharingSupport() {
@@ -61,10 +67,14 @@ function checkScreenSharingSupport() {
     if (navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia) {
         // Supported
         document.getElementById('checkScreenSharingSupport').textContent = pLabel + "Screen sharing is supported in this browser.";
+        checkScreenSharingSupportPass = true;
     } else {
         // Not supported
         document.getElementById('checkScreenSharingSupport').textContent = pLabel + "Screen sharing is not supported in this browser.";
+        checkScreenSharingSupportPass = false;
     }
+    console.log('checkScreenSharingSupportPass: ', checkScreenSharingSupportPass);
+    showNextButton();
 }
 
 
@@ -77,15 +87,20 @@ async function getVideoDevice() {
         if (videoTracks.length > 0) {
             const defaultVideoDevice = videoTracks[0].label;
             document.getElementById('getVideoDevice').textContent = pLabel + 'Default Video Device: ' + defaultVideoDevice;
+            getVideoDevicePass = true;
         } else {
             document.getElementById('getVideoDevice').textContent = pLabel + 'No video device found.';
+            getVideoDevicePass = false;
         }
 
         stream.getTracks().forEach(track => track.stop()); // Stop the stream
     } catch (error) {
         console.error('Error accessing video device:', error);
         document.getElementById('getVideoDevice').textContent = pLabel + 'Error accessing video device. Please check your browser permissions.';
+        getVideoDevicePass = false;
     }
+    console.log('getVideoDevicePass: ', getVideoDevicePass);
+    showNextButton();
 }
 
 async function getMicrophone() {
@@ -98,41 +113,60 @@ async function getMicrophone() {
         if (audioTracks.length > 0) {
             const defaultMicrophone = audioTracks[0].label;
             document.getElementById('getMicrophone').textContent = pLabel + 'Default Microphone: ' + defaultMicrophone;
+            getMicrophonePass = true;
         } else {
             document.getElementById('getMicrophone').textContent = pLabel + 'No microphone found.';
+            getMicrophonePass = false;
         }
 
         stream.getTracks().forEach(track => track.stop()); // Stop the stream
     } catch (error) {
         console.error('Error accessing microphone:', error);
         document.getElementById('getMicrophone').textContent = pLabel + 'Error accessing microphone. Please check your browser permissions.';
+        getMicrophonePass = false;
     }
+    console.log('getMicrophonePass: ', getMicrophonePass);
+    showNextButton();
 }
 
+// Tested on Google Chrome, Google Chrome Canary, Firefox, Safari
 function goFullscreen() {
     const pLabel = "6. Trigger fullscreen: ";
-    const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+    const element = document.documentElement; // Fullscreen the entire document
+    const fullscreenButton = document.getElementById('goFullscreen_btn');
 
-    if (isChrome) {
-        const element = document.documentElement; // Fullscreen the entire document
-
-        if (element.requestFullscreen) {
-            element.requestFullscreen().then(() => { //goFullscreen2
-                document.getElementById('goFullscreen').textContent = pLabel + "Fullscreen mode activated successfully!";
-            }).catch((error) => {
-                document.getElementById('goFullscreen').textContent = pLabel + "Failed to enter fullscreen mode: " + error;
-            });
-        } else if (element.webkitRequestFullscreen) { /* Chrome and Opera */
-            element.webkitRequestFullscreen().then(() => {
-                document.getElementById('goFullscreen').textContent = pLabel + "Fullscreen mode activated successfully!";
-            }).catch((error) => {
-                document.getElementById('goFullscreen').textContent = pLabel + "Failed to enter fullscreen mode: " + error;
-            });
-        } else {
-            document.getElementById('goFullscreen').textContent = pLabel + "Fullscreen mode is not supported in this browser.";
-        }
+    if (element.requestFullscreen) {
+        element.requestFullscreen().then(() => {
+            document.getElementById('goFullscreen').textContent = pLabel + "Fullscreen mode activated successfully!";
+            goFullscreenPass = true;
+            fullscreenButton.style.display = 'none';
+            console.log('goFullscreenPass: ', goFullscreenPass);
+            showNextButton();
+        }).catch((error) => {
+            document.getElementById('goFullscreen').textContent = pLabel + "Failed to enter fullscreen mode: " + error;
+            goFullscreenPass = false;
+            console.log('goFullscreenPass: ', goFullscreenPass);
+            showNextButton();
+        });
+    } else if (element.mozRequestFullScreen) { /* Firefox */
+        element.mozRequestFullScreen();
+        document.getElementById('goFullscreen').textContent = pLabel + "Fullscreen mode activated successfully!";
+        goFullscreenPass = true;
+        fullscreenButton.style.display = 'none';
+        console.log('goFullscreenPass: ', goFullscreenPass);
+        showNextButton();
+    } else if (element.webkitRequestFullscreen) { /* Safari */
+        element.webkitRequestFullscreen();
+        document.getElementById('goFullscreen').textContent = pLabel + "Fullscreen mode activated successfully!";
+        goFullscreenPass = true;
+        fullscreenButton.style.display = 'none';
+        console.log('goFullscreenPass: ', goFullscreenPass);
+        showNextButton();
     } else {
-        document.getElementById('goFullscreen').textContent = pLabel + "This feature is only available in Google Chrome.";
+        document.getElementById('goFullscreen').textContent = pLabel + "Fullscreen mode is not supported in this browser.";
+        goFullscreenPass = false;
+        console.log('goFullscreenPass: ', goFullscreenPass);
+        showNextButton();
     }
 }
 
@@ -140,3 +174,11 @@ delayFunction(compareChromeVersion);
 delayFunction(getVideoDevice);
 delayFunction(getMicrophone);
 delayFunction(checkScreenSharingSupport);
+delayFunction(showNextButton);
+
+// Show the next button if all are passed
+function showNextButton() {
+    if (jsCheckMessagePass && compareChromeVersionPass && checkScreenSharingSupportPass && getVideoDevicePass && getMicrophonePass && goFullscreenPass) {
+        identityFacePrechecksButton.style.display = 'inline';
+    }
+}

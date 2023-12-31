@@ -574,7 +574,7 @@ class mod_quiz_renderer extends plugin_renderer_base {
     }
 
     /**
-     * Ouputs the form for isntructions, prechecks and terms and conditions
+     * Ouputs the form for instructions, prechecks and terms and conditions
      *
      * @param quiz_attempt $attemptobj
      * @param int $page Current page number
@@ -661,12 +661,6 @@ class mod_quiz_renderer extends plugin_renderer_base {
         $output = '';
 
         //$output .= 'START FORM HERE';
-
-        // Display this message if JavaScript is disabled
-        $output .= html_writer::start_tag('noscript');
-        $output .= html_writer::tag('p', get_string('jsdisabled', 'quiz'));
-        $output .= html_writer::end_tag('noscript');
-
         $output .= $test;
 
         // Header and page description
@@ -674,10 +668,18 @@ class mod_quiz_renderer extends plugin_renderer_base {
         $output .= html_writer::tag('p', get_string('systemprecheck', 'quiz'));
 
         // QUIZ AND PRECHECK INSTRUCTIONS
-        // This will display the message if JavaScript is enabled
-        // If JavaScript is enabled, this message will be replaced
-        $output .= html_writer::tag('p', '', array('id' => 'jsCheckMessage'));
+        // Start of system precheck messages
 
+        $output .= html_writer::tag('script', "
+            // Define the jsCheckMessagePass variable
+            jsCheckMessagePass = false;
+        ");
+        // Display this message if JavaScript is disabled
+        $output .= html_writer::start_tag('noscript');
+        $output .= html_writer::tag('p', get_string('jsdisabled', 'quiz'));
+        $output .= html_writer::end_tag('noscript');
+
+        $output .= html_writer::tag('p', '', array('id' => 'jsCheckMessage'));
         $output .= html_writer::tag('p', '', array('id' => 'compareChromeVersion'));
         $output .= html_writer::tag('p', '', array('id' => 'checkScreenSharingSupport'));
         $output .= html_writer::tag('p', '', array('id' => 'getVideoDevice'));
@@ -685,12 +687,28 @@ class mod_quiz_renderer extends plugin_renderer_base {
         $output .= html_writer::tag('p', '', array('id' => 'goFullscreen'));
 
 
-        $output .= html_writer::tag('script', "const pLabel = '1. Javascript check: '; document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('jsCheckMessage').textContent = pLabel + 'JavaScript is enabled!';
-        });");
+        // 1. Checks the Javascript if enabled
+        // $output .= html_writer::tag('script', "const pLabel = '1. Javascript check: '; document.addEventListener('DOMContentLoaded', function() {
+        //     document.getElementById('jsCheckMessage').textContent = pLabel + 'JavaScript is enabled!';
+        // });");
+        $output .= html_writer::tag('script', "
+            // Check if JavaScript is enabled
+            jsCheckMessagePass = false;
+            document.addEventListener('DOMContentLoaded', function() {
+                const jsCheckMessageElement = document.getElementById('jsCheckMessage');
+
+                // Update the text content based on whether JavaScript is enabled or not
+                if (jsCheckMessageElement) {
+                    jsCheckMessageElement.textContent = '1. Javascript check: JavaScript is enabled!';
+                    jsCheckMessagePass = true;
+                }
+                console.log('jsCheckMessagePass: ', jsCheckMessagePass);
+            });
+
+        ");
 
         // TO TRIGGER THE FULLSCREEN
-        $output .= html_writer::tag('button', get_string('gofullscreen', 'quiz'), array('onclick' => 'goFullscreen()', 'class' => 'btn btn-secondary'));
+        $output .= html_writer::tag('button', get_string('gofullscreen', 'quiz'), array('onclick' => 'goFullscreen()', 'class' => 'btn btn-secondary', 'id' => 'goFullscreen_btn',));
 
         // LINE BREAK
         $output .= html_writer::tag('p', '');
@@ -704,7 +722,7 @@ class mod_quiz_renderer extends plugin_renderer_base {
         $output .= html_writer::start_tag('div');
 
         // NEXT BUTTON
-        $output .= html_writer::empty_tag('input', array('type' => 'submit', 'name' => 'identityfaceprechecks',
+        $output .= html_writer::empty_tag('input', array('type' => 'submit', 'name' => 'identityfaceprechecks', 'id' => 'identityfaceprechecks', 'style' => 'display: none;',
                 'value' => get_string('identityfaceprechecks_btn', 'quiz'), 'class' => 'mod_quiz-next-nav btn btn-primary'));
 
         // HIDE ALL THE QUESTIONS FOR NOW
@@ -818,17 +836,19 @@ class mod_quiz_renderer extends plugin_renderer_base {
         //  FACE PRECHECK BUTTONS
         $output .= html_writer::start_tag('div', array('id' => 'buttonsContainer'));
         $output .= html_writer::start_tag('div', array('id' => 'captureButtonContainer'));
-        $output .= html_writer::empty_tag('input', array('type' => 'button', 'id' => 'capture',
+        $output .= html_writer::empty_tag('input', array('type' => 'button', 'id' => 'capture', 'style' => 'margin-bottom: 10px;',
                 'value' => get_string('capture_btn', 'quiz'), 'class' => 'mod_quiz-next-nav btn btn-primary'));
-        $output .= html_writer::empty_tag('input', array('type' => 'button', 'id' => 'retry', 'style' => 'display: none;',
+        $output .= html_writer::empty_tag('input', array('type' => 'button', 'id' => 'retry', 'style' => 'display: none; margin-right: 10px; margin-top: 10px; margin-bottom: 10px;',
         'value' => get_string('retry_btn', 'quiz'), 'class' => 'mod_quiz-next-nav btn btn-primary'));
+        $output .= html_writer::empty_tag('input', array('type' => 'button', 'id' => 'save', 'style' => 'display: none; margin-top: 10px; margin-bottom: 10px;',
+        'value' => get_string('save_btn', 'quiz'), 'class' => 'mod_quiz-next-nav btn btn-primary'));
         $output .= html_writer::end_tag('div');
         $output .= html_writer::end_tag('div');
 
         // NEXT BUTTON
         $output .= html_writer::empty_tag('input', array('type' => 'submit', 'id' => 'continue', 'name' => 'identityidprechecks_btn',
                 'value' => get_string('identityidprechecks_btn', 'quiz'),
-                'style' => 'display: none;', 'onclick' => 'continueUpload()'));
+                'style' => 'display: none;', 'onclick' => 'continueUpload(sendVerify=false)'));
                 // 'class' => 'mod_quiz-next-nav btn btn-primary',
 
         // HIDE ALL THE QUESTIONS FOR NOW
@@ -921,17 +941,19 @@ class mod_quiz_renderer extends plugin_renderer_base {
         //  ID PRECHECK BUTTONS
         $output .= html_writer::start_tag('div', array('id' => 'buttonsContainer'));
         $output .= html_writer::start_tag('div', array('id' => 'captureButtonContainer'));
-        $output .= html_writer::empty_tag('input', array('type' => 'button', 'id' => 'capture',
+        $output .= html_writer::empty_tag('input', array('type' => 'button', 'id' => 'capture', 'style' => 'margin-bottom: 10px;',
                 'value' => get_string('capture_btn', 'quiz'), 'class' => 'mod_quiz-next-nav btn btn-primary'));
-        $output .= html_writer::empty_tag('input', array('type' => 'button', 'id' => 'retry', 'style' => 'display: none;',
+        $output .= html_writer::empty_tag('input', array('type' => 'button', 'id' => 'retry', 'style' => 'display: none; margin-right: 10px; margin-top: 10px; margin-bottom: 10px;',
         'value' => get_string('retry_btn', 'quiz'), 'class' => 'mod_quiz-next-nav btn btn-primary'));
+        $output .= html_writer::empty_tag('input', array('type' => 'button', 'id' => 'save', 'style' => 'display: none; margin-top: 10px; margin-bottom: 10px;',
+        'value' => get_string('save_btn', 'quiz'), 'class' => 'mod_quiz-next-nav btn btn-primary'));
         $output .= html_writer::end_tag('div');
         $output .= html_writer::end_tag('div');
 
         // NEXT BUTTON
         $output .= html_writer::empty_tag('input', array('type' => 'submit', 'id' => 'continue', 'name' => 'finalinstructions_btn',
                 'value' => get_string('finalinstructions_btn', 'quiz'),
-                'style' => 'display: none;', 'onclick' => 'continueUpload()'));
+                'style' => 'display: none;', 'onclick' => 'continueUpload(sendVerify=false)'));
                 //'class' => 'mod_quiz-next-nav btn btn-primary',
 
         // HIDE ALL THE QUESTIONS FOR NOW
