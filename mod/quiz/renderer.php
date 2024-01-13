@@ -737,8 +737,6 @@ class mod_quiz_renderer extends plugin_renderer_base {
 
         // TO TRIGGER THE FULLSCREEN
         $output .= html_writer::tag('button', get_string('gofullscreen', 'quiz'), array('onclick' => 'goFullscreen()', 'class' => 'btn btn-secondary', 'id' => 'goFullscreen_btn',));
-
-        // LINE BREAK
         $output .= html_writer::tag('p', '');
 
         // Start the form
