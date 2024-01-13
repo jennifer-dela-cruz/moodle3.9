@@ -247,7 +247,7 @@ if (isguestuser()) {
     echo ' |Course ID:' . $course->id . '| ';
     echo ' |Quiz ID:' . $quiz->id . '| ';
     // if ($quiz->id) {
-    //     $quiz_config = $DB->get_record('proctor_upou_quiz_config', array('id' => $quiz->id));
+    //     $quiz_config = $DB->get_record('mdl_proctor_upou_quiz_config', array('id' => $quiz->id));
     //     var_dump($quiz_config);
     // }
 

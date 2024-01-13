@@ -137,7 +137,7 @@ if ($currentattemptid) {
 // if ($quizobj) {
 //     // Get quiz details
 //     $quiz_id = $quizobj->get_quizid();
-//     $quiz_config = $DB->get_record('proctor_upou_quiz_config', array('id' => $quiz_id));
+//     $quiz_config = $DB->get_record('mdl_proctor_upou_quiz_config', array('id' => $quiz_id));
 //     // var_dump($quiz_config);
 
 // If validation status (face and id) are failed,
