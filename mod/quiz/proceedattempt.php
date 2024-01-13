@@ -112,7 +112,7 @@ if ($currentattemptid) {
             $quiz_id = $quizobj->get_quizid();
 
             // Check if done with both verify face and verify id ()
-            $quiz_student_config_record = $DB->get_record('proctor_upou_quiz_students', array('quiz_id' => $quiz_id, 'user_id' => $USER->id));
+            $quiz_student_config_record = $DB->get_record('mdl_proctor_upou_quiz_students', array('quiz_id' => $quiz_id, 'user_id' => $USER->id));
             var_dump($quiz_student_config_record);
 
             if (empty($quiz_student_config_record)) {
