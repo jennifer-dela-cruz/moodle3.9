@@ -109,7 +109,7 @@ if ($currentattemptid) {
         if ($quizobj) {
             // Get quiz details
             $quiz_id = $quizobj->get_quizid();
-            $quiz_config = $DB->get_record('proctor_upou_quiz_config', array('id' => $quiz_id));
+            $quiz_config = $DB->get_record('proctor_upou_quiz_config', array('quiz_id' => $quiz_id));
             var_dump($quiz_config);
 
             if ($quiz_config) {
@@ -130,7 +130,7 @@ $attempt = quiz_prepare_and_start_new_attempt($quizobj, $attemptnumber, $lastatt
 if ($quizobj) {
     // Get quiz details
     $quiz_id = $quizobj->get_quizid();
-    $quiz_config = $DB->get_record('proctor_upou_quiz_config', array('id' => $quiz_id));
+    $quiz_config = $DB->get_record('proctor_upou_quiz_config', array('quiz_id' => $quiz_id));
     // var_dump($quiz_config);
 
     if ($quiz_config) {

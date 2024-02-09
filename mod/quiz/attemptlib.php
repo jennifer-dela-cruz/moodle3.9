@@ -428,6 +428,42 @@ class quiz {
     }
 
     /**
+     * @param int $attemptid the id of an attempt (Snapshop Proctoring).
+     * @param int $page optional page number to go to in the attempt.
+     * @return string the URL of that attempt.
+     */
+    public function attempt_snap_proctor_url($attemptid, $page = 0) {
+        // cmid = quiz id
+        // attempt = number of attempts
+        // page = page number
+        global $CFG;
+        $url = $CFG->wwwroot . '/mod/quiz/attempt_snap_proctor.php?attempt=' . $attemptid;
+        if ($page) {
+            $url .= '&page=' . $page;
+        }
+        $url .= '&cmid=' . $this->get_cmid();
+        return $url;
+    }
+
+    /**
+     * @param int $attemptid the id of an attempt (Automated Proctoring).
+     * @param int $page optional page number to go to in the attempt.
+     * @return string the URL of that attempt.
+     */
+    public function attempt_auto_proctor_url($attemptid, $page = 0) {
+        // cmid = quiz id
+        // attempt = number of attempts
+        // page = page number
+        global $CFG;
+        $url = $CFG->wwwroot . '/mod/quiz/attempt_auto_proctor.php?attempt=' . $attemptid;
+        if ($page) {
+            $url .= '&page=' . $page;
+        }
+        $url .= '&cmid=' . $this->get_cmid();
+        return $url;
+    }
+
+    /**
      * Get the URL to start/continue an attempt.
      *
      * @param int $page page in the attempt to start on (optional).

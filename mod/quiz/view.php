@@ -246,6 +246,7 @@ if (isguestuser()) {
     // echo 'START CONTENT HERE';
     echo ' |Course ID:' . $course->id . '| ';
     echo ' |Quiz ID:' . $quiz->id . '| ';
+    // THERE SHOULD NOT BE ANY CHECKING HERE
     // if ($quiz->id) {
     //     $quiz_config = $DB->get_record('mdl_proctor_upou_quiz_config', array('id' => $quiz->id));
     //     var_dump($quiz_config);

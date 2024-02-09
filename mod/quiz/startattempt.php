@@ -102,23 +102,66 @@ if ($accessmanager->is_preflight_check_required($currentattemptid)) {
     // Pre-flight check passed.
     $accessmanager->notify_preflight_check_passed($currentattemptid);
 }
+
+// IF WITH ATTEMPTS ALREADY
+// The proctoring logic is the same regardless if has attempts or not
+// echo 'quizobj: ';
+// var_dump($quizobj);
+// echo 'user_id: ';
+// echo $USER->id;
+// echo 'currentattemptid: ';
+// var_dump($currentattemptid);
 if ($currentattemptid) {
+    echo 'WITH ATTEMPTS ALREADY';
+
     if ($lastattempt->state == quiz_attempt::OVERDUE) {
+        // CHECK IF I NEED TO UPDATE THIS
         redirect($quizobj->summary_url($lastattempt->id));
     } else {
 
         if ($quizobj) {
             // Get quiz details
             $quiz_id = $quizobj->get_quizid();
-            $quiz_config = $DB->get_record('proctor_upou_quiz_config', array('id' => $quiz_id));
-            var_dump($quiz_config);
+            // echo ' quiz_id: ';
+            // echo $quiz_id;
+            $quiz_config = $DB->get_record('proctor_upou_quiz_config', array('quiz_id' => $quiz_id));
+            // echo 'quiz_config';
+            // var_dump($quiz_config);
 
+            // Applicable to both Automated Proctoring and Snapshot Proctoring
+            // If quiz has proctoring configured
             if ($quiz_config) {
-                // Redirect to the quiz instructions page.
-                // Applicable to both Automated Proctoring and Snapshot Proctoring
-                redirect($quizobj->quiz_instructions_url($currentattemptid, $page));
+
+                $proctor_verify_config = $DB->get_record('proctor_upou_quiz_students', array('quiz_id' => $quiz_id, 'user_id' => $USER->id));
+                // echo 'proctor_verify_config';
+                // var_dump($proctor_verify_config);
+                // echo 'verify_face_status';
+                // echo $proctor_verify_config->verify_face_status;
+                // echo 'verify_id_status';
+                // echo $proctor_verify_config->verify_id_status;
+
+                // If quiz has proctoring configured, but verify_face_status and verify_id_status are with value of 1
+                if (($proctor_verify_config->verify_face_status == 1) && ($proctor_verify_config->verify_id_status == 1)) {
+
+                    // Check the proctoring_type in mdl_proctor_upou_quiz_config:
+                    // 1 - proctor_video_screenshare >> attempt_auto_proctor.php
+                    // 2 - snapshot_video_screenshare >> attempt_snap_proctor.php
+                    if ($quiz_config->proctoring_type == 1) {
+                        redirect($quizobj->attempt_auto_proctor_url($currentattemptid, $page));
+                    } else {
+                        redirect($quizobj->attempt_snap_proctor_url($currentattemptid, $page));
+                    }
+
+                // If quiz has proctoring configured, but verify_face_status and verify_id_status are with value of 0
+                // Redirect to the quiz instructions page
+                } else {
+                    redirect($quizobj->quiz_instructions_url($currentattemptid, $page));
+                    // WHY IT WENT TO attempt.php after Accept in quiz_instructions.php???
+                    // QUIZ_ID = 4
+                }
+
             } else {
-                // If has no existing attempts
+                // If quiz has NO proctoring configured
                 // Redirect to the attempt page.
                 redirect($quizobj->attempt_url($currentattemptid, $page));
             }
@@ -126,20 +169,53 @@ if ($currentattemptid) {
     }
 }
 
+//IF NO ATTEMPTS YET
+// The proctoring logic is the same regardless if has attempts or not
 $attempt = quiz_prepare_and_start_new_attempt($quizobj, $attemptnumber, $lastattempt);
 
 if ($quizobj) {
+    echo 'NO ATTEMPTS YET';
     // Get quiz details
     $quiz_id = $quizobj->get_quizid();
-    $quiz_config = $DB->get_record('proctor_upou_quiz_config', array('id' => $quiz_id));
+    // echo ' quiz_id: ';
+    // echo $quiz_id;
+    $quiz_config = $DB->get_record('proctor_upou_quiz_config', array('quiz_id' => $quiz_id));
+    // echo 'quiz_config';
     // var_dump($quiz_config);
 
+    // Applicable to both Automated Proctoring and Snapshot Proctoring
+    // If quiz has proctoring configured
     if ($quiz_config) {
-        // Redirect to the quiz instructions page.
-        // Applicable to both Automated Proctoring and Snapshot Proctoring
-        redirect($quizobj->quiz_instructions_url($currentattemptid, $page));
+        $proctor_verify_config = $DB->get_record('proctor_upou_quiz_students', array('quiz_id' => $quiz_id, 'user_id' => $USER->id));
+        // echo 'proctor_verify_config';
+        // var_dump($proctor_verify_config);
+        // echo 'verify_face_status';
+        // echo $proctor_verify_config->verify_face_status;
+        // echo 'verify_id_status';
+        // echo $proctor_verify_config->verify_id_status;
+
+        // If quiz has proctoring configured, but verify_face_status and verify_id_status are with value of 1
+        if (($proctor_verify_config->verify_face_status == 1) && ($proctor_verify_config->verify_id_status == 1)) {
+
+            // Check the proctoring_type in mdl_proctor_upou_quiz_config:
+            // 1 - proctor_video_screenshare >> attempt_auto_proctor.php
+            // 2 - snapshot_video_screenshare >> attempt_snap_proctor.php
+            if ($quiz_config->proctoring_type == 1) {
+                redirect($quizobj->attempt_auto_proctor_url($currentattemptid, $page));
+            } else {
+                redirect($quizobj->attempt_snap_proctor_url($currentattemptid, $page));
+            }
+
+        // If quiz has proctoring configured, but verify_face_status and verify_id_status are with value of 0
+        // Redirect to the quiz instructions page
+        } else {
+            redirect($quizobj->quiz_instructions_url($currentattemptid, $page));
+            // WHY IT WENT TO attempt.php after Accept in quiz_instructions.php???
+            // QUIZ_ID = 4
+        }
+
     } else {
-        // If has no existing attempts
+        // If quiz has NO proctoring configured
         // Redirect to the attempt page.
         redirect($quizobj->attempt_url($currentattemptid, $page));
     }

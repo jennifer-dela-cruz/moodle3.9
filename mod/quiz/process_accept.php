@@ -101,23 +101,31 @@ if ($accessmanager->is_preflight_check_required($currentattemptid)) {
     // Pre-flight check passed.
     $accessmanager->notify_preflight_check_passed($currentattemptid);
 }
+// echo 'currentattemptid: ';
+// echo $currentattemptid;
+
 if ($currentattemptid) {
     if ($lastattempt->state == quiz_attempt::OVERDUE) {
         redirect($quizobj->summary_url($lastattempt->id));
     } else {
 
         if ($quizobj) {
+            // echo ' quizobj: ';
+            // var_dump($quizobj);
+
             // Get quiz details
             $quiz_id = $quizobj->get_quizid();
-            $quiz_config = $DB->get_record('proctor_upou_quiz_config', array('id' => $quiz_id));
-            var_dump($quiz_config);
+            $quiz_config = $DB->get_record('proctor_upou_quiz_config', array('quiz_id' => $quiz_id));
+            // echo 'HAS EXISTING ATTEMPTS';
+            // echo 'quiz_config';
+            // var_dump($quiz_config);
 
             if ($quiz_config) {
                 // Redirect to the system prechecks page.
                 // Applicable to both Automated Proctoring and Snapshot Proctoring
                 redirect($quizobj->system_prechecks_url($currentattemptid, $page));
             } else {
-                // If has no existing attempts
+                // If quiz has NO proctoring configured
                 // Redirect to the attempt page.
                 redirect($quizobj->attempt_url($currentattemptid, $page));
             }
@@ -128,18 +136,23 @@ if ($currentattemptid) {
 $attempt = quiz_prepare_and_start_new_attempt($quizobj, $attemptnumber, $lastattempt);
 
 if ($quizobj) {
+    // echo ' quizobj: ';
+    // echo $quizobj;
+
     // Get quiz details
     $quiz_id = $quizobj->get_quizid();
-    $quiz_config = $DB->get_record('proctor_upou_quiz_config', array('id' => $quiz_id));
+    $quiz_config = $DB->get_record('proctor_upou_quiz_config', array('quiz_id' => $quiz_id));
+    // echo 'HAS NO EXISTING ATTEMPTS';
+    // echo 'quiz_config';
     // var_dump($quiz_config);
 
     if ($quiz_config) {
-        // Redirect to the system prechecks page.
-        // Applicable to both Automated Proctoring and Snapshot Proctoring
+    // Redirect to the system prechecks page.
+    // Applicable to both Automated Proctoring and Snapshot Proctoring
         redirect($quizobj->system_prechecks_url($currentattemptid, $page));
     } else {
-        // If has no existing attempts
-        // Redirect to the attempt page.
+    // If quiz has NO proctoring configured
+    // Redirect to the attempt page.
         redirect($quizobj->attempt_url($currentattemptid, $page));
     }
 }

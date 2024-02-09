@@ -102,6 +102,9 @@ if ($accessmanager->is_preflight_check_required($currentattemptid)) {
     // Pre-flight check passed.
     $accessmanager->notify_preflight_check_passed($currentattemptid);
 }
+
+// This is when there is an existing attempt ID
+// TESTED AND WORKING
 if ($currentattemptid) {
     if ($lastattempt->state == quiz_attempt::OVERDUE) {
         redirect($quizobj->summary_url($lastattempt->id));
@@ -112,16 +115,17 @@ if ($currentattemptid) {
             $quiz_id = $quizobj->get_quizid();
 
             // Check if done with both verify face and verify id ()
-            $quiz_student_config_record = $DB->get_record('mdl_proctor_upou_quiz_students', array('quiz_id' => $quiz_id, 'user_id' => $USER->id));
+            // The insert happens in the verifyFace or verifyID Lambda function
+            $quiz_student_config_record = $DB->get_record('proctor_upou_quiz_students', array('quiz_id' => $quiz_id, 'user_id' => $USER->id));
             var_dump($quiz_student_config_record);
 
             if (empty($quiz_student_config_record)) {
                 // Redirect to the quiz instructions page.
+                // The record is NOT YET existing in mdl_proctor_upou_quiz_students
                 // Applicable to both Automated Proctoring and Snapshot Proctoring
                 redirect($quizobj->quiz_instructions_url($currentattemptid, $page));
             } else {
-                // CHECK THIS NEXT TIME IF WORKING AFTER THE MSF-44 and MSF-42
-                // The record is existing
+                // The record is existing in mdl_proctor_upou_quiz_students
                 // Could be because the previous precheck was not successful?
                  // Redirect to the attempt page.
                 redirect($quizobj->attempt_url($currentattemptid, $page));
@@ -130,27 +134,32 @@ if ($currentattemptid) {
     }
 }
 
-// enable this later?
-// check the purpose of this?
+// // enable this later?
+// // check the purpose of this?
+// // I think this is when there is no existing attempts yet
+// // TEST THIS
 // $attempt = quiz_prepare_and_start_new_attempt($quizobj, $attemptnumber, $lastattempt);
-
+// echo 'new attempt vardump';
+// var_dump($attempt);
 // if ($quizobj) {
-//     // Get quiz details
-//     $quiz_id = $quizobj->get_quizid();
-//     $quiz_config = $DB->get_record('mdl_proctor_upou_quiz_config', array('id' => $quiz_id));
-//     // var_dump($quiz_config);
+//    // Get quiz details
+//    $quiz_id = $quizobj->get_quizid();
 
-// If validation status (face and id) are failed,
-// it will redirect back to quiz instructions.
-// Otherwise, it will redirect to attempt.php
+//    // Check if done with both verify face and verify id ()
+//    // The insert happens in the verifyFace or verifyID Lambda function
+//    $quiz_student_config_record = $DB->get_record('proctor_upou_quiz_students', array('quiz_id' => $quiz_id, 'user_id' => $USER->id));
+//    echo 'proctor_upou_quiz_students vardump';
+//    var_dump($quiz_student_config_record);
 
-//     if ($quiz_config) {
-//         // Redirect to the quiz instructions page.
-//         // Applicable to both Automated Proctoring and Snapshot Proctoring
-//         redirect($quizobj->quiz_instructions_url($currentattemptid, $page));
-//     } else {
-//         // If has no existing attempts
-//         // Redirect to the attempt page.
-//         redirect($quizobj->attempt_url($currentattemptid, $page));
-//     }
+// //    if (empty($quiz_student_config_record)) {
+// //        // Redirect to the quiz instructions page.
+// //        // The record is NOT YET existing in mdl_proctor_upou_quiz_students
+// //        // Applicable to both Automated Proctoring and Snapshot Proctoring
+// //        redirect($quizobj->quiz_instructions_url($currentattemptid, $page));
+// //    } else {
+// //        // The record is existing in mdl_proctor_upou_quiz_students
+// //        // Could be because the previous precheck was not successful?
+// //         // Redirect to the attempt page.
+// //        redirect($quizobj->attempt_url($currentattemptid, $page));
+// //    }
 // }
