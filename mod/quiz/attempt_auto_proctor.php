@@ -136,5 +136,5 @@ if ($attemptobj->is_last_page($page)) {
     $nextpage = $page + 1;
 }
 
-// DISABLE FOR NOW
+
 echo $output->attempt_page($attemptobj, $page, $accessmanager, $messages, $slots, $id, $nextpage);

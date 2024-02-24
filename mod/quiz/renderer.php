@@ -1099,6 +1099,11 @@ class mod_quiz_renderer extends plugin_renderer_base {
 
     /**
      * Ouputs the form for making an attempt
+     * Checks if the following resources are available:
+     *  - microphone
+     *  - camera
+     *  - fullscreen mode
+     *  - screensharing
      *
      * @param quiz_attempt $attemptobj
      * @param int $page Current page number
@@ -1108,6 +1113,55 @@ class mod_quiz_renderer extends plugin_renderer_base {
      */
     public function attempt_form($attemptobj, $page, $slots, $id, $nextpage) {
         $output = '';
+
+        // $output .= html_writer::empty_tag('script', array('src' => 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js'));
+
+        // Add inline stylesheets
+        $output .= html_writer::tag('style', "
+                /* Styles for the modal */
+                .modal {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.7);
+                justify-content: center;
+                align-items: center;
+                }
+
+                .modal-content {
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 5px;
+                text-align: center;
+                }
+
+                /* Styles for the button */
+                .fullscreen-button {
+                cursor: pointer;
+                background-color: #4CAF50;
+                color: white;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 5px;
+                }
+        ");
+
+        // ADD HERE THE Fullscreen Modal
+        // CHECK IF THE SCREEN CONTROLS (JS) ARE WORKING
+
+        $output .= html_writer::start_tag('div', array('id' => 'myModal', 'class' => 'modal'));
+        $output .= html_writer::start_tag('div', array('class' => 'modal-content'));
+
+        $output .= html_writer::tag('p', get_string('clicktofullscreen', 'quiz'));
+        $output .= html_writer::tag('button', get_string('fullscreen', 'quiz'), array('class' => 'fullscreen-button', 'onclick' => 'goFullscreen()'));
+
+        $output .= html_writer::empty_tag('video', array('id' => 'screenShareVideo', 'width' => '400', 'height' => '300', 'style' => 'display: none', 'controls' => 'controls'));
+
+        $output .= html_writer::end_tag('div');
+        $output .= html_writer::end_tag('div');
 
         // Start the form.
         $output .= html_writer::start_tag('form',
