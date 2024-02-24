@@ -134,4 +134,4 @@ if ($attemptobj->is_last_page($page)) {
 
 echo 'attempt_snap_proctor.php';
 // DISABLE THIS FOR NOW
-// echo $output->attempt_page($attemptobj, $page, $accessmanager, $messages, $slots, $id, $nextpage);
+echo $output->attempt_page($attemptobj, $page, $accessmanager, $messages, $slots, $id, $nextpage);

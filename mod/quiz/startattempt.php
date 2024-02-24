@@ -105,14 +105,7 @@ if ($accessmanager->is_preflight_check_required($currentattemptid)) {
 
 // IF WITH ATTEMPTS ALREADY
 // The proctoring logic is the same regardless if has attempts or not
-// echo 'quizobj: ';
-// var_dump($quizobj);
-// echo 'user_id: ';
-// echo $USER->id;
-// echo 'currentattemptid: ';
-// var_dump($currentattemptid);
 if ($currentattemptid) {
-    echo 'WITH ATTEMPTS ALREADY';
 
     if ($lastattempt->state == quiz_attempt::OVERDUE) {
         // CHECK IF I NEED TO UPDATE THIS
@@ -122,23 +115,13 @@ if ($currentattemptid) {
         if ($quizobj) {
             // Get quiz details
             $quiz_id = $quizobj->get_quizid();
-            // echo ' quiz_id: ';
-            // echo $quiz_id;
             $quiz_config = $DB->get_record('proctor_upou_quiz_config', array('quiz_id' => $quiz_id));
-            // echo 'quiz_config';
-            // var_dump($quiz_config);
 
             // Applicable to both Automated Proctoring and Snapshot Proctoring
             // If quiz has proctoring configured
             if ($quiz_config) {
 
                 $proctor_verify_config = $DB->get_record('proctor_upou_quiz_students', array('quiz_id' => $quiz_id, 'user_id' => $USER->id));
-                // echo 'proctor_verify_config';
-                // var_dump($proctor_verify_config);
-                // echo 'verify_face_status';
-                // echo $proctor_verify_config->verify_face_status;
-                // echo 'verify_id_status';
-                // echo $proctor_verify_config->verify_id_status;
 
                 // If quiz has proctoring configured, but verify_face_status and verify_id_status are with value of 1
                 if (($proctor_verify_config->verify_face_status == 1) && ($proctor_verify_config->verify_id_status == 1)) {
@@ -156,8 +139,6 @@ if ($currentattemptid) {
                 // Redirect to the quiz instructions page
                 } else {
                     redirect($quizobj->quiz_instructions_url($currentattemptid, $page));
-                    // WHY IT WENT TO attempt.php after Accept in quiz_instructions.php???
-                    // QUIZ_ID = 4
                 }
 
             } else {
@@ -174,25 +155,14 @@ if ($currentattemptid) {
 $attempt = quiz_prepare_and_start_new_attempt($quizobj, $attemptnumber, $lastattempt);
 
 if ($quizobj) {
-    echo 'NO ATTEMPTS YET';
     // Get quiz details
     $quiz_id = $quizobj->get_quizid();
-    // echo ' quiz_id: ';
-    // echo $quiz_id;
     $quiz_config = $DB->get_record('proctor_upou_quiz_config', array('quiz_id' => $quiz_id));
-    // echo 'quiz_config';
-    // var_dump($quiz_config);
 
     // Applicable to both Automated Proctoring and Snapshot Proctoring
     // If quiz has proctoring configured
     if ($quiz_config) {
         $proctor_verify_config = $DB->get_record('proctor_upou_quiz_students', array('quiz_id' => $quiz_id, 'user_id' => $USER->id));
-        // echo 'proctor_verify_config';
-        // var_dump($proctor_verify_config);
-        // echo 'verify_face_status';
-        // echo $proctor_verify_config->verify_face_status;
-        // echo 'verify_id_status';
-        // echo $proctor_verify_config->verify_id_status;
 
         // If quiz has proctoring configured, but verify_face_status and verify_id_status are with value of 1
         if (($proctor_verify_config->verify_face_status == 1) && ($proctor_verify_config->verify_id_status == 1)) {
@@ -210,8 +180,6 @@ if ($quizobj) {
         // Redirect to the quiz instructions page
         } else {
             redirect($quizobj->quiz_instructions_url($currentattemptid, $page));
-            // WHY IT WENT TO attempt.php after Accept in quiz_instructions.php???
-            // QUIZ_ID = 4
         }
 
     } else {
