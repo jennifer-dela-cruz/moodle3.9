@@ -7,6 +7,7 @@ getVideoDevicePass = false;
 getMicrophonePass = false;
 let screenSharingActive = false;
 
+// UPDATE THIS!!!
 // For violation logging
 var quiz_id = 2;
 var user_id = 3;
@@ -159,11 +160,11 @@ function goFullscreen() {
 // Function to open the modal
 function openModal() {
     document.getElementById('myModal').style.display = 'flex';
-  }
+}
 
 // Function to close the modal
 function closeModal() {
-document.getElementById('myModal').style.display = 'none';
+    document.getElementById('myModal').style.display = 'none';
 }
 
 // Event listener for changes in fullscreen mode (browser-specific)
@@ -197,6 +198,7 @@ window.addEventListener('load', () => {
   });
 
 // for fullscreen button
+// THIS HAS ERROR
 window.addEventListener('load', openModal);
 
 // Disabling this as the this might be annoying

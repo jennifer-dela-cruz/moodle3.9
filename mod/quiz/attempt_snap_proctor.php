@@ -132,6 +132,6 @@ if ($attemptobj->is_last_page($page)) {
     $nextpage = $page + 1;
 }
 
-echo 'attempt_snap_proctor.php';
-// DISABLE THIS FOR NOW
-echo $output->attempt_page($attemptobj, $page, $accessmanager, $messages, $slots, $id, $nextpage);
+
+$quiz_id = $attemptobj->get_quizid();
+echo $output->attempt_page($attemptobj, $page, $accessmanager, $messages, $slots, $id, $nextpage, $USER->id, $quiz_id);

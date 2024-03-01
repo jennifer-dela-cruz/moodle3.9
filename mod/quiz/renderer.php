@@ -1152,13 +1152,14 @@ class mod_quiz_renderer extends plugin_renderer_base {
         // ADD HERE THE Fullscreen Modal
         // CHECK IF THE SCREEN CONTROLS (JS) ARE WORKING
 
-        $output .= html_writer::start_tag('div', array('id' => 'myModal', 'class' => 'modal'));
+        $output .= html_writer::start_tag('div', array('id' => 'myModal', 'class' => 'modal', 'style' => 'display: none'));
         $output .= html_writer::start_tag('div', array('class' => 'modal-content'));
 
         $output .= html_writer::tag('p', get_string('clicktofullscreen', 'quiz'));
         $output .= html_writer::tag('button', get_string('fullscreen', 'quiz'), array('class' => 'fullscreen-button', 'onclick' => 'goFullscreen()'));
 
-        $output .= html_writer::empty_tag('video', array('id' => 'screenShareVideo', 'width' => '400', 'height' => '300', 'style' => 'display: none', 'controls' => 'controls'));
+        $output .= html_writer::start_tag('video', array('id' => 'screenShareVideo', 'width' => '400', 'height' => '300', 'style' => 'display: none', 'controls' => 'controls'));
+        $output .= html_writer::end_tag('video');
 
         $output .= html_writer::end_tag('div');
         $output .= html_writer::end_tag('div');
@@ -1193,6 +1194,9 @@ class mod_quiz_renderer extends plugin_renderer_base {
                 'value' => sesskey()));
         $output .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'scrollpos',
                 'value' => '', 'id' => 'scrollpos'));
+        // Add quiz id and user id hidden fields for image name
+        $output .= html_writer::empty_tag('input', array('id' => 'quiz_id', 'type' => 'hidden', 'value' => $quiz_id));
+        $output .= html_writer::empty_tag('input', array('id' => 'user_id', 'type' => 'hidden', 'value' => $user_id));
 
         // Add a hidden field with questionids. Do this at the end of the form, so
         // if you navigate before the form has finished loading, it does not wipe all

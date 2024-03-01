@@ -138,5 +138,5 @@ if ($attemptobj->is_last_page($page)) {
 } else {
     $nextpage = $page + 1;
 }
-
-echo $output->attempt_page($attemptobj, $page, $accessmanager, $messages, $slots, $id, $nextpage);
+$quiz_id = $attemptobj->get_quizid();
+echo $output->attempt_page($attemptobj, $page, $accessmanager, $messages, $slots, $id, $nextpage, $USER->id, $quiz_id);
