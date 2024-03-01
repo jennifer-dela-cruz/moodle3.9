@@ -105,10 +105,10 @@ function handleDataAvailable(event) {
 function uploadRecording(blob){
 
   const userFile = blob;
-  // quiz_id = document.getElementById('quiz_id').value;
-  // user_id = document.getElementById('user_id').value;
-  var quiz_id = 2;
-  var user_id = 3;
+  quiz_id = document.getElementById('quiz_id').value;
+  user_id = document.getElementById('user_id').value;
+  // var quiz_id = 2;
+  // var user_id = 3;
   const custFileName = quiz_id + '_' + user_id + '_' + Date.now() + '.webm';
 
   console.log('custFileName: ' + custFileName);

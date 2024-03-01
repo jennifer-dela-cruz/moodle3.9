@@ -864,7 +864,6 @@ class mod_quiz_renderer extends plugin_renderer_base {
         $output = '';
 
         //$output .= 'START FORM HERE';
-        $output .= $test;
 
         // Header and page description
         $output .= html_writer::tag('p', get_string('identityfaceprecheck_header', 'quiz'));
@@ -1265,6 +1264,37 @@ class mod_quiz_renderer extends plugin_renderer_base {
 
         $output .= html_writer::end_tag('div');
         $output .= html_writer::end_tag('div');
+
+        // Add HTML for the video recording
+        $output .= html_writer::start_tag('div', array('id' => 'container'));
+
+        $frame_width = 120;
+        $frame_height = 80;
+
+        $output .= html_writer::start_tag('video', array('id' => 'gum', 'width' => $frame_width, 'height' => $frame_height, 'autoplay' => 'autoplay', 'playsinline' => 'playsinline', 'muted' => 'muted', 'style' => 'border-radius: 50%; text-align: center; line-height: 50px;'));
+        $output .= html_writer::end_tag('video');
+
+        $output .= html_writer::start_tag('video', array('id' => 'recorded', 'playsinline' => 'playsinline', 'loop' => 'loop', 'style' => 'display: none'));
+        $output .= html_writer::end_tag('video');
+
+        // $output .= html_writer::start_tag('canvas', array('id' => 'canvas', 'width' => $frame_width, 'height' => $frame_height, 'style' => 'display: none;'));
+        // $output .= html_writer::end_tag('canvas');
+
+        $output .= html_writer::start_tag('div', array('style' => 'display: none'));
+        $output .= html_writer::tag('select', '', array('id' => 'codecPreferences', 'disabled' => 'disabled'));
+        $output .= html_writer::end_tag('div');
+
+        $output .= html_writer::start_tag('div', array('style' => 'display: none'));
+        $output .= html_writer::tag('input', '', array('type' => 'checkbox', 'id' => 'echoCancellation'));
+        $output .= html_writer::end_tag('div');
+
+        $output .= html_writer::start_tag('div');
+        $output .= html_writer::tag('span', '', array('id' => 'errorMsg'));
+        $output .= html_writer::end_tag('div');
+
+        $output .= html_writer::end_tag('div');
+
+        // End of Add HTML for the video recording
 
         // Start the form.
         $output .= html_writer::start_tag('form',
