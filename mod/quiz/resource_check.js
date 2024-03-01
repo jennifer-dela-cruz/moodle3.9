@@ -194,14 +194,18 @@ window.addEventListener('load', () => {
         checkCamera();
       setTimeout(() => {
         startScreenSharingIfNeeded();
+            // the below will be triggered manually. No need to enable
             // setTimeout(goFullscreen(), delay_duration);
       }, delay_duration);
     }, delay_duration);
   });
 
 // for fullscreen button
-// THIS HAS ERROR
-window.addEventListener('load', openModal);
+window.addEventListener('load', () => {
+    setTimeout(() => {
+        openModal();
+    }, delay_duration);
+  });
 
 // Disabling this as the this might be annoying
 // Set up the interval (60 seconds = 60000 milliseconds)

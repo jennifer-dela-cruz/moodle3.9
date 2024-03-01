@@ -1114,8 +1114,6 @@ class mod_quiz_renderer extends plugin_renderer_base {
     public function attempt_form($attemptobj, $page, $slots, $id, $nextpage, $user_id, $quiz_id) {
         $output = '';
 
-        // $output .= html_writer::empty_tag('script', array('src' => 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js'));
-
         // Add inline stylesheets
         $output .= html_writer::tag('style', "
                 /* Styles for the modal */
@@ -1136,6 +1134,7 @@ class mod_quiz_renderer extends plugin_renderer_base {
                 padding: 20px;
                 border-radius: 5px;
                 text-align: center;
+                width: 310px;
                 }
 
                 /* Styles for the button */
