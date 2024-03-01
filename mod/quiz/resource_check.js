@@ -9,8 +9,10 @@ let screenSharingActive = false;
 
 // UPDATE THIS!!!
 // For violation logging
-var quiz_id = 2;
-var user_id = 3;
+// var quiz_id = 2;
+// var user_id = 3;
+var user_id = document.getElementById('user_id').value;
+var quiz_id = document.getElementById('quiz_id').value;
 var evidence_msg = 'NO_VIOLATION';
 
 function delayFunction(callback) {
