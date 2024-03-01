@@ -456,6 +456,48 @@ class mod_quiz_renderer extends plugin_renderer_base {
     }
 
     /**
+     * Attempt Page for Auto Proctor
+     *
+     * @param quiz_attempt $attemptobj Instance of quiz_attempt
+     * @param int $page Current page number
+     * @param quiz_access_manager $accessmanager Instance of quiz_access_manager
+     * @param array $messages An array of messages
+     * @param array $slots Contains an array of integers that relate to questions
+     * @param int $id The ID of an attempt
+     * @param int $nextpage The number of the next page
+     */
+    public function attempt_auto_proctor_page($attemptobj, $page, $accessmanager, $messages, $slots, $id,
+            $nextpage, $user_id, $quiz_id) {
+        $output = '';
+        $output .= $this->header();
+        $output .= $this->quiz_notices($messages);
+        $output .= $this->attempt_auto_proctor_form($attemptobj, $page, $slots, $id, $nextpage, $user_id, $quiz_id);
+        $output .= $this->footer();
+        return $output;
+    }
+
+    /**
+     * Attempt Page for Snap Proctor
+     *
+     * @param quiz_attempt $attemptobj Instance of quiz_attempt
+     * @param int $page Current page number
+     * @param quiz_access_manager $accessmanager Instance of quiz_access_manager
+     * @param array $messages An array of messages
+     * @param array $slots Contains an array of integers that relate to questions
+     * @param int $id The ID of an attempt
+     * @param int $nextpage The number of the next page
+     */
+    public function attempt_snap_proctor_page($attemptobj, $page, $accessmanager, $messages, $slots, $id,
+            $nextpage, $user_id, $quiz_id) {
+        $output = '';
+        $output .= $this->header();
+        $output .= $this->quiz_notices($messages);
+        $output .= $this->attempt_snap_proctor_form($attemptobj, $page, $slots, $id, $nextpage, $user_id, $quiz_id);
+        $output .= $this->footer();
+        return $output;
+    }
+
+    /**
      * Quiz Instructions Page
      *
      * @param quiz_attempt $attemptobj Instance of quiz_attempt
@@ -1099,6 +1141,67 @@ class mod_quiz_renderer extends plugin_renderer_base {
 
     /**
      * Ouputs the form for making an attempt
+     *
+     * @param quiz_attempt $attemptobj
+     * @param int $page Current page number
+     * @param array $slots Array of integers relating to questions
+     * @param int $id ID of the attempt
+     * @param int $nextpage Next page number
+     */
+    public function attempt_form($attemptobj, $page, $slots, $id, $nextpage, $user_id, $quiz_id) {
+        $output = '';
+
+        // Start the form.
+        $output .= html_writer::start_tag('form',
+                array('action' => new moodle_url($attemptobj->processattempt_url(),
+                array('cmid' => $attemptobj->get_cmid())), 'method' => 'post',
+                'enctype' => 'multipart/form-data', 'accept-charset' => 'utf-8',
+                'id' => 'responseform'));
+        $output .= html_writer::start_tag('div');
+
+        // Print all the questions.
+        foreach ($slots as $slot) {
+            $output .= $attemptobj->render_question($slot, false, $this,
+                    $attemptobj->attempt_url($slot, $page), $this);
+        }
+
+        $navmethod = $attemptobj->get_quiz()->navmethod;
+        $output .= $this->attempt_navigation_buttons($page, $attemptobj->is_last_page($page), $navmethod);
+
+        // Some hidden fields to trach what is going on.
+        $output .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'attempt',
+                'value' => $attemptobj->get_attemptid()));
+        $output .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'thispage',
+                'value' => $page, 'id' => 'followingpage'));
+        $output .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'nextpage',
+                'value' => $nextpage));
+        $output .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'timeup',
+                'value' => '0', 'id' => 'timeup'));
+        $output .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'sesskey',
+                'value' => sesskey()));
+        $output .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'scrollpos',
+                'value' => '', 'id' => 'scrollpos'));
+        // Add quiz id and user id hidden fields for image name
+        $output .= html_writer::empty_tag('input', array('id' => 'quiz_id', 'type' => 'hidden', 'value' => $quiz_id));
+        $output .= html_writer::empty_tag('input', array('id' => 'user_id', 'type' => 'hidden', 'value' => $user_id));
+
+        // Add a hidden field with questionids. Do this at the end of the form, so
+        // if you navigate before the form has finished loading, it does not wipe all
+        // the student's answers.
+        $output .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'slots',
+                'value' => implode(',', $attemptobj->get_active_slots($page))));
+
+        // Finish the form.
+        $output .= html_writer::end_tag('div');
+        $output .= html_writer::end_tag('form');
+
+        $output .= $this->connection_warning();
+
+        return $output;
+    }
+
+    /**
+     * Ouputs the form for making an attempt for auto proctor
      * Checks if the following resources are available:
      *  - microphone
      *  - camera
@@ -1111,7 +1214,7 @@ class mod_quiz_renderer extends plugin_renderer_base {
      * @param int $id ID of the attempt
      * @param int $nextpage Next page number
      */
-    public function attempt_form($attemptobj, $page, $slots, $id, $nextpage, $user_id, $quiz_id) {
+    public function attempt_auto_proctor_form($attemptobj, $page, $slots, $id, $nextpage, $user_id, $quiz_id) {
         $output = '';
 
         // Add inline stylesheets
@@ -1211,6 +1314,118 @@ class mod_quiz_renderer extends plugin_renderer_base {
 
         return $output;
     }
+
+
+    /**
+     * Ouputs the form for making an attempt for snap proctor
+     *
+     * @param quiz_attempt $attemptobj
+     * @param int $page Current page number
+     * @param array $slots Array of integers relating to questions
+     * @param int $id ID of the attempt
+     * @param int $nextpage Next page number
+     */
+    public function attempt_snap_proctor_form($attemptobj, $page, $slots, $id, $nextpage, $user_id, $quiz_id) {
+        $output = '';
+
+        // Add inline stylesheets
+        $output .= html_writer::tag('style', "
+                /* Styles for the modal */
+                .modal {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.7);
+                justify-content: center;
+                align-items: center;
+                }
+
+                .modal-content {
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 5px;
+                text-align: center;
+                width: 310px;
+                }
+
+                /* Styles for the button */
+                .fullscreen-button {
+                cursor: pointer;
+                background-color: #4CAF50;
+                color: white;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 5px;
+                }
+        ");
+
+        // ADD HERE THE Fullscreen Modal
+        // CHECK IF THE SCREEN CONTROLS (JS) ARE WORKING
+
+        $output .= html_writer::start_tag('div', array('id' => 'myModal', 'class' => 'modal', 'style' => 'display: none'));
+        $output .= html_writer::start_tag('div', array('class' => 'modal-content'));
+
+        $output .= html_writer::tag('p', get_string('clicktofullscreen', 'quiz'));
+        $output .= html_writer::tag('button', get_string('fullscreen', 'quiz'), array('class' => 'fullscreen-button', 'onclick' => 'goFullscreen()'));
+
+        $output .= html_writer::start_tag('video', array('id' => 'screenShareVideo', 'width' => '400', 'height' => '300', 'style' => 'display: none', 'controls' => 'controls'));
+        $output .= html_writer::end_tag('video');
+
+        $output .= html_writer::end_tag('div');
+        $output .= html_writer::end_tag('div');
+
+        // Start the form.
+        $output .= html_writer::start_tag('form',
+                array('action' => new moodle_url($attemptobj->processattempt_url(),
+                array('cmid' => $attemptobj->get_cmid())), 'method' => 'post',
+                'enctype' => 'multipart/form-data', 'accept-charset' => 'utf-8',
+                'id' => 'responseform'));
+        $output .= html_writer::start_tag('div');
+
+        // Print all the questions.
+        foreach ($slots as $slot) {
+            $output .= $attemptobj->render_question($slot, false, $this,
+                    $attemptobj->attempt_url($slot, $page), $this);
+        }
+
+        $navmethod = $attemptobj->get_quiz()->navmethod;
+        $output .= $this->attempt_navigation_buttons($page, $attemptobj->is_last_page($page), $navmethod);
+
+        // Some hidden fields to trach what is going on.
+        $output .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'attempt',
+                'value' => $attemptobj->get_attemptid()));
+        $output .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'thispage',
+                'value' => $page, 'id' => 'followingpage'));
+        $output .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'nextpage',
+                'value' => $nextpage));
+        $output .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'timeup',
+                'value' => '0', 'id' => 'timeup'));
+        $output .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'sesskey',
+                'value' => sesskey()));
+        $output .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'scrollpos',
+                'value' => '', 'id' => 'scrollpos'));
+        // Add quiz id and user id hidden fields for image name
+        $output .= html_writer::empty_tag('input', array('id' => 'quiz_id', 'type' => 'hidden', 'value' => $quiz_id));
+        $output .= html_writer::empty_tag('input', array('id' => 'user_id', 'type' => 'hidden', 'value' => $user_id));
+
+        // Add a hidden field with questionids. Do this at the end of the form, so
+        // if you navigate before the form has finished loading, it does not wipe all
+        // the student's answers.
+        $output .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'slots',
+                'value' => implode(',', $attemptobj->get_active_slots($page))));
+
+        // Finish the form.
+        $output .= html_writer::end_tag('div');
+        $output .= html_writer::end_tag('form');
+
+        $output .= $this->connection_warning();
+
+        return $output;
+    }
+
 
     /**
      * Display the prev/next buttons that go at the bottom of each page of the attempt.

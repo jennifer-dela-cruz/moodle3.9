@@ -138,5 +138,5 @@ if ($attemptobj->is_last_page($page)) {
 }
 
 $quiz_id = $attemptobj->get_quizid();
-//  SHOULD CREATE ANOTHER OUTPUT FOR AUTO PROCTOR
-echo $output->attempt_page($attemptobj, $page, $accessmanager, $messages, $slots, $id, $nextpage, $USER->id, $quiz_id);
+
+echo $output->attempt_auto_proctor_page($attemptobj, $page, $accessmanager, $messages, $slots, $id, $nextpage, $USER->id, $quiz_id);
