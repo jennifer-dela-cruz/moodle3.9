@@ -14,6 +14,7 @@ function captureAndUpload(quiz_id, user_id, evidence_msg) {
 
             var bucket = 'upou-screen-stream';
             const custFileName = quiz_id + '_' + user_id + '_' + Date.now() + '_' + evidence_msg + '.jpeg';
+            // S3 Screen Upload
             uploadImageURL = 'https://uax7iojzo9.execute-api.us-east-1.amazonaws.com/v1/' + bucket + '/' + custFileName;
 
             console.log('uploadImageURL: ', uploadImageURL);

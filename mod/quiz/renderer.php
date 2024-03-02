@@ -1248,11 +1248,23 @@ class mod_quiz_renderer extends plugin_renderer_base {
                 border: none;
                 border-radius: 5px;
                 }
+
+                /* Styles for the floating video */
+                body {
+                    margin: 0;
+                    padding: 0;
+                }
+                .floating-container {
+                    position: fixed;
+                    bottom: 20px;
+                    right: 20px;
+                    padding: 10px;
+                    border-radius: 5px;
+                }
         ");
 
         // ADD HERE THE Fullscreen Modal
         // CHECK IF THE SCREEN CONTROLS (JS) ARE WORKING
-
         $output .= html_writer::start_tag('div', array('id' => 'myModal', 'class' => 'modal', 'style' => 'display: none'));
         $output .= html_writer::start_tag('div', array('class' => 'modal-content'));
 
@@ -1266,7 +1278,8 @@ class mod_quiz_renderer extends plugin_renderer_base {
         $output .= html_writer::end_tag('div');
 
         // Add HTML for the video recording
-        $output .= html_writer::start_tag('div', array('id' => 'container'));
+        $output .= html_writer::start_tag('div', array('id' => 'container', 'class' => 'floating-container'));
+        // $output .= html_writer::start_tag('div', array('id' => 'container'));
 
         $frame_width = 120;
         $frame_height = 80;
@@ -1276,9 +1289,6 @@ class mod_quiz_renderer extends plugin_renderer_base {
 
         $output .= html_writer::start_tag('video', array('id' => 'recorded', 'playsinline' => 'playsinline', 'loop' => 'loop', 'style' => 'display: none'));
         $output .= html_writer::end_tag('video');
-
-        // $output .= html_writer::start_tag('canvas', array('id' => 'canvas', 'width' => $frame_width, 'height' => $frame_height, 'style' => 'display: none;'));
-        // $output .= html_writer::end_tag('canvas');
 
         $output .= html_writer::start_tag('div', array('style' => 'display: none'));
         $output .= html_writer::tag('select', '', array('id' => 'codecPreferences', 'disabled' => 'disabled'));
@@ -1293,7 +1303,6 @@ class mod_quiz_renderer extends plugin_renderer_base {
         $output .= html_writer::end_tag('div');
 
         $output .= html_writer::end_tag('div');
-
         // End of Add HTML for the video recording
 
         // Start the form.

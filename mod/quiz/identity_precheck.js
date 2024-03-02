@@ -83,6 +83,7 @@ function dataURItoBlob(dataURI) {
 // Function to upload image data to an API endpoint as a Blob
 function uploadImage(imageBlob, sendVerify) {
 
+    // S3 Video Stream and Photo Upload v3
     uploadImageURL = 'https://hdy3rohah6.execute-api.us-east-1.amazonaws.com/v1/';
 
     user_id = document.getElementById('user_id').value;
@@ -138,8 +139,10 @@ function sendVerifyRequest(bucket, custFileName) {
 
     //  API Gateway endpoint
     if (bucket == 'upou-face-captures') {
+        // Lambda Verify Face Photo v2
         apiEndpoint = 'https://d4pe1tagpe.execute-api.us-east-1.amazonaws.com/v1/';
     } else {
+        // Lambda Verify ID Photo v2
         apiEndpoint = 'https://is713j3tqi.execute-api.us-east-1.amazonaws.com/v1/';
     }
 

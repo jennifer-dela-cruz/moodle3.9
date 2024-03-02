@@ -23,6 +23,7 @@ async function fetchRecords(created_time_start, created_time_end) {
     var displayDuration = 5000;
     var fadeOutDuration = 5000;
 
+    // Lambda Get Violations v2
     const apiUrl = 'https://qf6s9v2afl.execute-api.us-east-1.amazonaws.com/v1/' + quiz_id + '/' + student_id;
 
     const requestData = {
@@ -122,10 +123,11 @@ async function startLoop() {
 }
 
 // Start the loop
+// There is a 1 minute delay before getting the violations
+// There will be alerts only if there is a recent violation
 console.log('page_load_start: ', new Date(Date.now()));
 console.log('============================================');
 setTimeout(startLoop, delay);
-// startLoop();
 
 // To stop the loop, set the flag to false
 // Call stopLoop() to exit the loop - TO DO

@@ -113,6 +113,7 @@ function uploadRecording(blob){
 
   console.log('custFileName: ' + custFileName);
   const bucket = 'upou-video-stream';
+  // S3 Video Stream and Photo Upload v3
   const url = 'https://hdy3rohah6.execute-api.us-east-1.amazonaws.com/v1/' + bucket + '/' + custFileName;
 
   console.log('url: ' + url);
@@ -261,7 +262,8 @@ async function startCamera() {
   console.log('Using media constraints:', constraints);
   await init(constraints);
   console.log("startCamera function completed.");
-  startRecording();
+  // ENABLE THIS LATER
+  // startRecording();
 }
 
 startCamera();
