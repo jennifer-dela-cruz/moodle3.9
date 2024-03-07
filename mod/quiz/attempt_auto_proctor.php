@@ -122,6 +122,9 @@ $PAGE->requires->js(new moodle_url('https://cdnjs.cloudflare.com/ajax/libs/html2
 $PAGE->requires->js(new moodle_url('/mod/quiz/store_evidence.js'));
 $PAGE->requires->js(new moodle_url('/mod/quiz/resource_check.js'));
 $PAGE->requires->js(new moodle_url('/mod/quiz/video_recording.js'));
+$PAGE->requires->js(new moodle_url('/mod/quiz/violation_alerts.js'));
+$PAGE->requires->js(new moodle_url('/mod/quiz/ifvisible.js'));
+$PAGE->requires->js(new moodle_url('/mod/quiz/screen_violation.js'));
 
 // Arrange for the navigation to be displayed in the first region on the page.
 $navbc = $attemptobj->get_navigation_panel($output, 'quiz_attempt_nav_panel', $page);

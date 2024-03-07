@@ -18,10 +18,12 @@ function formatDate(date) {
 }
 
 async function fetchRecords(created_time_start, created_time_end) {
-    var quiz_id = 3;
-    var student_id = '888907';
-    var displayDuration = 5000;
-    var fadeOutDuration = 5000;
+    // var quiz_id = 7;
+    // var student_id = 2;
+    var quiz_id = document.getElementById('quiz_id').value;
+    var student_id = document.getElementById('user_id').value;
+    var displayDuration = 10000; // 10 seconds
+    var fadeOutDuration = 5000; // 5 seconds
 
     // Lambda Get Violations v2
     const apiUrl = 'https://qf6s9v2afl.execute-api.us-east-1.amazonaws.com/v1/' + quiz_id + '/' + student_id;
@@ -54,13 +56,15 @@ async function fetchRecords(created_time_start, created_time_end) {
         console.log("data.body: ", data.body);
         // console.log("data.body > data type: ", typeof data.body);
 
-        recordsContainer = document.getElementById('records-container');
-        container = document.getElementById('container');
+        container = document.getElementById('violation-container');
 
         for (let j = 0; j < data.body.length; j++) {
             // Show the violation message in the logs
             console.log("Record", j + ": " + data.body[j][5]);
             const record = data.body[j][5];
+
+            // Show the div element
+            container.style.display = 'block';
 
             const recordDiv = document.createElement('div');
             recordDiv.id = "records-container-child";
@@ -71,6 +75,9 @@ async function fetchRecords(created_time_start, created_time_end) {
             // Set the delay before starting to fade out
             await new Promise(resolve => setTimeout(resolve, displayDuration));
 
+            // Hide the div element
+            container.style.display = 'none';
+
             // Start fading out
             recordDiv.style.opacity = 0;
 
@@ -79,6 +86,7 @@ async function fetchRecords(created_time_start, created_time_end) {
                 recordDiv.remove();
                 resolve();
             }, fadeOutDuration)); // 5 seconds fade out
+
 
         }
 
@@ -123,11 +131,10 @@ async function startLoop() {
 }
 
 // Start the loop
-// There is a 1 minute delay before getting the violations
-// There will be alerts only if there is a recent violation
 console.log('page_load_start: ', new Date(Date.now()));
 console.log('============================================');
 setTimeout(startLoop, delay);
+// startLoop();
 
 // To stop the loop, set the flag to false
 // Call stopLoop() to exit the loop - TO DO

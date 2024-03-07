@@ -1256,15 +1256,33 @@ class mod_quiz_renderer extends plugin_renderer_base {
                 }
                 .floating-container {
                     position: fixed;
-                    bottom: 20px;
-                    right: 20px;
+                    bottom: 50px;
+                    right: 40px;
                     padding: 10px;
                     border-radius: 5px;
                 }
+
+                /* Styles for the violation alerts */
+                body {
+                    margin: 0;
+                    padding: 0;
+                    position: relative;
+                    min-height: 100vh;
+                }
+                .violation-message {
+                    position: fixed;
+                    bottom: 20px;
+                    right: 20px;
+                    background-color: #ff9999;
+                    color: #fff;
+                    padding: 10px;
+                    border-radius: 5px;
+                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+                    display: none;
+                }
         ");
 
-        // ADD HERE THE Fullscreen Modal
-        // CHECK IF THE SCREEN CONTROLS (JS) ARE WORKING
+        // Fullscreen Modal
         $output .= html_writer::start_tag('div', array('id' => 'myModal', 'class' => 'modal', 'style' => 'display: none'));
         $output .= html_writer::start_tag('div', array('class' => 'modal-content'));
 
@@ -1276,10 +1294,10 @@ class mod_quiz_renderer extends plugin_renderer_base {
 
         $output .= html_writer::end_tag('div');
         $output .= html_writer::end_tag('div');
+        // End of Fullscreen Modal
 
-        // Add HTML for the video recording
+        // Video recording
         $output .= html_writer::start_tag('div', array('id' => 'container', 'class' => 'floating-container'));
-        // $output .= html_writer::start_tag('div', array('id' => 'container'));
 
         $frame_width = 120;
         $frame_height = 80;
@@ -1303,7 +1321,12 @@ class mod_quiz_renderer extends plugin_renderer_base {
         $output .= html_writer::end_tag('div');
 
         $output .= html_writer::end_tag('div');
-        // End of Add HTML for the video recording
+        // End of video recording
+
+        // Violation alerts
+        $output .= html_writer::start_tag('div', array('id' => 'violation-container', 'class' => 'violation-message'));
+        $output .= html_writer::end_tag('div');
+        // End of Violation alerts
 
         // Start the form.
         $output .= html_writer::start_tag('form',
