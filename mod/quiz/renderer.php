@@ -915,7 +915,8 @@ class mod_quiz_renderer extends plugin_renderer_base {
         // NEXT BUTTON
         $output .= html_writer::empty_tag('input', array('type' => 'submit', 'id' => 'continue', 'name' => 'identityidprechecks_btn',
                 'value' => get_string('identityidprechecks_btn', 'quiz'),
-                'style' => 'display: none;', 'onclick' => 'continueUpload(sendVerify=false)'));
+                'style' => 'display: none;'));
+                // 'onclick' => 'continueUpload(sendVerify=false)'
                 // 'class' => 'mod_quiz-next-nav btn btn-primary',
 
         // HIDE ALL THE QUESTIONS FOR NOW
@@ -1020,7 +1021,8 @@ class mod_quiz_renderer extends plugin_renderer_base {
         // NEXT BUTTON
         $output .= html_writer::empty_tag('input', array('type' => 'submit', 'id' => 'continue', 'name' => 'finalinstructions_btn',
                 'value' => get_string('finalinstructions_btn', 'quiz'),
-                'style' => 'display: none;', 'onclick' => 'continueUpload(sendVerify=false)'));
+                'style' => 'display: none;'));
+                // 'onclick' => 'continueUpload(sendVerify=false)'
                 //'class' => 'mod_quiz-next-nav btn btn-primary',
 
         // HIDE ALL THE QUESTIONS FOR NOW

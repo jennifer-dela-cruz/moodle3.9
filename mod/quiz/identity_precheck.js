@@ -197,6 +197,7 @@ function sendVerifyRequest(bucket, custFileName) {
                 saveButton.style.display = 'none';
             } else {
                 alert('No face or multiple faces found. Please try again.');
+                console.log('No face or multiple faces found. Please try again.');
                 retryCapture();
             }
        } else {
@@ -209,6 +210,7 @@ function sendVerifyRequest(bucket, custFileName) {
                 saveButton.style.display = 'none';
             } else {
                 alert('ID is not valid. Student name not found. Please try again.');
+                console.log('ID is not valid. Student name not found. Please try again.');
                 retryCapture();
             }
        }
