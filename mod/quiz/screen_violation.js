@@ -32,23 +32,35 @@ window.onkeydown = function(key)
     }
 };
 
-//  Navigate Away Violation
-// WORKING!
-ifvisible.on('statusChanged', function(e){
-    console.log(e.status);
-    if(e.status == "hidden"){
-        console.log('Navigated away violation');
+//  Close Violation
+window.addEventListener('beforeunload', function(event) {
+    // Cancel the event
+    event.preventDefault();
+    evidence_msg = 'CLOSED_WINDOW';
+    captureAndUpload(quiz_id, user_id, evidence_msg);
+    // Chrome requires returnValue to be set
+    event.returnValue = '';
+});
+
+document.addEventListener("visibilitychange", function() {
+    if (document.hidden) {
+        // The page is hidden, user switched to another tab or window
+        console.log("User switched to another tab or window");
         evidence_msg = 'NAVIGATED_AWAY';
         captureAndUpload(quiz_id, user_id, evidence_msg);
+    } else {
+        // The page is visible again
+        console.log("User is back on this tab or window");
     }
 });
 
-//  Close Violation
-// WORKING!
-window.onbeforeunload = function(event) {
-    console.log('Closed window/tab violation');
-    evidence_msg = 'CLOSED_WINDOW';
-    captureAndUpload(quiz_id, user_id, evidence_msg);
-    return "";
-};
-
+//  Navigate Away Violation
+// TO FIX DUE TO IFVISIBLE CONFLICT
+// ifvisible.on('statusChanged', function(e){
+//     console.log(e.status);
+//     if(e.status == "hidden"){
+//         console.log('Navigated away violation');
+//         evidence_msg = 'NAVIGATED_AWAY';
+//         captureAndUpload(quiz_id, user_id, evidence_msg);
+//     }
+// });

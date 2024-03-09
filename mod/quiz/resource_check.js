@@ -5,6 +5,7 @@ const check_duration = 30000; // 30 seconds = 30000 milliseconds
 checkScreenSharingSupportPass = false;
 getVideoDevicePass = false;
 getMicrophonePass = false;
+goFullscreenPass = false;
 let screenSharingActive = false;
 
 // UPDATE THIS!!!
@@ -170,6 +171,7 @@ function closeModal() {
 }
 
 // Event listener for changes in fullscreen mode (browser-specific)
+// There is an approximately 5 minute delay before the fullscreen change will get detected
 document.addEventListener('fullscreenchange', handleFullscreenChange);
 document.addEventListener('mozfullscreenchange', handleFullscreenChange);
 document.addEventListener('webkitfullscreenchange', handleFullscreenChange);

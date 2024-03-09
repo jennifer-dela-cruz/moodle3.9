@@ -49,6 +49,7 @@ async function fetchRecords(created_time_start, created_time_end) {
         // For troubleshooting purposes
         // Objects are enclosed in curly braces {}.
         // Arrays are ordered lists enclosed in square brackets [].
+        console.log("Fetching latest violation records...");
         console.log("data: ", data);
         // console.log("data > data type: ", typeof data);
         // Display all records based on quiz_id and student_id
