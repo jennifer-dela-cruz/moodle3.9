@@ -263,7 +263,7 @@ async function startCamera() {
   await init(constraints);
   console.log("startCamera function completed.");
   // ENABLE THIS LATER
-  // startRecording();
+  startRecording();
 }
 
 startCamera();
