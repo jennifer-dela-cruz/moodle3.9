@@ -59,7 +59,7 @@ if ($next) {
 if ($page == -1) {
     $nexturl = $attemptobj->summary_url();
 } else {
-    $nexturl = $attemptobj->attempt_url(null, $page, $proctor_type_page);
+    $nexturl = $attemptobj->attempt_auto_proctor_url(null, $page, $proctor_type_page);
     if ($scrollpos !== '') {
         $nexturl->param('scrollpos', $scrollpos);
     }
@@ -88,12 +88,12 @@ if ($attemptobj->is_finished()) {
 // If this page cannot be accessed, notify user and send them to the correct page.
 if (!$finishattempt && !$attemptobj->check_page_access($thispage)) {
     throw new moodle_exception('submissionoutofsequencefriendlymessage', 'question',
-            $attemptobj->attempt_url(null, $attemptobj->get_currentpage()));
+            $attemptobj->attempt_auto_proctor_url(null, $attemptobj->get_currentpage()));
 }
 // echo 'before processing the attempt';
 
 // Process the attempt, getting the new status for the attempt.
-$status = $attemptobj->process_attempt($timenow, $finishattempt, $timeup, $thispage);
+$status = $attemptobj->process_attempt_auto_proctor($timenow, $finishattempt, $timeup, $thispage);
 
 // var_dump($status);
 
