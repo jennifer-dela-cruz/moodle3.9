@@ -1,8 +1,8 @@
 var evidence_msg = 'NO_VIOLATION';
-var quiz_id = 7;
-var user_id = 2;
-// var user_id = document.getElementById('user_id').value;
-// var quiz_id = document.getElementById('quiz_id').value;
+// var quiz_id = 7;
+// var user_id = 2;
+var user_id = document.getElementById('user_id').value;
+var quiz_id = document.getElementById('quiz_id').value;
 
 
 // Disable Right Mouse Click
