@@ -119,7 +119,6 @@ $PAGE->requires->js_init_call('M.mod_quiz.init_attempt_form', null, false, quiz_
 
 // Initializa the javascript for the resource precheck and store evidence (in case of viiolation)
 $PAGE->requires->js(new moodle_url('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js'));
-// $PAGE->requires->js(new moodle_url('/mod/quiz/ifvisible.js'));
 $PAGE->requires->js(new moodle_url('/mod/quiz/screen_violation.js'));
 $PAGE->requires->js(new moodle_url('/mod/quiz/store_evidence.js'));
 $PAGE->requires->js(new moodle_url('/mod/quiz/resource_check.js'));
@@ -142,5 +141,4 @@ if ($attemptobj->is_last_page($page)) {
 }
 
 $quiz_id = $attemptobj->get_quizid();
-
 echo $output->attempt_auto_proctor_page($attemptobj, $page, $accessmanager, $messages, $slots, $id, $nextpage, $USER->id, $quiz_id);

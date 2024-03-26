@@ -1424,11 +1424,42 @@ class mod_quiz_renderer extends plugin_renderer_base {
                 border: none;
                 border-radius: 5px;
                 }
+
+                /* Styles for the floating video */
+                body {
+                    margin: 0;
+                    padding: 0;
+                }
+                .floating-container {
+                    position: fixed;
+                    bottom: 50px;
+                    right: 40px;
+                    padding: 10px;
+                    border-radius: 5px;
+                }
+
+                /* Styles for the violation alerts */
+                body {
+                    margin: 0;
+                    padding: 0;
+                    position: relative;
+                    min-height: 100vh;
+                }
+                .violation-message {
+                    position: fixed;
+                    bottom: 20px;
+                    right: 20px;
+                    background-color: #ff9999;
+                    color: #fff;
+                    padding: 10px;
+                    border-radius: 5px;
+                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+                    display: none;
+                }
         ");
 
-        // ADD HERE THE Fullscreen Modal
-        // CHECK IF THE SCREEN CONTROLS (JS) ARE WORKING
 
+        // Fullscreen Modal
         $output .= html_writer::start_tag('div', array('id' => 'myModal', 'class' => 'modal', 'style' => 'display: none'));
         $output .= html_writer::start_tag('div', array('class' => 'modal-content'));
 
@@ -1440,6 +1471,39 @@ class mod_quiz_renderer extends plugin_renderer_base {
 
         $output .= html_writer::end_tag('div');
         $output .= html_writer::end_tag('div');
+        // End of Fullscreen Modal
+
+        // Video recording
+        $output .= html_writer::start_tag('div', array('id' => 'container', 'class' => 'floating-container'));
+
+        $frame_width = 120;
+        $frame_height = 80;
+
+        $output .= html_writer::start_tag('video', array('id' => 'gum', 'width' => $frame_width, 'height' => $frame_height, 'autoplay' => 'autoplay', 'playsinline' => 'playsinline', 'muted' => 'muted', 'style' => 'border-radius: 50%; text-align: center; line-height: 50px;'));
+        $output .= html_writer::end_tag('video');
+
+        $output .= html_writer::start_tag('video', array('id' => 'recorded', 'playsinline' => 'playsinline', 'loop' => 'loop', 'style' => 'display: none'));
+        $output .= html_writer::end_tag('video');
+
+        $output .= html_writer::start_tag('div', array('style' => 'display: none'));
+        $output .= html_writer::tag('select', '', array('id' => 'codecPreferences', 'disabled' => 'disabled'));
+        $output .= html_writer::end_tag('div');
+
+        $output .= html_writer::start_tag('div', array('style' => 'display: none'));
+        $output .= html_writer::tag('input', '', array('type' => 'checkbox', 'id' => 'echoCancellation'));
+        $output .= html_writer::end_tag('div');
+
+        $output .= html_writer::start_tag('div');
+        $output .= html_writer::tag('span', '', array('id' => 'errorMsg'));
+        $output .= html_writer::end_tag('div');
+
+        $output .= html_writer::end_tag('div');
+        // End of video recording
+
+        // Violation alerts
+        $output .= html_writer::start_tag('div', array('id' => 'violation-container', 'class' => 'violation-message'));
+        $output .= html_writer::end_tag('div');
+        // End of Violation alerts
 
         // Start the form.
         $output .= html_writer::start_tag('form',
