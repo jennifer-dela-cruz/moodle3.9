@@ -119,7 +119,7 @@ $PAGE->requires->js_init_call('M.mod_quiz.init_attempt_form', null, false, quiz_
 
 // Initializa the javascript for the resource precheck and store evidence (in case of viiolation)
 $PAGE->requires->js(new moodle_url('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js'));
-$PAGE->requires->js(new moodle_url('/mod/quiz/screen_violation.js'));
+$PAGE->requires->js(new moodle_url('/mod/quiz/screen_snapshots.js'));
 $PAGE->requires->js(new moodle_url('/mod/quiz/store_evidence.js'));
 $PAGE->requires->js(new moodle_url('/mod/quiz/resource_check.js'));
 $PAGE->requires->js(new moodle_url('/mod/quiz/video_recording.js'));

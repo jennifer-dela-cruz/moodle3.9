@@ -33,6 +33,7 @@ window.onkeydown = function(key)
     }
 };
 
+// Disabled for now as this affects if there are multiple pages (when pressing next
 // //  Close Window Violation
 // window.addEventListener('beforeunload', function(event) {
 //     // Cancel the event
