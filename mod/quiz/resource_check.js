@@ -14,7 +14,9 @@ let screenSharingActive = false;
 // var user_id = 3;
 var user_id = document.getElementById('user_id').value;
 var quiz_id = document.getElementById('quiz_id').value;
+var proctor_type = document.getElementById('proctor_type').value;
 var evidence_msg = 'NO_VIOLATION';
+var bucket = 'upou-video-stream'; // default
 
 function delayFunction(callback) {
     const delay_duration = delay_duration;

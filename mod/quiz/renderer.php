@@ -1364,6 +1364,11 @@ class mod_quiz_renderer extends plugin_renderer_base {
         $output .= html_writer::empty_tag('input', array('id' => 'quiz_id', 'type' => 'hidden', 'value' => $quiz_id));
         $output .= html_writer::empty_tag('input', array('id' => 'user_id', 'type' => 'hidden', 'value' => $user_id));
 
+        // Add proctor type hidden field
+        // 1 = auto proctor
+        // 2 = snap proctor
+        $output .= html_writer::empty_tag('input', array('id' => 'proctor_type', 'type' => 'hidden', 'value' => '1'));
+
         // Add a hidden field with questionids. Do this at the end of the form, so
         // if you navigate before the form has finished loading, it does not wipe all
         // the student's answers.
@@ -1535,9 +1540,15 @@ class mod_quiz_renderer extends plugin_renderer_base {
                 'value' => sesskey()));
         $output .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'scrollpos',
                 'value' => '', 'id' => 'scrollpos'));
+
         // Add quiz id and user id hidden fields for image name
         $output .= html_writer::empty_tag('input', array('id' => 'quiz_id', 'type' => 'hidden', 'value' => $quiz_id));
         $output .= html_writer::empty_tag('input', array('id' => 'user_id', 'type' => 'hidden', 'value' => $user_id));
+
+        // Add proctor type hidden field
+        // 1 = auto proctor
+        // 2 = snap proctor
+        $output .= html_writer::empty_tag('input', array('id' => 'proctor_type', 'type' => 'hidden', 'value' => '2'));
 
         // Add a hidden field with questionids. Do this at the end of the form, so
         // if you navigate before the form has finished loading, it does not wipe all

@@ -95,6 +95,7 @@ function handleDataAvailable(event) {
     // Stop and start the video to get a playable video
     stopRecording();
     startRecording();
+
   }
 
 }
@@ -107,12 +108,19 @@ function uploadRecording(blob){
   const userFile = blob;
   quiz_id = document.getElementById('quiz_id').value;
   user_id = document.getElementById('user_id').value;
+  proctor_type = document.getElementById('proctor_type').value;
   // var quiz_id = 2;
   // var user_id = 3;
   const custFileName = quiz_id + '_' + user_id + '_' + Date.now() + '.webm';
 
   console.log('custFileName: ' + custFileName);
-  const bucket = 'upou-video-stream';
+
+  if (proctor_type == '1') {
+    bucket = 'upou-video-stream';
+  } else {
+    bucket = 'upou-video-snapshot';
+  }
+
   // S3 Video Stream and Photo Upload v3
   const url = 'https://hdy3rohah6.execute-api.us-east-1.amazonaws.com/v1/' + bucket + '/' + custFileName;
 
@@ -192,10 +200,13 @@ function startRecording() {
   // The data is provided in a Blob object that contains the data.
   mediaRecorder.ondataavailable = handleDataAvailable;
 
+  // This will provide recording every 10 seconds
+  var duration = 10000; // default
+
   // https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder/start
   // The method start() begins recording media into one or more Blob objects
   // This will provide recording every 5 seconds
-  mediaRecorder.start(5000);
+  mediaRecorder.start(duration);
   console.log('MediaRecorder started', mediaRecorder);
 
   console.log("startRecording function completed.");
