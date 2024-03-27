@@ -146,9 +146,17 @@ if (file_exists($modmoodleform)) {
     print_error('noformdesc');
 }
 
-$mformclassname = 'mod_'.$module->name.'_mod_form';
+$mformclassname = 'mod_'.$module->name.'_mod_form'; // mod_quiz_mod_form
+
 $mform = new $mformclassname($data, $cw->section, $cm, $course);
 $mform->set_data($data);
+// echo '<pre>';
+// var_dump($data);
+// echo '</pre>';
+
+// echo '<pre>';
+// var_dump($mform);
+// echo '</pre>';
 
 if ($mform->is_cancelled()) {
     if ($return && !empty($cm->id)) {
@@ -210,6 +218,10 @@ if ($mform->is_cancelled()) {
     }
 
     $mform->display();
+
+    // echo ('$mformclassname:' + $mformclassname);
+
+    echo "ITS HERE?";
 
     echo $OUTPUT->footer();
 }

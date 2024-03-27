@@ -1031,3 +1031,7 @@ $string['finalinstructions'] = 'Lorem ipsum dolor sit amet, consectetur adipisci
 $string['proceedattemptquiz_btn'] = 'Proceed to attempt quiz';
 $string['clicktofullscreen'] = 'Click the button below to enter fullscreen mode.';
 $string['fullscreen'] = 'Fullscreen';
+$string['proctoring_options'] = 'Proctoring options';
+$string['proctoring_options_noproctor'] = 'Disable all proctoring features';
+$string['proctoring_options_autoproctor'] = 'Automated proctoring - video and screenshare';
+$string['proctoring_options_snapproctor'] = 'Random snapshot - video and screenshare';

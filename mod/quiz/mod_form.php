@@ -63,6 +63,7 @@ class mod_quiz_mod_form extends moodleform_mod {
         $quizconfig = get_config('quiz');
         $mform = $this->_form;
 
+        // GENERAL
         // -------------------------------------------------------------------------------
         $mform->addElement('header', 'general', get_string('general', 'form'));
 
@@ -79,6 +80,7 @@ class mod_quiz_mod_form extends moodleform_mod {
         // Introduction.
         $this->standard_intro_elements(get_string('introduction', 'quiz'));
 
+        // TIMING
         // -------------------------------------------------------------------------------
         $mform->addElement('header', 'timing', get_string('timing', 'quiz'));
 
@@ -109,6 +111,7 @@ class mod_quiz_mod_form extends moodleform_mod {
         $mform->addHelpButton('graceperiod', 'graceperiod', 'quiz');
         $mform->hideIf('graceperiod', 'overduehandling', 'neq', 'graceperiod');
 
+        // GRADE
         // -------------------------------------------------------------------------------
         // Grade settings.
         $this->standard_grading_coursemodule_elements();
@@ -138,6 +141,7 @@ class mod_quiz_mod_form extends moodleform_mod {
             $mform->hideIf('grademethod', 'attempts', 'eq', 1);
         }
 
+        // LAYOUT
         // -------------------------------------------------------------------------------
         $mform->addElement('header', 'layouthdr', get_string('layout', 'quiz'));
 
@@ -161,6 +165,7 @@ class mod_quiz_mod_form extends moodleform_mod {
                 quiz_get_navigation_options());
         $mform->addHelpButton('navmethod', 'navmethod', 'quiz');
 
+        // QUESTION BEHAVIOUR
         // -------------------------------------------------------------------------------
         $mform->addElement('header', 'interactionhdr', get_string('questionbehaviour', 'quiz'));
 
@@ -197,6 +202,7 @@ class mod_quiz_mod_form extends moodleform_mod {
             $mform->hideIf('attemptonlast', 'attempts', 'eq', 1);
         }
 
+        // REVIEW OPTIONS
         // -------------------------------------------------------------------------------
         $mform->addElement('header', 'reviewoptionshdr',
                 get_string('reviewoptionsheading', 'quiz'));
@@ -227,6 +233,7 @@ class mod_quiz_mod_form extends moodleform_mod {
             $mform->disabledIf($field . 'closed', 'timeclose[enabled]');
         }
 
+        // APPEARANCE
         // -------------------------------------------------------------------------------
         $mform->addElement('header', 'display', get_string('appearance'));
 
@@ -257,6 +264,15 @@ class mod_quiz_mod_form extends moodleform_mod {
         $mform->addElement('selectyesno', 'showblocks', get_string('showblocks', 'quiz'));
         $mform->addHelpButton('showblocks', 'showblocks', 'quiz');
 
+        // ONLINE PROCTORING
+        // -------------------------------------------------------------------------------
+        $mform->addElement('header', 'proctoring', get_string('proctoring_header'));
+        $mform->addElement('select', 'proctoringoptions',
+                get_string('proctoring_options', 'quiz'), quiz_get_proctoring_options());
+
+        // SAFE EXAM BROWSER (MISSING)
+
+        // EXTRA RESTRICTIONS ON ATTEMPTS
         // -------------------------------------------------------------------------------
         $mform->addElement('header', 'security', get_string('extraattemptrestrictions', 'quiz'));
 
@@ -294,6 +310,7 @@ class mod_quiz_mod_form extends moodleform_mod {
         // Any other rule plugins.
         quiz_access_manager::add_settings_form_fields($this, $mform);
 
+        // OVERALL FEEDBACK
         // -------------------------------------------------------------------------------
         $mform->addElement('header', 'overallfeedbackhdr', get_string('overallfeedback', 'quiz'));
         $mform->addHelpButton('overallfeedbackhdr', 'overallfeedback', 'quiz');
@@ -352,6 +369,7 @@ class mod_quiz_mod_form extends moodleform_mod {
             $mform->disabledIf('feedbacktext[' . ($i + 1) . ']', 'grade', 'eq', 0);
         }
 
+        // COMMON MODULE SETTINGS
         // -------------------------------------------------------------------------------
         $this->standard_coursemodule_elements();
 

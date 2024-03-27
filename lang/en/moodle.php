@@ -2305,3 +2305,6 @@ $string['sitemessage'] = 'Message users';
 // Deprecated since Moodle 3.9.
 $string['participantscount'] = 'Number of participants: {$a}';
 $string['userfilterplaceholder'] = 'Search keyword or select filter';
+
+// Proctor UPOU
+$string['proctoring_header'] = 'UPOU Proctor';

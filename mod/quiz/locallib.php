@@ -1197,6 +1197,17 @@ function quiz_get_overdue_handling_options() {
 }
 
 /**
+ * @return array string => lang string the options for proctoring options
+ */
+function quiz_get_proctoring_options() {
+    return array(
+        'noproctor'  => get_string('proctoring_options_noproctor', 'quiz'),
+        'autoproctor' => get_string('proctoring_options_autoproctor', 'quiz'),
+        'snapproctor' => get_string('proctoring_options_snapproctor', 'quiz'),
+    );
+}
+
+/**
  * Get the choices for what size user picture to show.
  * @return array string => lang string the options for whether to display the user's picture.
  */
