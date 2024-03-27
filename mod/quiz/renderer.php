@@ -1262,6 +1262,7 @@ class mod_quiz_renderer extends plugin_renderer_base {
                     right: 40px;
                     padding: 10px;
                     border-radius: 5px;
+                    z-index: 9999;
                 }
 
                 /* Styles for the violation alerts */
@@ -1281,6 +1282,7 @@ class mod_quiz_renderer extends plugin_renderer_base {
                     border-radius: 5px;
                     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
                     display: none;
+                    z-index: 9999;
                 }
         ");
 
