@@ -60,16 +60,22 @@ async function fetchRecords(created_time_start, created_time_end) {
         container = document.getElementById('violation-container');
 
         for (let j = 0; j < data.body.length; j++) {
+
+            const record = data.body[j][5];
+            let violationMsg = record.replace(/_/g, ' ');
+            violationMsg = violationMsg.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
+
             // Show the violation message in the logs
             console.log("Record", j + ": " + data.body[j][5]);
-            const record = data.body[j][5];
+            console.log("Record", j + ": " + violationMsg);
 
             // Show the div element
             container.style.display = 'block';
 
             const recordDiv = document.createElement('div');
             recordDiv.id = "records-container-child";
-            recordDiv.innerHTML = record;
+            // recordDiv.innerHTML = record;
+            recordDiv.innerHTML = violationMsg;
 
             container.appendChild(recordDiv);
 
