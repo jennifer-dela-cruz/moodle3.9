@@ -150,13 +150,6 @@ $mformclassname = 'mod_'.$module->name.'_mod_form'; // mod_quiz_mod_form
 
 $mform = new $mformclassname($data, $cw->section, $cm, $course);
 $mform->set_data($data);
-// echo '<pre>';
-// var_dump($data);
-// echo '</pre>';
-
-// echo '<pre>';
-// var_dump($mform);
-// echo '</pre>';
 
 if ($mform->is_cancelled()) {
     if ($return && !empty($cm->id)) {
@@ -169,7 +162,10 @@ if ($mform->is_cancelled()) {
     } else {
         redirect(course_get_url($course, $cw->section, array('sr' => $sectionreturn)));
     }
+
+// Form is submitted
 } else if ($fromform = $mform->get_data()) {
+
     if (!empty($fromform->update)) {
         list($cm, $fromform) = update_moduleinfo($cm, $fromform, $course, $mform);
     } else if (!empty($fromform->add)) {
@@ -177,6 +173,38 @@ if ($mform->is_cancelled()) {
     } else {
         print_error('invaliddata');
     }
+
+    // Add/update the proctor config for the quiz
+    $quiz_id = $fromform->instance;
+    $proctor_upou_quiz_config_id = $DB->get_record('proctor_upou_quiz_config', array('quiz_id' => $quiz_id));
+
+    // Set date time
+    date_default_timezone_set('Asia/Singapore');
+    $currentDateTime = date('Y-m-d H:i:s');
+
+    // update record if exists
+    if ($proctor_upou_quiz_config_id) {
+
+        $proctor_upou_quiz_config = [
+            'quiz_id' => (int)$quiz_id,
+            'proctoring_type' => (int)$fromform->proctoringoptions,
+            'id' => (int)$proctor_upou_quiz_config_id,
+            'modified_datetime' => $currentDateTime,
+        ];
+
+        $DB->update_record("proctor_upou_quiz_config", $proctor_upou_quiz_config);
+
+    // add record if new
+    } else {
+        $proctor_upou_quiz_config = [
+            'quiz_id' => (int)$quiz_id,
+            'proctoring_type' => (int)$fromform->proctoringoptions,
+            'created_datetime' => $currentDateTime,
+        ];
+
+        $DB->insert_record("proctor_upou_quiz_config", $proctor_upou_quiz_config);
+    }
+    // End of Add/update the proctor config for the quiz
 
     if (isset($fromform->submitbutton)) {
         $url = new moodle_url("/mod/$module->name/view.php", array('id' => $fromform->coursemodule, 'forceview' => 1));
@@ -190,6 +218,8 @@ if ($mform->is_cancelled()) {
     }
     exit;
 
+// Form not yet submitted
+// UPDATE THIS SO THAT IT GETS THE EXISTING VALUE FOR THE QUIZ CONFIG
 } else {
 
     $streditinga = get_string('editinga', 'moodle', $fullmodulename);
@@ -218,10 +248,6 @@ if ($mform->is_cancelled()) {
     }
 
     $mform->display();
-
-    // echo ('$mformclassname:' + $mformclassname);
-
-    echo "ITS HERE?";
 
     echo $OUTPUT->footer();
 }

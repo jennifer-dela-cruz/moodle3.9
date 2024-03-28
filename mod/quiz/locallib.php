@@ -1201,9 +1201,9 @@ function quiz_get_overdue_handling_options() {
  */
 function quiz_get_proctoring_options() {
     return array(
-        'noproctor'  => get_string('proctoring_options_noproctor', 'quiz'),
-        'autoproctor' => get_string('proctoring_options_autoproctor', 'quiz'),
-        'snapproctor' => get_string('proctoring_options_snapproctor', 'quiz'),
+        '0'  => get_string('proctoring_options_noproctor', 'quiz'),
+        '1' => get_string('proctoring_options_autoproctor', 'quiz'),
+        '2' => get_string('proctoring_options_snapproctor', 'quiz'),
     );
 }
 
