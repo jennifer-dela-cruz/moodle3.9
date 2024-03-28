@@ -1009,25 +1009,121 @@ $string['reviewofpreview'] = 'Review of preview';
 // Proctor UPOU
 $string['precheckinstructions_header'] = 'Precheck Instructions';
 $string['precheckinstructions'] = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Mauris augue neque gravida in fermentum. Nulla facilisi nullam vehicula ipsum a arcu cursus vitae. Cursus in hac habitasse platea dictumst. Nisl vel pretium lectus quam id leo in vitae turpis. Nullam eget felis eget nunc. Diam volutpat commodo sed egestas egestas fringilla phasellus faucibus. Ullamcorper velit sed ullamcorper morbi tincidunt. Quis viverra nibh cras pulvinar mattis nunc. Ut etiam sit amet nisl purus in. Pellentesque nec nam aliquam sem et tortor consequat.';
-$string['termsandconditions_header'] = 'Terms and Conditions';
-$string['termsandconditions'] = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Mauris augue neque gravida in fermentum. Nulla facilisi nullam vehicula ipsum a arcu cursus vitae. Cursus in hac habitasse platea dictumst. Nisl vel pretium lectus quam id leo in vitae turpis. Nullam eget felis eget nunc. Diam volutpat commodo sed egestas egestas fringilla phasellus faucibus. Ullamcorper velit sed ullamcorper morbi tincidunt. Quis viverra nibh cras pulvinar mattis nunc. Ut etiam sit amet nisl purus in. Pellentesque nec nam aliquam sem et tortor consequat.';
+$string['termsandconditions_header'] = '<h3>Terms and Conditions</h3>';
+$string['termsandconditions'] = '
+<b>Technical Requirements:</b>
+<ul>
+<li>You must have a reliable internet connection throughout the exam.</li>
+<li>Ensure your computer meets the minimum hardware and software requirements specified by the proctoring service.</li>
+<li>Use a compatible web browser (e.g., Google Chrome) for the exam.</li>
+</ul>
+<br>
+<b>Environment:</b>
+<ul>
+<li>Choose a quiet, well-lit, and private location for taking the exam.</li>
+<li>Remove any external monitors, devices, or materials not permitted for the exam.</li>
+<li>Ensure the exam area is free from distractions and interruptions.</li>
+</ul>
+<br>
+<b>Identification:</b>
+<ul>
+<li>Have a valid government-issued ID ready for identity verification.</li>
+<li>Follow the instructions for showing your ID and capturing your face for verification purposes.</li>
+</ul>
+<br>
+<b>Exam Rules:</b>
+<ul>
+<li>Follow the exam rules and guidelines provided by your institution or exam administrator.</li>
+<li>Do not use any unauthorized materials or devices during the exam.</li>
+<li>Do not communicate with anyone during the exam.</li>
+</ul>
+<br>
+<b>Proctoring Process:</b>
+<ul>
+<li>Consent to being monitored and recorded throughout the exam.</li>
+<li>Follow instructions at all times.</li>
+</ul>
+<br>
+<b>Recording and Data Privacy:</b>
+<ul>
+<li>Understand that your exam session may be recorded and monitored for exam integrity purposes.</li>
+<li>Your personal data will be handled in accordance with applicable privacy laws and the proctoring service\'s privacy policy.</li>
+</ul>
+<br>
+<b>Consequences of Violations:</b>
+<ul>
+<li>Any violation of the exam rules may result in disciplinary action, including but not limited to disqualification from the exam and academic penalties.</li>
+</ul>
+<br>
+<b>Technical Issues:</b>
+<ul>
+<li>In case of technical difficulties during the exam, immediately contact the proctor for assistance.</li>
+</ul>
+<br>
+<b>Feedback and Disputes:</b>
+<ul>
+<li>If you have any feedback or disputes regarding the proctoring process, contact your institution or exam administrator for resolution.</li>
+</ul>
+<br>
+
+By clicking accept, you acknowledge that you have read, understood, and agree to abide by these terms and conditions.
+';
 $string['accepttermsandconditions'] = 'Accept';
 $string['jsdisabled'] = '1. Javascript check: JavaScript is not enabled! Please enable JavaScript in your browser settings.';
 $string['gofullscreen'] = '6. Go fullscreen';
-$string['systemprecheck_header'] = 'System Precheck';
-$string['systemprecheck'] = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Mauris augue neque gravida in fermentum. Nulla facilisi nullam vehicula ipsum a arcu cursus vitae. Cursus in hac habitasse platea dictumst. Nisl vel pretium lectus quam id leo in vitae turpis. Nullam eget felis eget nunc. Diam volutpat commodo sed egestas egestas fringilla phasellus faucibus. Ullamcorper velit sed ullamcorper morbi tincidunt. Quis viverra nibh cras pulvinar mattis nunc. Ut etiam sit amet nisl purus in. Pellentesque nec nam aliquam sem et tortor consequat.';
+$string['systemprecheck_header'] = '<h3>System Precheck</h3>';
+$string['systemprecheck'] = 'Before you start your exam, we\'ll perform a quick system check to ensure everything is set up correctly for a smooth proctoring experience:
+    <br><br>
+    <b>Check if JavaScript is enabled:</b> This ensures the proctoring platform functions correctly and helps maintain exam integrity.
+    <br><br>
+    <b>Check browser if Chrome:</b> For the best experience, we recommend using Google Chrome for your exam.
+    <br><br>
+    <b>Verify screen sharing:</b> This allows us to monitor your screen to prevent unauthorized activities during the exam.
+    <br><br>
+    <b>Verify webcam/camera:</b> Your webcam will be used to monitor you during the exam to ensure compliance with exam rules.
+    <br><br>
+    <b>Verify microphone:</b> The microphone will be used to record audio during the exam for review purposes.
+    <br><br>
+    <b>Check fullscreen mode:</b> Ensuring your browser window is in fullscreen mode helps prevent distractions and ensures a focused exam environment.
+    <br><br>
+    These checks are standard procedure to maintain the integrity of the exam process. Thank you for your cooperation.
+    <br><br>
+    ------------------------------------------------------------------------------
+    <br>
+    ';
 $string['identityfaceprechecks_btn'] = 'Next: Identity (Face) Prechecks';
-$string['identityfaceprecheck_header'] = 'Identity (Face) Precheck';
-$string['identityfaceprecheck'] = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Mauris augue neque gravida in fermentum. Nulla facilisi nullam vehicula ipsum a arcu cursus vitae. Cursus in hac habitasse platea dictumst. Nisl vel pretium lectus quam id leo in vitae turpis. Nullam eget felis eget nunc. Diam volutpat commodo sed egestas egestas fringilla phasellus faucibus. Ullamcorper velit sed ullamcorper morbi tincidunt. Quis viverra nibh cras pulvinar mattis nunc. Ut etiam sit amet nisl purus in. Pellentesque nec nam aliquam sem et tortor consequat.';
+$string['identityfaceprecheck_header'] = '<h3>Identity (Face) Precheck</h3>';
+$string['identityfaceprecheck'] = '
+Before proceeding, we\'ll need to capture your face through your device\'s camera for identity recording purposes:
+<br><br>
+Your cooperation in this process is greatly appreciated as it helps us maintain the security and integrity of our identity verification process. Thank you.
+';
 $string['identityidprechecks_btn'] = 'Next: Identity (ID) Prechecks';
-$string['identityidprecheck_header'] = 'Identity (ID) Precheck';
-$string['identityidprecheck'] = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Mauris augue neque gravida in fermentum. Nulla facilisi nullam vehicula ipsum a arcu cursus vitae. Cursus in hac habitasse platea dictumst. Nisl vel pretium lectus quam id leo in vitae turpis. Nullam eget felis eget nunc. Diam volutpat commodo sed egestas egestas fringilla phasellus faucibus. Ullamcorper velit sed ullamcorper morbi tincidunt. Quis viverra nibh cras pulvinar mattis nunc. Ut etiam sit amet nisl purus in. Pellentesque nec nam aliquam sem et tortor consequat.';
+$string['identityidprecheck_header'] = '<h3>Identity (ID) Precheck</h3>';
+$string['identityidprecheck'] = '
+Before proceeding, we\'ll need to capture an image of your ID for verification purposes:
+<br><br>
+Your cooperation in this process is greatly appreciated as it helps us maintain the security and integrity of our verification process. Thank you.
+';
 $string['capture_btn'] = 'Capture';
 $string['retry_btn'] = 'Retry';
 $string['save_btn'] = 'Save';
-$string['finalinstructions_header'] = 'Final Instructions';
+$string['finalinstructions_header'] = '<h3>Final Instructions</h3>';
 $string['finalinstructions_btn'] = 'Next: Final Instructions';
-$string['finalinstructions'] = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Mauris augue neque gravida in fermentum. Nulla facilisi nullam vehicula ipsum a arcu cursus vitae. Cursus in hac habitasse platea dictumst. Nisl vel pretium lectus quam id leo in vitae turpis. Nullam eget felis eget nunc. Diam volutpat commodo sed egestas egestas fringilla phasellus faucibus. Ullamcorper velit sed ullamcorper morbi tincidunt. Quis viverra nibh cras pulvinar mattis nunc. Ut etiam sit amet nisl purus in. Pellentesque nec nam aliquam sem et tortor consequat.';
+$string['finalinstructions'] = '
+Before you start the exam, please:
+<ul>
+    <li>Ensure your computer, webcam, and microphone are working.</li>
+    <li>Choose a quiet, well-lit, and private exam area.</li>
+    <li>Have a valid ID ready for verification.</li>
+    <li>Follow all exam rules and proctor instructions.</li>
+    <li>Understand your session may be recorded.</li>
+    <li>Click \'Proceed to attempt quiz\' to begin.</li>
+    <li>Contact the proctor for technical issues.</li>
+    <li>Remember, your personal data will be handled responsibly.</li>
+    <li>If you have questions, ask the proctor. Good luck!</li>
+</ul>
+';
 $string['proceedattemptquiz_btn'] = 'Proceed to attempt quiz';
 $string['clicktofullscreen'] = 'Click the button below to enter fullscreen mode.';
 $string['fullscreen'] = 'Fullscreen';

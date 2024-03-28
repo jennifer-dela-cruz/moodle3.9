@@ -631,8 +631,8 @@ class mod_quiz_renderer extends plugin_renderer_base {
 
         $output .= $test;
         // ADD HERE THE QUIZ AND PRECHECK INSTRUCTIONS
-        $output .= html_writer::tag('p', get_string('precheckinstructions_header', 'quiz'));
-        $output .= html_writer::tag('p', get_string('precheckinstructions', 'quiz'));
+        // $output .= html_writer::tag('p', get_string('precheckinstructions_header', 'quiz'));
+        // $output .= html_writer::tag('p', get_string('precheckinstructions', 'quiz'));
         $output .= html_writer::tag('p', get_string('termsandconditions_header', 'quiz'));
         $output .= html_writer::tag('p', get_string('termsandconditions', 'quiz'));
 
