@@ -90,6 +90,7 @@ if (!empty($add)) {
     }
     $navbaraddition = $pageheading;
 
+// existing quiz settings
 } else if (!empty($update)) {
 
     $url->param('update', $update);
@@ -174,7 +175,8 @@ if ($mform->is_cancelled()) {
         print_error('invaliddata');
     }
 
-    // Add/update the proctor config for the quiz
+    /* ****************************************** */
+    /* Add/update the proctor config for the quiz */
     $quiz_id = $fromform->instance;
     $proctor_upou_quiz_config_id = $DB->get_record('proctor_upou_quiz_config', array('quiz_id' => $quiz_id));
 
@@ -204,7 +206,8 @@ if ($mform->is_cancelled()) {
 
         $DB->insert_record("proctor_upou_quiz_config", $proctor_upou_quiz_config);
     }
-    // End of Add/update the proctor config for the quiz
+    /* End of Add/update the proctor config for the quiz */
+    /* ************************************************* */
 
     if (isset($fromform->submitbutton)) {
         $url = new moodle_url("/mod/$module->name/view.php", array('id' => $fromform->coursemodule, 'forceview' => 1));

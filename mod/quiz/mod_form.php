@@ -61,6 +61,7 @@ class mod_quiz_mod_form extends moodleform_mod {
     protected function definition() {
         global $COURSE, $CFG, $DB, $PAGE;
         $quizconfig = get_config('quiz');
+
         $mform = $this->_form;
 
         // GENERAL
@@ -266,9 +267,13 @@ class mod_quiz_mod_form extends moodleform_mod {
 
         // ONLINE PROCTORING
         // -------------------------------------------------------------------------------
+        $quiz_id = $this->current->id;
+        $proctor_upou_quiz_config_id = $DB->get_record('proctor_upou_quiz_config', array('quiz_id' => $quiz_id));
+
         $mform->addElement('header', 'proctoring', get_string('proctoring_header'));
         $mform->addElement('select', 'proctoringoptions',
                 get_string('proctoring_options', 'quiz'), quiz_get_proctoring_options());
+        $mform->setDefault('proctoringoptions', $proctor_upou_quiz_config_id->proctoring_type);
 
         // SAFE EXAM BROWSER (MISSING)
 
