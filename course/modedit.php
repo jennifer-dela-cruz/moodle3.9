@@ -188,7 +188,7 @@ if ($mform->is_cancelled()) {
         $proctor_upou_quiz_config = [
             'quiz_id' => (int)$quiz_id,
             'proctoring_type' => (int)$fromform->proctoringoptions,
-            'id' => (int)$proctor_upou_quiz_config_id,
+            'id' => (int)$proctor_upou_quiz_config_id->id,
             'modified_datetime' => $currentDateTime,
         ];
 
