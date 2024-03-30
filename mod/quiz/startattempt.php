@@ -119,7 +119,7 @@ if ($currentattemptid) {
 
             // Applicable to both Automated Proctoring and Snapshot Proctoring
             // If quiz has proctoring configured
-            if ($quiz_config) {
+            if ($quiz_config && $quiz_config->proctoring_type > 0) {
 
                 $proctor_verify_config = $DB->get_record('proctor_upou_quiz_students', array('quiz_id' => $quiz_id, 'user_id' => $USER->id));
 
@@ -161,7 +161,7 @@ if ($quizobj) {
 
     // Applicable to both Automated Proctoring and Snapshot Proctoring
     // If quiz has proctoring configured
-    if ($quiz_config) {
+    if ($quiz_config && $quiz_config->proctoring_type > 0) {
         $proctor_verify_config = $DB->get_record('proctor_upou_quiz_students', array('quiz_id' => $quiz_id, 'user_id' => $USER->id));
 
         // If quiz has proctoring configured, but verify_face_status and verify_id_status are with value of 1
