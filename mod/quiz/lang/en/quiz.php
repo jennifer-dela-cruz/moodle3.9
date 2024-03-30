@@ -1086,7 +1086,7 @@ $string['systemprecheck'] = 'Before you start your exam, we\'ll perform a quick 
     <br><br>
     <b>Check fullscreen mode:</b> Ensuring your browser window is in fullscreen mode helps prevent distractions and ensures a focused exam environment.
     <br><br>
-    These checks are standard procedure to maintain the integrity of the exam process. Thank you for your cooperation.
+    These checks are standard procedure to maintain the integrity of the exam process.
     <br><br>
     ------------------------------------------------------------------------------
     <br>
@@ -1096,14 +1096,14 @@ $string['identityfaceprecheck_header'] = '<h3>Identity (Face) Precheck</h3>';
 $string['identityfaceprecheck'] = '
 Before proceeding, we\'ll need to capture your face through your device\'s camera for identity recording purposes:
 <br><br>
-Your cooperation in this process is greatly appreciated as it helps us maintain the security and integrity of our identity verification process. Thank you.
+Your cooperation in this process is greatly appreciated as it helps us maintain the security and integrity of our identity verification process.
 ';
 $string['identityidprechecks_btn'] = 'Next: Identity (ID) Prechecks';
 $string['identityidprecheck_header'] = '<h3>Identity (ID) Precheck</h3>';
 $string['identityidprecheck'] = '
 Before proceeding, we\'ll need to capture an image of your ID for verification purposes:
 <br><br>
-Your cooperation in this process is greatly appreciated as it helps us maintain the security and integrity of our verification process. Thank you.
+Your cooperation in this process is greatly appreciated as it helps us maintain the security and integrity of our verification process.
 ';
 $string['capture_btn'] = 'Capture';
 $string['retry_btn'] = 'Retry';
@@ -1121,7 +1121,7 @@ Before you start the exam, please:
     <li>Click \'Proceed to attempt quiz\' to begin.</li>
     <li>Contact the proctor for technical issues.</li>
     <li>Remember, your personal data will be handled responsibly.</li>
-    <li>If you have questions, ask the proctor. Good luck!</li>
+    <li>If you have questions, ask the proctor. Do your best!</li>
 </ul>
 ';
 $string['proceedattemptquiz_btn'] = 'Proceed to attempt quiz';
