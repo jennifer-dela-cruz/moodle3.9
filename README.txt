@@ -26,3 +26,30 @@ Moodle is written in PHP and JavaScript and uses an SQL database for storing
 the data.
 
 See <https://docs.moodle.org> for details of Moodle's many features.
+
+
+1. To clone this repository, follow the instructions below.
+
+For Windows:
+
+Open Git Bash. If you don't have Git Bash installed, you can download it from the Git website.
+Navigate to the directory where you want to clone the repository. You can use the cd command to change directories. For example, to clone the repository to your desktop, you would use cd Desktop.
+
+Use the following command to clone the repository:
+git clone https://github.com/jennifer-dela-cruz/moodle3.9
+Press Enter. Git will clone the repository to your local machine.
+
+
+For Mac:
+
+Open Terminal. You can find Terminal in the Applications > Utilities folder.
+Navigate to the directory where you want to clone the repository. You can use the cd command to change directories. For example, to clone the repository to your desktop, you would use cd Desktop.
+
+Use the following command to clone the repository:
+git clone https://github.com/jennifer-dela-cruz/moodle3.9
+Press Enter. Git will clone the repository to your local machine.
+After cloning the repository, you can navigate to the moodle3.9 directory to access the repository's files.
+
+2. Update the config.php as needed
+
+3. The quiz module files are found in mod/quiz
