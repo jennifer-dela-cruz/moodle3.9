@@ -150,7 +150,7 @@ if ($currentattemptid) {
     }
 }
 
-//IF NO ATTEMPTS YET
+// IF NO ATTEMPTS YET
 // The proctoring logic is the same regardless if has attempts or not
 $attempt = quiz_prepare_and_start_new_attempt($quizobj, $attemptnumber, $lastattempt);
 
@@ -171,20 +171,20 @@ if ($quizobj) {
             // 1 - proctor_video_screenshare >> attempt_auto_proctor.php
             // 2 - snapshot_video_screenshare >> attempt_snap_proctor.php
             if ($quiz_config->proctoring_type == 1) {
-                redirect($quizobj->attempt_auto_proctor_url($currentattemptid, $page));
+                redirect($quizobj->attempt_auto_proctor_url($attempt->id, $page));
             } else {
-                redirect($quizobj->attempt_snap_proctor_url($currentattemptid, $page));
+                redirect($quizobj->attempt_snap_proctor_url($attempt->id, $page));
             }
 
         // If quiz has proctoring configured, but verify_face_status and verify_id_status are with value of 0
         // Redirect to the quiz instructions page
         } else {
-            redirect($quizobj->quiz_instructions_url($currentattemptid, $page));
+            redirect($quizobj->quiz_instructions_url($attempt->id, $page));
         }
 
     } else {
         // If quiz has NO proctoring configured
         // Redirect to the attempt page.
-        redirect($quizobj->attempt_url($currentattemptid, $page));
+        redirect($quizobj->attempt_url($attempt->id, $page));
     }
 }
