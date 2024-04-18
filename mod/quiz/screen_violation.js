@@ -5,6 +5,11 @@ var user_id = document.getElementById('user_id').value;
 var quiz_id = document.getElementById('quiz_id').value;
 var proctor_type = document.getElementById('proctor_type').value;
 
+// For navigating away finish_btn
+var next_page = document.getElementById('nextpage').value;
+var is_finish = document.getElementById('is_finish').value;
+var previous_btn = document.getElementById('previous');
+var next_btn = document.getElementById('next');
 
 // Disable Right Mouse Click
 // WORKING!
@@ -33,13 +38,32 @@ window.onkeydown = function(key)
     }
 };
 
-// Disabled for now as this affects if there are multiple pages (when pressing next
+
+// // Add a click event listener to the submit button
+// next_btn.addEventListener('click', () => {
+//     is_finish.value = '1';
+//     // Your code to run when the button is clicked
+//     console.log('Next button clicked!');
+// });
+
+// previous_btn.addEventListener('click', () => {
+//     is_finish.value = '0';
+//     // Your code to run when the button is clicked
+//     console.log('Previous button clicked!');
+// });
+
+// // Disabled for now as this affects if there are multiple pages (when pressing next
 // //  Close Window Violation
 // window.addEventListener('beforeunload', function(event) {
-//     // Cancel the event
-//     event.preventDefault();
-//     evidence_msg = 'CLOSED_WINDOW';
-//     captureAndUpload(quiz_id, user_id, evidence_msg);
+
+//     // if next page = -1 (OK) and if NOT submit button (name=next, id=next) then
+//     if (next_page == -1 && is_finish == 1) {
+//         // Cancel the event
+//         event.preventDefault();
+//         evidence_msg = 'CLOSED_WINDOW';
+//         captureAndUpload(quiz_id, user_id, evidence_msg);
+//     }
+
 //     // Chrome requires returnValue to be set
 //     event.returnValue = '';
 // });

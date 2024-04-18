@@ -1354,7 +1354,7 @@ class mod_quiz_renderer extends plugin_renderer_base {
                 'value' => $attemptobj->get_attemptid()));
         $output .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'thispage',
                 'value' => $page, 'id' => 'followingpage'));
-        $output .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'nextpage',
+        $output .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'nextpage', 'id' => 'nextpage',
                 'value' => $nextpage));
         $output .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'timeup',
                 'value' => '0', 'id' => 'timeup'));
@@ -1370,6 +1370,9 @@ class mod_quiz_renderer extends plugin_renderer_base {
         // 1 = auto proctor
         // 2 = snap proctor
         $output .= html_writer::empty_tag('input', array('id' => 'proctor_type', 'type' => 'hidden', 'value' => '1'));
+
+        // Add detecting submit button (finish) hidden field
+        $output .= html_writer::empty_tag('input', array('id' => 'is_finish', 'type' => 'hidden', 'value' => '0'));
 
         // Add a hidden field with questionids. Do this at the end of the form, so
         // if you navigate before the form has finished loading, it does not wipe all
@@ -1581,7 +1584,7 @@ class mod_quiz_renderer extends plugin_renderer_base {
 
         $output .= html_writer::start_tag('div', array('class' => 'submitbtns'));
         if ($page > 0 && $navmethod == 'free') {
-            $output .= html_writer::empty_tag('input', array('type' => 'submit', 'name' => 'previous',
+            $output .= html_writer::empty_tag('input', array('type' => 'submit', 'name' => 'previous', 'id' => 'previous',
                     'value' => get_string('navigateprevious', 'quiz'), 'class' => 'mod_quiz-prev-nav btn btn-secondary'));
         }
         if ($lastpage) {
@@ -1589,7 +1592,7 @@ class mod_quiz_renderer extends plugin_renderer_base {
         } else {
             $nextlabel = get_string('navigatenext', 'quiz');
         }
-        $output .= html_writer::empty_tag('input', array('type' => 'submit', 'name' => 'next',
+        $output .= html_writer::empty_tag('input', array('type' => 'submit', 'name' => 'next', 'id' => 'next',
                 'value' => $nextlabel, 'class' => 'mod_quiz-next-nav btn btn-primary'));
         $output .= html_writer::end_tag('div');
 
